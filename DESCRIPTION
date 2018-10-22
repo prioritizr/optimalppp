@@ -1,0 +1,49 @@
+Package: optimalppp
+Type: Package
+Version: 0.0.0.1
+Title: Optimal Project Prioritization Protocol
+Description: Prioritize conservation projects for funding under limited
+    budgets. To identify solutions, users will need to install
+    should install the 'IBM ILOG CPLEX' optimizer (available from
+    <https://www.ibm.com>).
+Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
+               email='jeffrey.hanson@uqconnect.edu.au', role = c('aut')),
+             person(c('Richard'), 'Schuster',
+               email='mail@richard-schuster.com', role = c('aut', 'cre')),
+             person(c('Matthew'), 'Strimas-Mackey',
+               email='mstrimas@gmail.com', role = c('aut')),
+             person(c('Joeseph'), 'Bennett',
+               email='joseph.bennett@carleton.ca', role = c('aut')))
+Imports:
+    utils,
+    methods,
+    assertthat(>= 0.2.0),
+    Matrix,
+    ape,
+    tibble(>= 1.4.2),
+    tidytree
+Suggests:
+    testthat,
+    knitr,
+    roxygen2,
+    rmarkdown,
+    cplexAPI,
+    ggtree
+Depends:
+    R(>= 3.4.0)
+LinkingTo: Rcpp, RcppArmadillo
+License: GPL-3
+LazyData: true
+SystemRequirements: C++11
+URL: https://prioritizr.net,
+    https://github.com/prioritizr/optimalppp
+BugReports: https://github.com/prioritizr/optimalppp/issues
+VignetteBuilder: knitr
+RoxygenNote: 6.1.0
+Collate:
+    'RcppExports.R'
+    'data.R'
+    'internal.R'
+    'methods.R'
+    'package.R'
+    'ppp.R'
