@@ -19,9 +19,10 @@ Imports:
     methods,
     assertthat(>= 0.2.0),
     Matrix,
-    ape,
     tibble(>= 1.4.2),
-    tidytree
+    ape,
+    tidytree,
+    xml2
 Suggests:
     testthat,
     knitr,
@@ -42,8 +43,8 @@ VignetteBuilder: knitr
 RoxygenNote: 6.1.0
 Collate:
     'RcppExports.R'
-    'data.R'
     'internal.R'
+    'data.R'
     'methods.R'
     'package.R'
     'ppp.R'

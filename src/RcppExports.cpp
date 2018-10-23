@@ -17,3 +17,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_miqp_formulation
+Rcpp::List rcpp_miqp_formulation(Rcpp::NumericMatrix spp, double budget, arma::sp_mat branch_matrix, Rcpp::NumericVector branch_lengths, Rcpp::NumericVector costs, Rcpp::NumericVector success_probabilities, Rcpp::IntegerVector locked_in, Rcpp::IntegerVector locked_out);
+RcppExport SEXP _optimalppp_rcpp_miqp_formulation(SEXP sppSEXP, SEXP budgetSEXP, SEXP branch_matrixSEXP, SEXP branch_lengthsSEXP, SEXP costsSEXP, SEXP success_probabilitiesSEXP, SEXP locked_inSEXP, SEXP locked_outSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type spp(sppSEXP);
+    Rcpp::traits::input_parameter< double >::type budget(budgetSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type branch_matrix(branch_matrixSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type branch_lengths(branch_lengthsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type costs(costsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type success_probabilities(success_probabilitiesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type locked_in(locked_inSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type locked_out(locked_outSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_miqp_formulation(spp, budget, branch_matrix, branch_lengths, costs, success_probabilities, locked_in, locked_out));
+    return rcpp_result_gen;
+END_RCPP
+}

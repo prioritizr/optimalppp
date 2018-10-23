@@ -20,15 +20,15 @@ sim_project_data <- data.frame(
   name = c(paste0("project_spp_", seq_len(n_spp)), "project_do_nothing"),
   cost = c(rnorm(n_spp, project_cost_distribution_parameters[1],
               project_cost_distribution_parameters[2]), 0),
-  project_success = c(plogis(rnorm(n_spp,
-                      project_success_distribution_parameters[1],
-                      project_success_distribution_parameters[2])), 1))
+  success = c(plogis(rnorm(n_spp,
+                           project_success_distribution_parameters[1],
+                           project_success_distribution_parameters[2])), 1))
 
 ## phylogenetic tree
-sim_phylogeny <- ape::rtree(n = n_spp, tip.label = paste0("S", seq_len(n_spp)))
+sim_tree <- ape::rtree(n = n_spp, tip.label = paste0("S", seq_len(n_spp)))
 
 ## species persistence probabilities
-species_names <- sim_phylogeny$tip.label
+species_names <- sim_tree$tip.label
 for (i in seq_along(species_names))
   sim_project_data[[species_names[i]]] <- replace(
     rep(0, nrow(sim_project_data)), i,
@@ -42,5 +42,5 @@ sim_project_data[nrow(sim_project_data), species_names] <-
   spp_do_nothing_persistence_scaling_parameter
 
 # Exports
-save(sim_project_data, file = "data/sim_sim_project_data.rda", compress = "xz")
-save(sim_phylogeny, file = "data/sim_phylogeny.rda", compress = "xz")
+save(sim_project_data, file = "data/sim_project_data.rda", compress = "xz")
+save(sim_tree, file = "data/sim_tree.rda", compress = "xz")

@@ -5,3 +5,7 @@ rcpp_branch_matrix <- function(x) {
     .Call(`_optimalppp_rcpp_branch_matrix`, x)
 }
 
+rcpp_miqp_formulation <- function(spp, budget, branch_matrix, branch_lengths, costs, success_probabilities, locked_in, locked_out) {
+    .Call(`_optimalppp_rcpp_miqp_formulation`, spp, budget, branch_matrix, branch_lengths, costs, success_probabilities, locked_in, locked_out)
+}
+
