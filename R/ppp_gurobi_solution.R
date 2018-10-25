@@ -61,10 +61,13 @@ NULL
 #'   defaults to no time limit (but specifically is
 #'   \code{.Machine$integer.max}).
 #'
+#' @param number_approx_points \code{numeric} number of points to use for
+#'   approximating the probability that branches will go extent. Larger
+#'   values increase the precision of these calculations. Defaults to
+#'   \code{300}.
+#'
 #' @param verbose \code{logical} should information be printed while solving
 #'   the problem? Defaults to \code{FALSE}.
-#'
-#' @param threads
 #'
 #' @details TODO
 #'
@@ -97,6 +100,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
                                 locked_out_column_name = NULL,
                                 gap = 0.000001, threads = 1L,
                                 time_limit = .Machine$integer.max,
+                                number_approx_points = 300,
                                 verbose = FALSE) {
   # assertions
   ## assert that gurobi R package is installed
@@ -123,6 +127,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
                           assertthat::is.count(time_limit),
                           is.finite(time_limit),
                           assertthat::is.count(threads),
+                          assertthat::is.count(number_approx_points),
                           assertthat::is.flag(verbose))
   if (!is.null(locked_in_column_name))
     assertthat::assert_that(assertthat::is.string(locked_in_column_name),
@@ -148,22 +153,32 @@ ppp_gurobi_solution <- function(x, tree, budget,
                 paste(paste0("'", setdiff(tree$tip.label, names(x)), "'"),
                       collapse = ", ")))
 
-  # formulate the problem
+  # preliminary data formatting
+  ## determine which projects need to be locked
   locked_in <- integer(0)
   locked_out <- integer(0)
   if (!is.null(locked_in_column_name))
     locked_in <- which(x[[locked_in_column_name]])
   if (!is.null(locked_out_column_name))
     locked_out <- which(x[[locked_in_column_name]])
-  f <- rcpp_miqp_formulation(spp = round(as.matrix(x[, tree$tip.label,
-                                                     drop = FALSE]), 5),
-                             budget = budget,
-                             branch_matrix = branch_matrix(tree),
-                             branch_lengths = tree$edge.lengths,
-                             costs = x[[cost_column_name]],
-                             success_probabilities = x[[success_column_name]],
-                             locked_in = locked_in,
-                             locked_out = locked_out)
+
+  ## pre-compute conditional probabilities of species persistance
+  ## and project success
+  spp_probs <- as.matrix(x[, tree$tip.label, drop = FALSE])
+  spp_probs <- spp_probs * matrix(x[[success_column_name]],
+                                  ncol = ncol(spp_probs),
+                                  nrow = nrow(spp_probs))
+  spp_probs <- Matrix::drop0(as(round(spp_probs, 5), "dgCMatrix"))
+
+  # formulate the problem
+  f <- rcpp_mip_formulation(spp = spp_probs,
+                            budget = budget,
+                            branch_matrix = branch_matrix(tree),
+                            branch_lengths = tree$edge.lengths,
+                            costs = x[[cost_column_name]],
+                            locked_in = locked_in,
+                            locked_out = locked_out,
+                            n_approx_points = number_approx_points)
 
   # solve the problem
   s <- gurobu::gurobi(f, params = list(Presolve = 2,

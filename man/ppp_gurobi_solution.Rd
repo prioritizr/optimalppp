@@ -7,7 +7,7 @@
 ppp_gurobi_solution(x, tree, budget, cost_column_name, success_column_name,
   locked_in_column_name = NULL, locked_out_column_name = NULL,
   gap = 1e-06, threads = 1L, time_limit = .Machine$integer.max,
-  verbose = FALSE)
+  number_approx_points = 300, verbose = FALSE)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
@@ -64,10 +64,13 @@ spent searching for a solution after formatting the data. Effectively,
 defaults to no time limit (but specifically is
 \code{.Machine$integer.max}).}
 
+\item{number_approx_points}{\code{numeric} number of points to use for
+approximating the probability that branches will go extent. Larger
+values increase the precision of these calculations. Defaults to
+\code{300}.}
+
 \item{verbose}{\code{logical} should information be printed while solving
 the problem? Defaults to \code{FALSE}.}
-
-\item{threads}{}
 }
 \value{
 A \code{\link[tibble]{tibble}} object that contains the data in

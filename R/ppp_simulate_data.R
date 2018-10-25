@@ -167,8 +167,8 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
     isTRUE(locked_out_proportion >= 0),
     isTRUE(locked_out_proportion <= 1),
     isTRUE(number_species >
-           (floor(number_species * locked_in_proportion) +
-           floor(number_species * locked_out_proportion))))
+           (ceiling(number_species * locked_in_proportion) +
+           ceiling(number_species * locked_out_proportion))))
 
   # create project data
   project_data <- data.frame(
@@ -184,8 +184,8 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   # assign locked in projects
   project_data$locked_in <- FALSE
   if (locked_in_proportion > 1e-10) {
-    l <- sample.int(number_species, floor(number_species *
-                                          locked_in_proportion))
+    l <- sample.int(number_species, ceiling(number_species *
+                                            locked_in_proportion))
     project_data$locked_in[l] <- TRUE
   }
 
@@ -193,7 +193,7 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   project_data$locked_out <- FALSE
   if (locked_out_proportion > 1e-10) {
     l <- sample(which(!project_data$locked_in),
-                floor(number_species * locked_out_proportion))
+                ceiling(number_species * locked_out_proportion))
     project_data$locked_out[l] <- TRUE
   }
 
