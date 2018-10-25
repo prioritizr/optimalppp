@@ -1,46 +1,36 @@
 # Initialization
 ## set seed for reproducibility
+source("R/ppp_simulate_data.R")
 set.seed(500)
 
 ## set simulation parameters
-n_spp <- 5 # number of species for simulation
-budget_fraction <- 0.25 # fraction of total project cost available for funding
-project_cost_distribution_parameters <- c(100, 5) # mean/sd for project cost
-project_success_distribution_parameters <- c(-0.3, 1) # mean/sd for project
-                                                      # success
-spp_persistence_parameters <- c(0.5, 1) # mean/sd for persistence
-spp_do_nothing_persistence_scaling_parameter <- 0.1 # spp persistence for do
-                                                    # nothing project expressed
-                                                    # as proportion of project
-                                                    # persistence
+number_species <- 5
+cost_mean <- 100
+cost_sd <- 5
+success_min_probability <- 0.7
+success_max_probability <- 0.99
+funded_min_persistence_probability <- 0.5
+funded_max_persistence_probability <- 0.9
+not_funded_min_persistence_probability <- 0.01
+not_funded_max_persistence_probability <- 0.4
+locked_in_proportion <- 0.01
+locked_out_proportion <- 0.01
 
-# Main processing
-## create project data
-sim_project_data <- data.frame(
-  name = c(paste0("project_spp_", seq_len(n_spp)), "project_do_nothing"),
-  cost = c(rnorm(n_spp, project_cost_distribution_parameters[1],
-              project_cost_distribution_parameters[2]), 0),
-  success = c(plogis(rnorm(n_spp,
-                           project_success_distribution_parameters[1],
-                           project_success_distribution_parameters[2])), 1))
-
-## phylogenetic tree
-sim_tree <- ape::rtree(n = n_spp, tip.label = paste0("S", seq_len(n_spp)))
-
-## species persistence probabilities
-species_names <- sim_tree$tip.label
-for (i in seq_along(species_names))
-  sim_project_data[[species_names[i]]] <- replace(
-    rep(0, nrow(sim_project_data)), i,
-    plogis(rnorm(1, spp_persistence_parameters[1],
-                 spp_persistence_parameters[2])))
-
-## set persistence probabilities for species when the "do nothing" project is
-## their only project
-sim_project_data[nrow(sim_project_data), species_names] <-
-  colSums(sim_project_data[, species_names]) *
-  spp_do_nothing_persistence_scaling_parameter
+# Simulate data
+sim <- ppp_simulate_data(number_species,
+                         cost_mean,
+                         cost_sd,
+                         success_min_probability,
+                         success_max_probability,
+                         funded_min_persistence_probability,
+                         funded_max_persistence_probability,
+                         not_funded_min_persistence_probability,
+                         not_funded_max_persistence_probability,
+                         locked_in_proportion,
+                         locked_out_proportion)
 
 # Exports
+sim_project_data <- sim$project_data
+sim_tree <- sim$treee
 save(sim_project_data, file = "data/sim_project_data.rda", compress = "xz")
 save(sim_tree, file = "data/sim_tree.rda", compress = "xz")

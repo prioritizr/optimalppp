@@ -28,13 +28,29 @@ The data set contains the following objects:
   \item{\code{sim_project_data}}{A \code{\link[base]{data.frame}} containing
     data for six simulated conservation projects. Each row corresponds to a
     different project and each column contains information about the
-    projects. This table contains the following columns: \code{"name"} with
-    the name of each project, \code{"cost"} with the cost of funding each
-    project, \code{"success"} with the probability of the project succeeding
-    if it is funded. It also contains columns that are named after each
-    species (i.e. \code{"S1"}, \code{"S2"}, \code{"S3"}, \code{"S4"}, and
-    \code{"S5"}) and these columns indicate the probability of each
-    species persisting if the project is used to enhance its persistence.}
+    projects. This table contains the following columns:
+
+    \describe{
+
+      \item{\code{"name"}}{\code{character} name for each project.}
+
+      \item{\code{"cost"}}{\code{numeric} cost for each project.}
+
+      \item{\code{"success"}}{\code{numeric} probability of each project
+        succeeding if it is funded.}
+
+      \item{\code{"locked_in"}}{\code{logical} indicating if certain
+        projects should be locked into the solution.}
+
+      \item{\code{"locked_out"}}{\code{logical} indicating if certain
+        projects should be locked out of the solution.}
+
+      \item{\code{"S1"} ... \code{"S5"}}{\code{numeric} columns for each
+      species (i.e. \code{"S1"}, \code{"S2"}, \code{"S3"}, \code{"S4"},
+      \code{"S5"}, indicating the enhanced probability that each
+        species will survive if it funded.}
+
+    }}
 
   \item{\code{sim_tree}}{A \code{\link[ape]{phylo}} phylogenetic tree
     that describes the evolutionary relationships between five simulated

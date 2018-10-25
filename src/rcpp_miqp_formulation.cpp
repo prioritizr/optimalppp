@@ -23,7 +23,7 @@ Rcpp::List rcpp_miqp_formulation(Rcpp::NumericMatrix spp,
   {
     arma::sp_mat sppsums = arma::sum(branch_matrix);
     for (std::size_t i = 0; i < n_branches; ++i) {
-      if (sppsums[i] > 0.5) {
+      if (sppsums[i] > 1.5) {
         branch_nontip_indices.push_back(i);
       } else {
         branch_tip_indices.push_back(i);
@@ -63,11 +63,14 @@ Rcpp::List rcpp_miqp_formulation(Rcpp::NumericMatrix spp,
   {
     std::size_t firstspp;
     arma::sp_mat::col_iterator j;
-    std::size_t qstart = n_projects + (n_projects * n_spp) + n_spp;
+    std::size_t qstart = n_projects + (n_projects * n_spp);
     for (std::size_t b = 0; b < branch_nontip_indices.size(); ++b) {
+      Rcpp::Rcout << "starting branch " << branch_nontip_indices[b] << std::endl;
       j = branch_matrix.begin_col(branch_nontip_indices[b]);
       firstspp = j.row();
+      ++j;
       for (;j != branch_matrix.end_col(branch_nontip_indices[b]); ++j) {
+        Rcpp::Rcout << "spp " << firstspp << " vs. spp " << j.row() << ": " <<  branch_lengths[branch_nontip_indices[b]] * 0.5 << std::endl;
         model_Qi.push_back(qstart + static_cast<std::size_t>(firstspp));
         model_Qj.push_back(qstart + static_cast<std::size_t>(j.row()));
         model_Qx.push_back(branch_lengths[branch_nontip_indices[b]] * 0.5);

@@ -3,9 +3,9 @@ Type: Package
 Version: 0.0.0.1
 Title: Optimal Project Prioritization Protocol
 Description: Prioritize conservation projects for funding under limited
-    budgets. To identify solutions, users will need to install
-    should install the 'IBM ILOG CPLEX' optimizer (available from
-    <https://www.ibm.com>).
+    budgets. Although solutions can be identified using heuristic algorithms,
+    to identify optimal solutions the 'Gurobi' optimizer should be installed.
+    (available from <https://www.gurobi.com>).
 Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
                email='jeffrey.hanson@uqconnect.edu.au', role = c('aut')),
              person(c('Richard'), 'Schuster',
@@ -21,14 +21,13 @@ Imports:
     Matrix,
     tibble(>= 1.4.2),
     ape,
-    tidytree,
-    xml2
+    tidytree
 Suggests:
     testthat,
     knitr,
     roxygen2,
     rmarkdown,
-    cplexAPI,
+    gurobi,
     ggtree
 Depends:
     R(>= 3.4.0)
@@ -44,7 +43,10 @@ RoxygenNote: 6.1.0
 Collate:
     'RcppExports.R'
     'internal.R'
+    'branch_matrix.R'
     'data.R'
     'methods.R'
     'package.R'
-    'ppp.R'
+    'ppp_gurobi_solution.R'
+    'ppp_heuristic_solution.R'
+    'ppp_simulate_data.R'

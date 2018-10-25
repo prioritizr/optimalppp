@@ -4,8 +4,8 @@ NULL
 #' Project prioritization protocol
 #'
 #' Prioritize funding for conservation projects. To identify optimal funding
-#' schemes, the IBM ILOG CPLEX optimization software suite and the
-#' \pkg{cplexAPI} package need to be installed.
+#' schemes, the Gurobi optimization software suite and the
+#' \pkg{gurobi} package need to be installed.
 #'
 #' @param x \code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
 #'   table containing project data. Here, each row should correspond to
@@ -24,12 +24,12 @@ NULL
 #' @param cost_column_name \code{character} name of column that
 #'   indicates the cost for funding each project. This column must have
 #'   \code{numeric} values which are equal to or greater than zero. No missing
-#'   values are permitted. Defaults to \code{"cost"}.
+#'   values are permitted.
 #'
 #' @param success_column_name \code{character} name of column that
 #'   denotes the probability that each project will succeed if it is funded.
 #'   This column must have \code{numeric} values which lay between zero and one.
-#'   No missing values are permitted. Defaults to \code{"success"}.
+#'   No missing values are permitted.
 #'
 #' @param locked_in_column_name \code{character} name of column that
 #'   indicates which projects should be locked into the funding scheme. For
@@ -53,9 +53,18 @@ NULL
 #'   solutions will be within 0.0001 % of optimality. No missing values are
 #'   permitted.
 #'
+#' @param threads \code{numeric} number of threads for computational processing.
+#'   Defaults to \code{1}.
+#'
 #' @param time_limit \code{numeric} maximum number of seconds that should be
-#'   spent searching for a solution after formatting the data. Defaults
-#'   to \code{NULL} such that no time limit is imposed.
+#'   spent searching for a solution after formatting the data. Effectively,
+#'   defaults to no time limit (but specifically is
+#'   \code{.Machine$integer.max}).
+#'
+#' @param verbose \code{logical} should information be printed while solving
+#'   the problem? Defaults to \code{FALSE}.
+#'
+#' @param threads
 #'
 #' @details TODO
 #'
@@ -64,23 +73,35 @@ NULL
 #'   \code{"solution"} that contains \code{logical} (i.e.
 #'   \code{TRUE}/\code{FALSE} values) which indicate if each project is
 #'   selected for funding in the solution. This object also has the
-#'   following attributes: \code{"objective"} containing the solution's
-#'   objective, \code{"runtime"} denoting the number of seconds that elapsed
-#'   while solving the problem, and \code{"status"} describing the status
-#'   of the solver (e.g. \code{"TODO"} indicates that the
-#'   optimal solution was found, and \code{"TODO"} indicates that the solution
-#'   meets the optimality gap.
-ppp <- function(x, tree, budget,
-                cost_column_name = "cost",
-                success_column_name = "success",
-                locked_in_column_name = NULL,
-                locked_out_column_name = NULL,
-                gap = 0.000001, time_limit = NULL, threads = 1L,
-                verbose = TRUE) {
+#'   following attributes:
+#'
+#'   \describe{
+#'
+#'     \item{\code{objective}}{\code{numeric} objective value associated with
+#'       the solution.}
+#'
+#'     \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
+#'       while solving the problem.}
+#'
+#'     \item{\code{status}}{\code{character} description of the state of the
+#'       solver (e.g. \code{"OPTIMAL"} indicates that the
+#'       optimal solution was found.}
+#'
+#'  }
+#'
+#' @export
+ppp_gurobi_solution <- function(x, tree, budget,
+                                cost_column_name,
+                                success_column_name,
+                                locked_in_column_name = NULL,
+                                locked_out_column_name = NULL,
+                                gap = 0.000001, threads = 1L,
+                                time_limit = .Machine$integer.max,
+                                verbose = FALSE) {
   # assertions
-  ## assert that cplexAPI is installed
-  assertthat::assert_that(requireNamespace("cplexAPI", quietly = TRUE),
-                          msg = "cplexAPI package not installed.")
+  ## assert that gurobi R package is installed
+  assertthat::assert_that(requireNamespace("gurobi", quietly = TRUE),
+                          msg = "gurobi R package not installed.")
   ## assert that parameters are valid
   assertthat::assert_that(inherits(x, c("data.frame", "tbl_df")),
                           ncol(x) > 0, nrow(x) > 0,
@@ -99,6 +120,8 @@ ppp <- function(x, tree, budget,
                           assertthat::is.scalar(gap),
                           is.finite(gap),
                           isTRUE(gap >= 0),
+                          assertthat::is.count(time_limit),
+                          is.finite(time_limit),
                           assertthat::is.count(threads),
                           assertthat::is.flag(verbose))
   if (!is.null(locked_in_column_name))
@@ -114,7 +137,7 @@ ppp <- function(x, tree, budget,
   if (!is.null(locked_in_column_name) && !is.null(locked_out_column_name)) {
     assertthat::see_if(max(x[[locked_out_column_name]] +
                            x[[locked_in_column_name]]) == 1)
-    stop("some projects are specified as locked in and locked out.")
+    stop("some projects locked in and locked out.")
   }
   if (!is.null(time_limit))
     assertthat::assert_that(assertthat::is.count(time_limit))
@@ -125,9 +148,7 @@ ppp <- function(x, tree, budget,
                 paste(paste0("'", setdiff(tree$tip.label, names(x)), "'"),
                       collapse = ", ")))
 
-  # prepare data for cplex
-  ## prepare problem formulation
-  ## apply locked constraints
+  # formulate the problem
   locked_in <- integer(0)
   locked_out <- integer(0)
   if (!is.null(locked_in_column_name))
@@ -143,58 +164,21 @@ ppp <- function(x, tree, budget,
                              success_probabilities = x[[success_column_name]],
                              locked_in = locked_in,
                              locked_out = locked_out)
-  ## convert linear constraint matrix to array representation for cplexAPI
-  f$A <- Matrix::sparseMatrix(i = f$Ai, j = f$Aj, x = f$Ax,
-                              dims = c(max(f$Aj), f$n_variables),
-                              index1 = FALSE)
-  f$A <- as(f$A, "dgCMatrix")
-  f$Amatbeg <- f$A@p
-  f$Amatcnt <- diff(c(f$A@p, length(f$A@x)))
-  f$Amatind <- f$A@i
-  f$Amatval <- f$A@x
-  ## convert quadratic objective matrix to array representation for cplexAPI
-  f$Q <- Matrix::sparseMatrix(i = f$Qi, j = f$Qj, x = f$Qx,
-                              dims = rep(f$n_variables, 2),
-                              index1 = FALSE)
-  f$Q <- as(f$Q, "dgCMatrix")
-  f$Qmatbeg <- f$Q@p
-  f$Qmatcnt <- diff(c(f$Q@p, length(f$Q@x)))
-  f$Qmatind <- f$Q@i
-  f$Qmatval <- f$Q@x
 
-  # create cplex model
-  ## initialize cplex environment
-  env <- cplexAPI::openEnvCPLEX()
-  ## set parameters for solving problem
-  cplexAPI::setIntParmCPLEX(env, cplexAPI::CPX_PARAM_SCRIND,
-                            as.integer(verbose))
-  cplexAPI::setIntParmCPLEX(env, cplexAPI::CPXPARAM_SolutionTarget, 3L)
-  cplexAPI::setIntParmCPLEX(env, cplexAPI::CPX_PARAM_THREADS,
-                            as.integer(threads))
-  cplexAPI::setDblParmCPLEX(env, cplexAPI::CPXPARAM_MIP_Tolerances_MIPGap, gap)
-  if (!is.null(time_limit))
-    cplexAPI::setIntParmCPLEX(env, cplexAPI::CPXPARAM_TimeLimit,
-                              as.intger(time_limit))
-  ## construct model
-  p <- cplexAPI::initProbCPLEX(env, "ppp")
-  cplexAPI::copyLpwNamesCPLEX(env, p, ncol(f$A), nrow(f$A),
-                    cplexAPI::CPX_MIN, f$obj, f$rhs, f$sense, f$Amatbeg,
-                    f$Amatcnt, f$Amatind, f$Amatval, f$lb, f$ub)
-  cplexAPI::copyQuadCPLEX(env, p, f$Qmatbeg, f$Qmatcnt,
-                          f$Qmatind, f$Qmatval)
-  cplexAPI::copyColTypeCPLEX(env, p, f$vtype)
-  ## solve model
-  cplexAPI::mipoptCPLEX(f, p)
-  ## extract solution
-  sol_path <- tempfile(fileext = ".sol")
-  cplexAPI::solWriteCPLEX(env, p, sol_path)
-  l <- xml2::as_list(xml2::read_xml(sol_path))
+  # solve the problem
+  s <- gurobu::gurobi(f, params = list(Presolve = 2,
+                                       LogToConsole = as.integer(verbose),
+                                       MIPGap = gap,
+                                       Threads = threads,
+                                       TimeLimit = time_limit,
+                                       LogFile = ""))
 
-  # return output
-  x$solution <- as.logical(as.numeric(vapply(
-    l$CPLEXSolution$variables[seq_len(nrow(x))], attr, character(1), "value")))
-  attr(x, "objval") <- as.numeric(attr(l$CPLEXSolution$header,
-                                       "objectiveValue"))
-  attr(x, "status") <- attr(l$CPLEXSolution$header, "solutionStatusString")
+  # format result for output
+  x$solution <- as.logical(s$x[seq_len(nrow(x))])
+  attr(x, "objective") <- s$objval
+  attr(x, "status") <- s$status
+  attr(x, "runtime") <- s$runtime
+
+  # return result
   x
 }
