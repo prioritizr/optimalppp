@@ -4,8 +4,8 @@ Version: 0.0.0.1
 Title: Optimal Project Prioritization Protocol
 Description: Prioritize conservation projects for funding under limited
     budgets. Although solutions can be identified using heuristic algorithms,
-    to identify optimal solutions the 'Gurobi' optimizer should be installed.
-    (available from <https://www.gurobi.com>).
+    to identify optimal solutions the 'Gurobi' optimizer will need to be
+    installed (available from <https://www.gurobi.com>).
 Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
                email='jeffrey.hanson@uqconnect.edu.au', role = c('aut')),
              person(c('Richard'), 'Schuster',
@@ -17,26 +17,25 @@ Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
 Imports:
     utils,
     methods,
-    assertthat(>= 0.2.0),
     Matrix,
+    assertthat(>= 0.2.0),
     tibble(>= 1.4.2),
-    ape,
-    tidytree
+    ape(>= 5.2),
+    tidytree(>= 0.1.9)
 Suggests:
-    testthat,
-    knitr,
-    roxygen2,
-    rmarkdown,
-    gurobi,
-    ggtree
+    testthat(>= 2.0.0),
+    knitr(>= 1.20),
+    roxygen2(>= 6.1.0),
+    rmarkdown(>= 1.10),
+    gurobi(>= 8.0.0),
+    ggtree(>= 1.8.2)
 Depends:
     R(>= 3.4.0)
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp(>= 0.12.19), RcppArmadillo(>= 0.9.100.5.0)
 License: GPL-3
 LazyData: true
 SystemRequirements: C++11
-URL: https://prioritizr.net,
-    https://github.com/prioritizr/optimalppp
+URL: https://github.com/prioritizr/optimalppp
 BugReports: https://github.com/prioritizr/optimalppp/issues
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
