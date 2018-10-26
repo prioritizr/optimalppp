@@ -49,46 +49,62 @@ NULL
 #'   permitted. Defaults to \code{NULL} such that no projects are locked out of
 #'   the solution.
 #'
-#' @param gap \code{numeric} optimality gap. Defaults to 0.000001, so that
-#'   solutions will be within 0.0001 % of optimality. No missing values are
-#'   permitted.
+#' @param gap \code{numeric} optimality gap. This gap should be expressed as
+#'   a proportion. For example, to find a solution that is within 10 % of
+#'   optimality, then \code{0.1} should be supplied. No missing values are
+#'   permitted. Defaults to \code{0}, so that the optimal solution will be
+#'   returned.
 #'
 #' @param threads \code{numeric} number of threads for computational processing.
-#'   Defaults to \code{1}.
+#'   No missing values are permitted. Defaults to \code{1}.
+#'
+#' @param number_solutions \code{numeric} number of solutions to return. If
+#'   the argument is greater than \code{1}, then the output will contain the
+#'   set number of solutions that are closest to optimality. No missing values
+#'   are permitted. Defaults to \code{1}.
 #'
 #' @param time_limit \code{numeric} maximum number of seconds that should be
 #'   spent searching for a solution after formatting the data. Effectively,
 #'   defaults to no time limit (but specifically is
-#'   \code{.Machine$integer.max}).
+#'   \code{.Machine$integer.max}). No missing values are permitted.
 #'
 #' @param number_approx_points \code{numeric} number of points to use for
 #'   approximating the probability that branches will go extent. Larger
-#'   values increase the precision of these calculations. Defaults to
-#'   \code{300}.
+#'   values increase the precision of these calculations.
+#'   No missing values are permitted. Defaults to \code{300}.
 #'
 #' @param verbose \code{logical} should information be printed while solving
-#'   the problem? Defaults to \code{FALSE}.
+#'   the problem? No missing values are permitted. Defaults to \code{FALSE}.
 #'
 #' @details TODO
 #'
-#' @return A \code{\link[tibble]{tibble}} object that contains the data in
-#'   the argument to \code{x}, with an additional column named
-#'   \code{"solution"} that contains \code{logical} (i.e.
-#'   \code{TRUE}/\code{FALSE} values) which indicate if each project is
-#'   selected for funding in the solution. This object also has the
-#'   following attributes:
+#' @return A \code{\link[tibble]{tbl_df}} object that contains a column
+#'   for each solution. Each row corresponds to a different project,
+#'   (following the same order as the data in the argument to \code{x}), and
+#'   each column corresponds to a different solution. Cell values are
+#'   \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
+#'   project is selected for funding in a given solution. The column names
+#'   are formatted where the name \code{"solution_N"} contains the
+#'   the n'th solution. For example, if only one solution is returned
+#'   (as specified in the \code{number_solutions} argument) then the
+#'   output object will only contain a single column called
+#'   \code{"solution_1"}. The output object is also associated with the
+#'   following attributes that describe the solution(s).
 #'
 #'   \describe{
 #'
-#'     \item{\code{objective}}{\code{numeric} objective value associated with
-#'       the solution.}
+#'     \item{\code{status}}{\code{character} description of the
+#'       solver (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
+#'       were found.)}
 #'
 #'     \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
 #'       while solving the problem.}
 #'
-#'     \item{\code{status}}{\code{character} description of the state of the
-#'       solver (e.g. \code{"OPTIMAL"} indicates that the
-#'       optimal solution was found.}
+#'     \item{\code{objective}}{\code{numeric} objective value associated with
+#'       each of the solution(s).}
+#'
+#'     \item{\code{optimality}}{\code{logical} indicating if each solution
+#'       is known to be optimal or not.)}
 #'
 #'  }
 #'
@@ -99,6 +115,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
                                 locked_in_column_name = NULL,
                                 locked_out_column_name = NULL,
                                 gap = 0.000001, threads = 1L,
+                                number_solutions = 1L,
                                 time_limit = .Machine$integer.max,
                                 number_approx_points = 300,
                                 verbose = FALSE) {
@@ -127,8 +144,12 @@ ppp_gurobi_solution <- function(x, tree, budget,
                           assertthat::is.count(time_limit),
                           is.finite(time_limit),
                           assertthat::is.count(threads),
+                          assertthat::is.count(number_solutions),
+                          is.finite(number_solutions),
                           assertthat::is.count(number_approx_points),
                           assertthat::is.flag(verbose))
+  assertthat::assert_that(min(x[[cost_column_name]]) >= 0,
+                          msg = "zero cost baseline project missing.")
   if (!is.null(locked_in_column_name))
     assertthat::assert_that(assertthat::is.string(locked_in_column_name),
                             assertthat::has_name(x, locked_in_column_name),
@@ -140,13 +161,13 @@ ppp_gurobi_solution <- function(x, tree, budget,
                             is.logical(x[[locked_out_column_name]]),
                             assertthat::noNA(x[[locked_out_column_name]]))
   if (!is.null(locked_in_column_name) && !is.null(locked_out_column_name)) {
-    assertthat::see_if(max(x[[locked_out_column_name]] +
-                           x[[locked_in_column_name]]) == 1)
-    stop("some projects locked in and locked out.")
+    assertthat::assert_that(max(x[[locked_out_column_name]] +
+                            x[[locked_in_column_name]]) <= 1,
+                            msg = "some projects locked in and locked out.")
   }
   if (!is.null(time_limit))
     assertthat::assert_that(assertthat::is.count(time_limit))
-  asserthat::assert_that(
+  assertthat::assert_that(
     all(tree$tip.label %in% names(x)),
     msg = paste("argument to tree contains species that do not appear as",
                 "column names in the argument to x:",
@@ -154,15 +175,22 @@ ppp_gurobi_solution <- function(x, tree, budget,
                       collapse = ", ")))
 
   # preliminary data formatting
+  ## check that branches have lengths
+  if (is.null(tree$edge.length)) {
+    tree$edge.length <- rep(1, nrow(tree$edge))
+    warning(paste("tree does not have branch length data,",
+                  "all branches are assumed to have equal lengths"))
+  }
+
   ## determine which projects need to be locked
   locked_in <- integer(0)
   locked_out <- integer(0)
   if (!is.null(locked_in_column_name))
     locked_in <- which(x[[locked_in_column_name]])
   if (!is.null(locked_out_column_name))
-    locked_out <- which(x[[locked_in_column_name]])
+    locked_out <- which(x[[locked_out_column_name]])
 
-  ## pre-compute conditional probabilities of species persistance
+  ## pre-compute conditional probabilities of species persistence
   ## and project success
   spp_probs <- as.matrix(x[, tree$tip.label, drop = FALSE])
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
@@ -174,26 +202,48 @@ ppp_gurobi_solution <- function(x, tree, budget,
   f <- rcpp_mip_formulation(spp = spp_probs,
                             budget = budget,
                             branch_matrix = branch_matrix(tree),
-                            branch_lengths = tree$edge.lengths,
+                            branch_lengths = tree$edge.length,
                             costs = x[[cost_column_name]],
                             locked_in = locked_in,
                             locked_out = locked_out,
                             n_approx_points = number_approx_points)
 
-  # solve the problem
-  s <- gurobu::gurobi(f, params = list(Presolve = 2,
-                                       LogToConsole = as.integer(verbose),
-                                       MIPGap = gap,
-                                       Threads = threads,
-                                       TimeLimit = time_limit,
-                                       LogFile = ""))
+  # convert constraint matrix to sparse representation
+  f$A <- Matrix::sparseMatrix(i = f$Ai, j = f$Aj, x = f$Ax, index1 = FALSE)
 
+  # solve the problem
+  s <- gurobi::gurobi(f, list(Presolve = 2,
+                              LogToConsole = as.integer(verbose),
+                              MIPGap = gap,
+                              Threads = threads,
+                              TimeLimit = time_limit,
+                              LogFile = "",
+                              PoolSearchMode = 2,
+                              PoolSolutions = number_solutions))
+
+  # verify that solution is feasible
+  if (s$status == "INFEASIBLE")
+    stop(paste0("problem is infeasible. This should not happen. ",
+                "Please file an issue at:\n",
+                "  https://github.com/prioritizr/optimalppp/issues"))
   # format result for output
-  x$solution <- as.logical(s$x[seq_len(nrow(x))])
-  attr(x, "objective") <- s$objval
-  attr(x, "status") <- s$status
-  attr(x, "runtime") <- s$runtime
+  obj <- sapply(s$pool, `[[`, "objval", simplify = TRUE)
+  out <- sapply(s$pool, `[[`, "xn", simplify = TRUE)
+  if (!is.matrix(out))
+    out <- matrix(out, ncol = 1)
+  out <- out > 0.5
+  colnames(out) <- paste0("solution_", seq_len(ncol(out)))
+  out <- tibble::as_tibble(out[seq_len(nrow(x)), , drop = FALSE])
+  attr(out, "status") <- s$status
+  attr(out, "runtime") <- s$runtime
+  attr(out, "objective") <- obj
+  attr(out, "optimal") <- (s$status == "OPTIMAL") & (abs(obj[1] - obj) < 1.0e-5)
+
+  # throw warning if less solutions returned then requested
+  if (ncol(out) < number_solutions)
+    warning(paste0("although ", number_solutions, "requested, only ",
+                   ncol(number_solutions), "solutions exist."))
 
   # return result
-  x
+  out
 }

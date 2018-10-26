@@ -6,8 +6,9 @@
 \usage{
 ppp_gurobi_solution(x, tree, budget, cost_column_name, success_column_name,
   locked_in_column_name = NULL, locked_out_column_name = NULL,
-  gap = 1e-06, threads = 1L, time_limit = .Machine$integer.max,
-  number_approx_points = 300, verbose = FALSE)
+  gap = 1e-06, threads = 1L, number_solutions = 1L,
+  time_limit = .Machine$integer.max, number_approx_points = 300,
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
@@ -52,45 +53,61 @@ should contain \code{logical} values, and projects associated with
 permitted. Defaults to \code{NULL} such that no projects are locked out of
 the solution.}
 
-\item{gap}{\code{numeric} optimality gap. Defaults to 0.000001, so that
-solutions will be within 0.0001 % of optimality. No missing values are
-permitted.}
+\item{gap}{\code{numeric} optimality gap. This gap should be expressed as
+a proportion. For example, to find a solution that is within 10 % of
+optimality, then \code{0.1} should be supplied. No missing values are
+permitted. Defaults to \code{0}, so that the optimal solution will be
+returned.}
 
 \item{threads}{\code{numeric} number of threads for computational processing.
-Defaults to \code{1}.}
+No missing values are permitted. Defaults to \code{1}.}
+
+\item{number_solutions}{\code{numeric} number of solutions to return. If
+the argument is greater than \code{1}, then the output will contain the
+set number of solutions that are closest to optimality. No missing values
+are permitted. Defaults to \code{1}.}
 
 \item{time_limit}{\code{numeric} maximum number of seconds that should be
 spent searching for a solution after formatting the data. Effectively,
 defaults to no time limit (but specifically is
-\code{.Machine$integer.max}).}
+\code{.Machine$integer.max}). No missing values are permitted.}
 
 \item{number_approx_points}{\code{numeric} number of points to use for
 approximating the probability that branches will go extent. Larger
-values increase the precision of these calculations. Defaults to
-\code{300}.}
+values increase the precision of these calculations.
+No missing values are permitted. Defaults to \code{300}.}
 
 \item{verbose}{\code{logical} should information be printed while solving
-the problem? Defaults to \code{FALSE}.}
+the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
-A \code{\link[tibble]{tibble}} object that contains the data in
-  the argument to \code{x}, with an additional column named
-  \code{"solution"} that contains \code{logical} (i.e.
-  \code{TRUE}/\code{FALSE} values) which indicate if each project is
-  selected for funding in the solution. This object also has the
-  following attributes:
+A \code{\link[tibble]{tbl_df}} object that contains a column
+  for each solution. Each row corresponds to a different project,
+  (following the same order as the data in the argument to \code{x}), and
+  each column corresponds to a different solution. Cell values are
+  \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
+  project is selected for funding in a given solution. The column names
+  are formatted where the name \code{"solution_N"} contains the
+  the n'th solution. For example, if only one solution is returned
+  (as specified in the \code{number_solutions} argument) then the
+  output object will only contain a single column called
+  \code{"solution_1"}. The output object is also associated with the
+  following attributes that describe the solution(s).
 
   \describe{
 
-    \item{\code{objective}}{\code{numeric} objective value associated with
-      the solution.}
+    \item{\code{status}}{\code{character} description of the
+      solver (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
+      were found.)}
 
     \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
       while solving the problem.}
 
-    \item{\code{status}}{\code{character} description of the state of the
-      solver (e.g. \code{"OPTIMAL"} indicates that the
-      optimal solution was found.}
+    \item{\code{objective}}{\code{numeric} objective value associated with
+      each of the solution(s).}
+
+    \item{\code{optimality}}{\code{logical} indicating if each solution
+      is known to be optimal or not.)}
 
  }
 }

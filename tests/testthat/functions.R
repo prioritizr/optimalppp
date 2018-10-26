@@ -1,4 +1,4 @@
-r_miqp_formulation <- function(project_data, tree, budget) {
+r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
   # Initialization
   ## calculate numbers
   n_projects <- nrow(project_data)
@@ -10,64 +10,46 @@ r_miqp_formulation <- function(project_data, tree, budget) {
   T_bs <- as(T_bs, "dgTMatrix")
   L_b <- tree$edge.length
   n_branches <- ncol(T_bs)
+  branch_tip_indices <- which(Matrix::colSums(T_bs) == 1)
+  branch_nontip_indices <- which(Matrix::colSums(T_bs) > 1)
 
   ## create variable names
   variable_names <- c(paste0("X_", seq_len(n_projects)),
                       paste0("Y_", outer(seq_len(n_projects), species_names,
                                          paste0)),
-                      paste0("E_", species_names),
-                      paste0("D_", which(Matrix::colSums(T_bs) > 1)))
+                      paste0("R_", seq_len(n_branches)))
 
   ## calculate number of variables
   n_v <- length(variable_names)
 
   # Build model
   ## initialize model
-  model <- list(modelsense = "min")
+  model <- list(modelsense = "max")
 
-  ## linear component of objective function
-  ### here, the branches that correspond to a single species are represented in
-  ### the linear component of the objective function
-  model$obj <- setNames(rep(0, n_v), variable_names)
-  for (b in which(Matrix::colSums(T_bs) == 1)) {
-    model$obj[match(paste0("E_", species_names[which(T_bs[, b] > 0.5)]),
-                    names(model$obj))] <- L_b[b]
-  }
+  ## set objective function
+  model$obj <- rep(0, n_v)
+  model$obj[match(paste0("R_", branch_tip_indices), variable_names)] <-
+    L_b[branch_tip_indices]
 
-  ## quadratic component of objective function
-  ### here, the branches that correspond to multiple species are represented in
-  ### the quadratic component of the objective function
-  model$Q <- Matrix::sparseMatrix(i = 1, j = 1, x = 0,
-                                  dims = c(n_v, n_v),
-                                  dimnames = list(variable_names,
-                                                  variable_names))
-  model$Q <- Matrix::drop0(model$Q)
-  for (b in which(Matrix::colSums(T_bs) > 1)) {
-    curr_spp <- species_names[which(T_bs[, b] > 0.5)]
-    m <- matrix(c(rep(paste0("E_", curr_spp[1]), length(curr_spp) - 1),
-                  rep(paste0("E_", curr_spp[-1]), length(curr_spp) - 1)),
-                ncol = 2)
-    m2 <- matrix(0, ncol = 2, nrow = nrow(m))
-    m2[, 1] <- match(m[, 1], variable_names)
-    m2[, 2] <- match(m[, 2], variable_names)
-    model$Q[m2] <- L_b[b] * 0.5
-    model$Q[m2[, c(2, 1), drop = FALSE]] <- L_b[b] * 0.5
-  }
-
-  # set variable bounds
-  model$lb <- replace(rep(0, n_v), grep("D_", variable_names, fixed = TRUE), 1)
+  ## set variable bounds
+  model$lb <- rep(0, n_v)
   model$ub <- rep(1, n_v)
+  model$ub[match(paste0("R_", branch_nontip_indices), variable_names)] <- Inf
+  model$lb[match(paste0("R_", branch_nontip_indices), variable_names)] <- -Inf
+  model$lb[which(project_data$locked_in)] <- 1
+  model$ub[which(project_data$locked_out)] <- 0
 
-  # set variable types
+  ## set variable types
   model$vtype <- rep("S", n_v)
   model$vtype[seq_len(n_projects)] <- "B"
-  model$vtype[grep("^D\\_.*$", variable_names)] <- "B"
+  model$vtype[match(paste0("R_", branch_nontip_indices), variable_names)] <- "C"
 
   ## set linear constraints
   ### initialize constraints
   model$A <- Matrix::sparseMatrix(i = 1, j = 1, x = 0,
                                   dims = c(1 + (n_spp * n_projects) + n_spp +
-                                           n_spp, n_v),
+                                           n_spp +
+                                           length(branch_nontip_indices), n_v),
                                   dimnames = list(NULL, variable_names))
   model$A <- Matrix::drop0(model$A)
   model$rhs <- rep(NA_real_, nrow(model$A))
@@ -75,7 +57,7 @@ r_miqp_formulation <- function(project_data, tree, budget) {
 
   ### budget constraint
   model$A[1, paste0("X_", seq_len(n_projects))] <- project_data$cost
-  model$sense[1] <- "L"
+  model$sense[1] <- "<="
   model$rhs[1] <- budget
 
   ### project allocation constraints
@@ -85,7 +67,7 @@ r_miqp_formulation <- function(project_data, tree, budget) {
       curr_row <- curr_row + 1
       model$A[curr_row, paste0("X_", i)] <- 1
       model$A[curr_row, paste0("Y_", i, s)] <- -1
-      model$sense[curr_row] <- "G"
+      model$sense[curr_row] <- ">="
       model$rhs[curr_row] <- 0
     }
   }
@@ -94,32 +76,67 @@ r_miqp_formulation <- function(project_data, tree, budget) {
   for (s in species_names) {
     curr_row <- curr_row + 1
     model$A[curr_row, paste0("Y_", seq_len(n_projects), s)] <- 1
-    model$sense[curr_row] <- "E"
+    model$sense[curr_row] <- "="
     model$rhs[curr_row] <- 1
   }
 
-  ### species extinction probability constraints
+  ### species persistence probability constraints
   for (s in species_names) {
     curr_row <- curr_row + 1
-    curr_projects <- paste0("Y_", seq_len(n_projects), s)
-    curr_projects_nz <- which(project_data[[s]] > 1.0e-10)
-    model$A[curr_row, curr_projects] <-
-      round(project_data$success * project_data[[s]][curr_projects_nz], 5)
-    model$A[curr_row, paste0("E_", s)] <- 1
-    model$sense[curr_row] <- "E"
-    model$rhs[curr_row] <- 1
+    curr_projects_for_spp <- which(project_data[[s]] > 0)
+    b <- which((Matrix::colSums(T_bs) == 1) &
+               (T_bs[match(s, species_names), ] == 1))
+    model$A[curr_row, paste0("Y_", curr_projects_for_spp, s)] <-
+      round(project_data[[s]][curr_projects_for_spp] *
+            project_data$success[curr_projects_for_spp], 5)
+    model$A[curr_row, paste0("R_", b)] <- -1
+    model$sense[curr_row] <- "="
+    model$rhs[curr_row] <- 0
   }
 
-  ### convert sparse matrices to vector representation
-  model$A <- as(model$A, "dgTMatrix")
-  model$Ai <- model$A@i - 1
-  model$Aj <- model$A@j - 1
-  model$Ax <- model$A@x
-  model$Q <- as(model$Q, "dgTMatrix")
-  model$Qi <- model$Q@i - 1
-  model$Qj <- model$Q@j - 1
-  model$Qx <- model$Q@x
-  model$n_variables <- n_v
+  ## set constraints to specify log-sum probabilities for branches associated with
+  ## multiple species
+  if (length(branch_nontip_indices) > 0) {
+    ### initialize variables
+    model$pwlobj <- list()
+    curr_pwl <- 0
+    for (b in branch_nontip_indices) {
+      ### increment counters
+      curr_row <- curr_row + 1
+      curr_pwl <- curr_pwl + 1
+      ### apply linear constraints
+      for (s in species_names[which(T_bs[, b] > 0.5)]) {
+        curr_projects_for_spp <- which(project_data[[s]] > 0)
+        model$A[curr_row, paste0("Y_", curr_projects_for_spp, s)] <-
+          log(1 - (project_data[[s]][curr_projects_for_spp] *
+                   project_data$success[curr_projects_for_spp]))
+      }
+      model$A[curr_row, paste0("R_", b)] <- -1
+      model$sense[curr_row] <- "="
+      model$rhs[curr_row] <- 0
+      ### apply piecewise linear approximation constraints
+      #### calculate extinction probabilities for each spp and project
+      curr_probs <- as.matrix(project_data[, species_names[T_bs[, b] > 0.5]])
+      curr_probs <- curr_probs * matrix(project_data$success, byrow = FALSE,
+                                        ncol = ncol(curr_probs),
+                                        nrow = nrow(curr_probs))
+      curr_probs[curr_probs < 1e-15] <- NA_real_
+      curr_probs <- 1 - curr_probs
+      #### calculate log-sum value of extinction probabilities if best project
+      ### funded for each species
+      curr_min_value <- sum(log(apply(curr_probs, 2, min, na.rm = TRUE)))
+      #### calculate log-sum value of extinction probabilities if worst project
+      ### funded for each species
+      curr_max_value <- sum(log(apply(curr_probs, 2, max, na.rm = TRUE)))
+      model$pwlobj[[curr_pwl]] <- list()
+      model$pwlobj[[curr_pwl]]$var <- match(paste0("R_", b), variable_names)
+      model$pwlobj[[curr_pwl]]$x <- seq(curr_min_value * 0.99,
+                                        curr_max_value * 1.01,
+                                        length.out = n_approx_points)
+      model$pwlobj[[curr_pwl]]$y <- L_b[b] * (1 -
+                                              exp(model$pwlobj[[curr_pwl]]$x))
+    }
+  }
 
   # Exports
   model
