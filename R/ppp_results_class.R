@@ -3,75 +3,50 @@ NULL
 
 #' 'Project Prioritization Protocol' solution class
 #'
-#' This manual page documents information about the \code{ppp_results} class.
+#' This manual page documents information about the
+#' \code{\link[tibble]{tbl_df}} object output from the solver functions.
 #'
 #' @name ppp_results_class
 #'
 #' @keywords internal
 #'
 #' @seealso The following methods can be used to extract, inspect, and
-#'   visualize components of the
-#'   solution(s): (e.g. extract the solutions, or the summary statistics)
+#'   visualize the solution(s): TODO
 #'
-#' @return A \code{ppp_results} class object containing the solutions.
-#'   This is a \code{list} object which contains the following components:
+#' @return A \code{\code{link[tibble]{tbl_df}} object containing the
+#'   solution(s) data. Each row corresponds to a different solution, and
+#'   each column describes a different property of the solution. The object
+#'   contains a column for each project (based on the argument to
+#'   \code{project_column_name}) which contains \code{logical} values indicating
+#'   if the project was prioritized for funded (\code{TRUE}) or not
+#'   (\code{FALSE}) in a given solution. Additionally, the object also contains
+#'   the following columns:
 #'
 #'  \describe{
 #'
-#'    \item{\code{$call}}{\code{\link[base]{call}} command used to generate the
-#'      solution(s).}
+#'    \item{\code{objective}}{\code{numeric} objective value associated with
+#'      each of the solution(s). This corresponds to the expected amount of
+#'      evolutionary history that is retained by each solution.}
 #'
-#'    \item{\code{$project_data}}{\code{\link[tibble]{tbl_df}} object that
-#'      contains the project data used to generate the solution(s).}
+#'    \item{\code{cost}}{\code{numeric} total cost associated with each of
+#'      of the solution(s).}
 #'
-#'    \item{\code{$tree}}{\code{\link[ape]{phylo}} phylogenetic tree used to
-#'      generate the solution(s).}
+#'    \item{\code{optimal}}{\code{logical} indicating if each of the
+#'      solution(s) is known to be optimal or not.)}
 #'
-#'    \item{\code{$solution}}{\code[\link[tibble]{tbl_df} object that contains a
-#'      column for each solution. Each row corresponds to a different project,
-#'      (following the same order as the data in the argument to \code{x}), and
-#'      each column corresponds to a different solution. Cell values are
-#'      \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
-#'      project is selected for funding in a given solution. The column names
-#'      are formatted where the name \code{"solution_N"} contains the
-#'      the n'th solution. For example, if only one solution is returned
-#'      (as specified in the \code{number_solutions} argument) then the
-#'      output object will only contain a single column called
-#'      \code{"solution_1"}.}
+#'  }}
 #'
-#'   \item{\code{$statistics}}{\code[\link[tibble]{tbl_df} object that contains
-#'     summary statistics for each solution. Each row corresponds to a
-#'     different solution and each column describes a different property of the
-#'     solution. Specifically, it contains the following columns:
+#'  Finally, the object also contains following attributes
+#'  (which can be accessed, for example, using \code{attr(output, "status")}):
 #'
-#'     \describe{
+#'  \describe{
 #'
-#'       \item{\code{name}}{\code{character} name of each solution. The solution
-#'         names correspond to the column names in the \code{$solution}
-#'         element.}
+#'    \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
+#'      while solving the problem.}
 #'
-#'       \item{\code{cost}}{\code{numeric} total cost associated with each of
-#'         of the solution(s).}
-#'
-#'       \item{\code{objective}}{\code{numeric} objective value associated with
-#'         each of the solution(s). This corresponds to the expected amount of
-#'         evolutionary history that is retained by each solution.}
-#'
-#'       \item{\code{optimal}}{\code{logical} indicating if each of the
-#'         solution(s) is known to be optimal or not.)}
-#'
-#'     }}
-#'
-#'   \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
-#'     while solving the problem.}
-#'
-#'   \item{\code{status}}{\code{character} description of the
-#'     solver status (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
-#'     were found.)}
-#'
-#'   \item{\code{method}}{\code{character} name of the method used to produce
-#'     the solutions (e.g. \code{"gurobi"} if solutions were obtained using the
-#'     \code{\link{ppp_gurobi_solution}} function).}
+#'    \item{\code{status}}{\code{character} description of the
+#'      solver status (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
+#'      were found.)}
 #'
 #'  }
 NULL

@@ -26,8 +26,10 @@ ppp_objective_value <- function(x, tree, project_column_name,
                           is.numeric(x[[success_column_name]]),
                           assertthat::noNA(x[[success_column_name]]),
                           inherits(solution, c("data.frame", "tbl_df")),
-                          all(x$name %in% names(solution)),
-                          all(vapply(solution[, x[[project_column_name]]],
+                          all(as.character(x[[project_column_name]]) %in%
+                              names(solution)),
+                          all(vapply(solution[, x[[project_column_name]],
+                                              drop = FALSE],
                                      class, character(1)) ==
                                      "logical"))
   assertthat::assert_that(

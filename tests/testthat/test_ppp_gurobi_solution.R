@@ -17,110 +17,160 @@ test_that("solution (single solution, no constraints)", {
                            "cost", "success")
   # tests
   ## class
-  expect_is(s, "ppp_results")
-  ## project_data
-  expect_identical(project_data, s$project_data)
-  ## tree
-  expect_identical(tree, s$tree)
-  ## solution
-  expect_is(s$solution, "tbl_df")
-  expect_equal(ncol(s$solution), 1)
-  expect_equal(nrow(s$solution), 4)
-  expect_equal(names(s$solution), "solution_1")
-  expect_equal(s$solution[[1]], c(FALSE, FALSE, TRUE, TRUE))
-  ## statistics
-  expect_equal(ncol(s$statistics), 4)
-  expect_equal(nrow(s$statistics), 1)
-  expect_equal(names(s$statistics), c("name", "objective", "cost", "optimal"))
-  expect_equal(s$statistics$name, "solution_1")
-  expect_equal(s$statistics$objective,
-               (100 * (1 - (1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 8)
+  expect_equal(nrow(s), 1)
+  ## statistic columns
+  expect_equal(s$solution, 1L)
+  expect_equal(s$objective,
+               (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +
-               (5 * (0.94 * 0.8))
-  expect_equal(s$statistics$cost, 0.15)
-  expect_equal(s$statistics$optimal, TRUE)
+               (5 * (0.94 * 0.8)) +
+               (5 * (1.00 * 0.1)))
+  expect_equal(s$cost, 0.15)
+  expect_equal(s$optimal, TRUE)
+  ## solution columns
+  expect_equal(s$a, FALSE)
+  expect_equal(s$b, FALSE)
+  expect_equal(s$c, TRUE)
+  expect_equal(s$d, TRUE)
   ## runtime
-  expect_is(s$runtime, "numeric")
-  expect_gte(s$runtime, 0)
-  expect_lte(s$runtime, 10)
+  expect_is(attr(s, "runtime"), "numeric")
+  expect_gte(attr(s, "runtime"), 0)
+  expect_lte(attr(s, "runtime"), 10)
   ## status
-  expect_identical(s$status, "OPTIMAL")
-
+  expect_identical(attr(s, "status"), "OPTIMAL")
 })
 
-# test_that("solution (single solution, locked in + out constraints)", {
-#   skip_on_cran()
-#   skip_on_travis()
-#   skip_on_appveyor()
-#   skip_if_not(requireNamespace("gurobi", quietly = TRUE))
-#   project_data <- data.frame(name = letters[1:3],
-#                              cost =       c(1.00, 1.00, 0.00),
-#                              success =    c(0.01, 0.96, 1.00),
-#                              S1 =         c(0.01, 0.96, 0.10),
-#                              S2 =         c(0.01, 0.96, 0.10),
-#                              locked_in =  c(TRUE, FALSE, FALSE),
-#                              locked_out = c(FALSE, TRUE, FALSE))
-#   tree <- ape::read.tree(text = "(S1,S2);")
-#   # expect warning because the tree has no edge length data
-#   expect_warning(s <- ppp_gurobi_solution(project_data, tree, 2,
-#                                           "cost", "success", "locked_in",
-#                                           "locked_out"))
-#   expect_is(s$solution, "tbl_df")
-#   expect_equal(ncol(s$solution), 1)
-#   expect_equal(nrow(s$solution), 3)
-#   expect_equal(names(s$solution), "solution_1")
-#   expect_equal(s$solution[[1]], c(TRUE, FALSE, TRUE))
-# })
-#
-# test_that("solution (multiple solutions, no constraints)", {
-#   skip_on_cran()
-#   skip_on_travis()
-#   skip_on_appveyor()
-#   skip_if_not(requireNamespace("gurobi", quietly = TRUE))
-#   project_data <- data.frame(name = letters[1:4],
-#                              cost =     c(0.10, 0.10, 0.15, 0.00),
-#                              success =  c(0.95, 0.96, 0.94, 1.00),
-#                              S1 =       c(0.91, 0.00, 0.80, 0.10),
-#                              S2 =       c(0.00, 0.92, 0.80, 0.10),
-#                              S3 =       c(0.00, 0.00, 0.00, 0.10))
-#   tree <- ape::read.tree(text = "((S1,S2),S3);")
-#   tree$edge.length <- c(100, 5, 5)
-#   # expect warning because there does not exist 100 solutions
-#   expect_warning(s <- ppp_gurobi_solution(project_data, tree, 0.18, "cost",
-#                                           "success", number_solutions = 100))
-#   expect_is(s$solution, "tbl_df")
-#   expect_equal(ncol(s$solution), 7)
-#   expect_equal(nrow(s$solution), 4)
-#   expect_equal(names(s$solution), paste0("solution_", seq_len(7)))
-#   expect_equal(unique(vapply(s$solution, class, character(1))), "logical")
-#   expect_equal(anyDuplicated(vapply(s$solution, paste, character(1),
-#                                     collapse = ",")), 0)
-# })
-#
-# test_that("solution (multiple solutions, locked in + out constraints)", {
-#   skip_on_cran()
-#   skip_on_travis()
-#   skip_on_appveyor()
-#   skip_if_not(requireNamespace("gurobi", quietly = TRUE))
-#   project_data <- data.frame(name = letters[1:3],
-#                              cost =       c(1.00, 1.00, 0.00),
-#                              success =    c(0.01, 0.96, 1.00),
-#                              S1 =         c(0.01, 0.96, 0.10),
-#                              S2 =         c(0.01, 0.96, 0.10),
-#                              locked_in =  c(TRUE, FALSE, FALSE),
-#                              locked_out = c(FALSE, TRUE, FALSE))
-#   tree <- ape::read.tree(text = "(S1,S2);")
-#   # expect warning because the tree has no edge length data
-#   expect_warning(s <- ppp_gurobi_solution(project_data, tree, 2,
-#                                           "cost", "success", "locked_in",
-#                                           "locked_out", number_solutions = 100))
-#   expect_is(s, "tbl_df")
-#   expect_equal(ncol(s), 2)
-#   expect_equal(nrow(s), 3)
-#   expect_equal(names(s), paste0("solution_", seq_len(2)))
-#   expect_equal(unique(vapply(s, class, character(1))), "logical")
-#   expect_equal(anyDuplicated(vapply(s, paste, character(1), collapse = ",")), 0)
-# })
+test_that("solution (single solution, locked in + out constraints)", {
+  skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
+  skip_if_not(requireNamespace("gurobi", quietly = TRUE))
+  project_data <- data.frame(name = letters[1:3],
+                             cost =       c(1.00, 1.00, 0.00),
+                             success =    c(0.01, 0.96, 1.00),
+                             S1 =         c(0.01, 0.96, 0.10),
+                             S2 =         c(0.01, 0.96, 0.10),
+                             S3 =         c(0.0, 0.0, 0.0),
+                             locked_in =  c(TRUE, FALSE, FALSE),
+                             locked_out = c(FALSE, TRUE, FALSE))
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  # expect warning because the tree has no edge length data
+  expect_warning(s <- ppp_gurobi_solution(project_data, tree, 2, "name",
+                                          "cost", "success", "locked_in",
+                                          "locked_out"))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(nrow(s), 1)
+  expect_equal(ncol(s), 7)
+  ## solution columns
+  expect_equal(s$a, TRUE)
+  expect_equal(s$b, FALSE)
+  expect_equal(s$c, TRUE)
+  ## statistics columns
+  expect_equal(s$solution, 1L)
+  expect_equal(s$objective,
+               (1 * (1 - ((1 - (1 * 0.1)) * (1 - (1 * 0.1))))) +
+               (1 * (1 * 0.1)) +
+               (1 * (1 * 0.1)))
+  expect_equal(s$cost, 1.0)
+  expect_equal(s$optimal, TRUE)
+  ## runtime
+  expect_is(attr(s, "runtime"), "numeric")
+  expect_gte(attr(s, "runtime"), 0)
+  expect_lte(attr(s, "runtime"), 10)
+  ## status
+  expect_identical(attr(s, "status"), "OPTIMAL")
+})
+
+test_that("solution (multiple solutions, no constraints)", {
+  skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
+  skip_if_not(requireNamespace("gurobi", quietly = TRUE))
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  # expect warning because there does not exist 100 solutions
+  expect_warning(s <- ppp_gurobi_solution(project_data, tree, 0.18, "name",
+                                          "cost", "success",
+                                           number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(nrow(s), 7)
+  expect_equal(ncol(s), 8)
+  ## solution columns
+  expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
+               "logical")
+  expect_equal(anyDuplicated(vapply(s[, project_data$name], paste, character(1),
+                                    collapse = ",")), 0)
+  ## statistics columns
+  expect_equal(s$solution, seq_len(7))
+  expect_is(s$objective, "numeric")
+  expect_true(all(s$objective >= 0))
+  expect_is(s$cost, "numeric")
+  expect_true(all(s$cost >= 0))
+  expect_equal(s$optimal, c(TRUE, rep(FALSE, 6)))
+  ## runtime
+  expect_is(attr(s, "runtime"), "numeric")
+  expect_gte(attr(s, "runtime"), 0)
+  expect_lte(attr(s, "runtime"), 10)
+  ## status
+  expect_identical(attr(s, "status"), "OPTIMAL")
+})
+
+test_that("solution (multiple solutions, locked in + out constraints)", {
+  skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
+  skip_if_not(requireNamespace("gurobi", quietly = TRUE))
+  project_data <- data.frame(name = letters[1:3],
+                             cost =       c(1.00, 1.00, 0.00),
+                             success =    c(0.01, 0.96, 1.00),
+                             S1 =         c(0.01, 0.96, 0.10),
+                             S2 =         c(0.01, 0.96, 0.10),
+                             S3 =         c(0.00, 0.00, 0.00),
+                             locked_in =  c(TRUE, FALSE, FALSE),
+                             locked_out = c(FALSE, TRUE, FALSE),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  # expect warning because the tree has no edge length data
+  expect_warning(s <- ppp_gurobi_solution(project_data, tree, 2, "name",
+                                          "cost", "success", "locked_in",
+                                          "locked_out", number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(nrow(s), 2)
+  expect_equal(ncol(s), 7)
+  ## solution columns
+  expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
+               "logical")
+  expect_equal(anyDuplicated(vapply(s[, project_data$name], paste, character(1),
+                                    collapse = ",")), 0)
+  ## statistics columns
+  expect_equal(s$solution, seq_len(2))
+  expect_is(s$objective, "numeric")
+  expect_true(all(s$objective >= 0))
+  expect_is(s$cost, "numeric")
+  expect_true(all(s$cost >= 0))
+  expect_equal(s$optimal, c(TRUE, FALSE))
+  ## runtime
+  expect_is(attr(s, "runtime"), "numeric")
+  expect_gte(attr(s, "runtime"), 0)
+  expect_lte(attr(s, "runtime"), 10)
+  ## status
+  expect_identical(attr(s, "status"), "OPTIMAL")
+})
 
 test_that("invalid arguments", {
   # invalid budget

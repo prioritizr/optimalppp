@@ -214,6 +214,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
                               LogFile = "",
                               PoolSearchMode = 2,
                               PoolSolutions = number_solutions))
+
   # verify that solution is feasible
   if (s$status == "INFEASIBLE")
     stop(paste0("problem is infeasible. This should not happen. ",
@@ -228,6 +229,12 @@ ppp_gurobi_solution <- function(x, tree, budget,
   out <- t(out) > 0.5
   colnames(out) <- x[[project_column_name]]
   out <- tibble::as_tibble(out)
+
+  ## throw warning if the number of output solutions is not equal to the number
+  ## of the requested solution
+  if (nrow(out) != number_solutions)
+    warning(paste("although", number_solutions, "requested, only", nrow(out),
+                  "solutions exist."))
 
   ## format statistics for output
   out <- tibble::as_tibble(cbind(
