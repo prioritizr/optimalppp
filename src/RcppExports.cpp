@@ -35,3 +35,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_ppp_objective
+Rcpp::NumericVector rcpp_ppp_objective(arma::sp_mat spp, arma::sp_mat branch_matrix, Rcpp::NumericVector branch_lengths, arma::sp_mat solutions);
+RcppExport SEXP _optimalppp_rcpp_ppp_objective(SEXP sppSEXP, SEXP branch_matrixSEXP, SEXP branch_lengthsSEXP, SEXP solutionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type spp(sppSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type branch_matrix(branch_matrixSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type branch_lengths(branch_lengthsSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type solutions(solutionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_ppp_objective(spp, branch_matrix, branch_lengths, solutions));
+    return rcpp_result_gen;
+END_RCPP
+}

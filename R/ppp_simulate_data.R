@@ -20,20 +20,20 @@ NULL
 #'   projects succeeding if they are funded. Defaults to \code{0.99}.
 #'
 #' @param funded_min_persistence_probability \code{numeric} minimum probability
-#'    of the species persisting if their projects are funded and successful.
-#'    Defaults to \code{0.5}.
+#'   of the species persisting if their projects are funded and successful.
+#'   Defaults to \code{0.5}.
 #'
 #' @param funded_max_persistence_probability \code{numeric} maximum probability
-#'    of the species persisting if their projects are funded and successful.
-#'    Defaults to \code{0.9}.
+#'   of the species persisting if their projects are funded and successful.
+#'   Defaults to \code{0.9}.
 #'
 #' @param not_funded_min_persistence_probability \code{numeric} minimum
-#'    probability of the species persisting if their projects are not funded.
-#'    Defaults to \code{0.01}.
+#'   probability of the species persisting if their projects are not funded.
+#'   Defaults to \code{0.01}.
 #'
 #' @param not_funded_max_persistence_probability \code{numeric} maximum
-#'    probability of the species persisting if their projects are not funded.
-#'    Defaults to \code{0.4}.
+#'   probability of the species persisting if their projects are not funded.
+#'   Defaults to \code{0.4}.
 #'
 #' @param locked_in_proportion \code{numeric} of projects that are locked
 #'   into the solution. Defaults to \code{0}.
@@ -42,9 +42,9 @@ NULL
 #'   into the solution. Defaults to \code{0}.
 #'
 #' @details The simulated data set will contain one conservation project for
-#'    each species and a baseline "do nothing" project to reflect species'
-#'    persistence when their conservation projects are not funded. The
-#'    data are simulated as follows:
+#'   each species and a baseline "do nothing" project to reflect species'
+#'   persistence when their conservation projects are not funded. The
+#'   data are simulated as follows:
 #'
 #'   \enumerate{
 #'

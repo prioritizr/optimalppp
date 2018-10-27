@@ -1,11 +1,13 @@
 #' @include internal.R
 NULL
 
-#' Project prioritization protocol
+#' Solve the 'Project Prioritization Protocol' problem using Gurobi
 #'
-#' Prioritize funding for conservation projects. To identify optimal funding
-#' schemes, the Gurobi optimization software suite and the
-#' \pkg{gurobi} package need to be installed.
+#' Prioritize funding for conservation projects using the Gurobi optimization
+#' software suite. Unlike other methods for generating prioritizations,
+#' this method can identify optimal solutions (or solutions within a
+#' pre-specified optimality gap). \strong{As a consequence, it is strongly
+#' recommended to use this method for developing project prioritizations.}
 #'
 #' @param x \code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
 #'   table containing project data. Here, each row should correspond to
@@ -20,6 +22,10 @@ NULL
 #'
 #' @param budget \code{numeric} value that represents the total budget available
 #'   for funding conservation projects.
+#'
+#' @param project_column_name \code{character} name of column that contains
+#'   the name for each conservation project. Note that the project names
+#'   must not contain any duplicates or missing values.
 #'
 #' @param cost_column_name \code{character} name of column that
 #'   indicates the cost for funding each project. This column must have
@@ -78,38 +84,11 @@ NULL
 #'
 #' @details TODO
 #'
-#' @return A \code{\link[tibble]{tbl_df}} object that contains a column
-#'   for each solution. Each row corresponds to a different project,
-#'   (following the same order as the data in the argument to \code{x}), and
-#'   each column corresponds to a different solution. Cell values are
-#'   \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
-#'   project is selected for funding in a given solution. The column names
-#'   are formatted where the name \code{"solution_N"} contains the
-#'   the n'th solution. For example, if only one solution is returned
-#'   (as specified in the \code{number_solutions} argument) then the
-#'   output object will only contain a single column called
-#'   \code{"solution_1"}. The output object is also associated with the
-#'   following attributes that describe the solution(s).
-#'
-#'   \describe{
-#'
-#'     \item{\code{status}}{\code{character} description of the
-#'       solver (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
-#'       were found.)}
-#'
-#'     \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
-#'       while solving the problem.}
-#'
-#'     \item{\code{objective}}{\code{numeric} objective value associated with
-#'       each of the solution(s).}
-#'
-#'     \item{\code{optimality}}{\code{logical} indicating if each solution
-#'       is known to be optimal or not.)}
-#'
-#'  }
+#' @inherit ppp_results_class return seealso
 #'
 #' @export
 ppp_gurobi_solution <- function(x, tree, budget,
+                                project_column_name,
                                 cost_column_name,
                                 success_column_name,
                                 locked_in_column_name = NULL,
@@ -123,13 +102,21 @@ ppp_gurobi_solution <- function(x, tree, budget,
   ## assert that gurobi R package is installed
   assertthat::assert_that(requireNamespace("gurobi", quietly = TRUE),
                           msg = "gurobi R package not installed.")
+  ## coerce x to tibble if just a regular data.frame
+  if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))
+    x <- tibble::as_tibble(x)
   ## assert that parameters are valid
-  assertthat::assert_that(inherits(x, c("data.frame", "tbl_df")),
+  assertthat::assert_that(inherits(x, "tbl_df"),
                           ncol(x) > 0, nrow(x) > 0,
                           inherits(tree, "phylo"),
                           assertthat::is.scalar(budget),
                           is.finite(budget),
                           isTRUE(budget >= 0),
+                          assertthat::is.string(project_column_name),
+                          assertthat::has_name(x, project_column_name),
+                          assertthat::noNA(x[[project_column_name]]),
+                          inherits(x[[project_column_name]],
+                                   c("character", "factor")),
                           assertthat::is.string(cost_column_name),
                           assertthat::has_name(x, cost_column_name),
                           is.numeric(x[[cost_column_name]]),
@@ -165,8 +152,6 @@ ppp_gurobi_solution <- function(x, tree, budget,
                             x[[locked_in_column_name]]) <= 1,
                             msg = "some projects locked in and locked out.")
   }
-  if (!is.null(time_limit))
-    assertthat::assert_that(assertthat::is.count(time_limit))
   assertthat::assert_that(
     all(tree$tip.label %in% names(x)),
     msg = paste("argument to tree contains species that do not appear as",
@@ -175,12 +160,21 @@ ppp_gurobi_solution <- function(x, tree, budget,
                       collapse = ", ")))
 
   # preliminary data formatting
+  ## coerce factor species names to character
+  if (is.factor(x[[project_column_name]]))
+    x[[project_column_name]] <- as.character(x[[project_column_name]])
+
   ## check that branches have lengths
   if (is.null(tree$edge.length)) {
     tree$edge.length <- rep(1, nrow(tree$edge))
     warning(paste("tree does not have branch length data,",
                   "all branches are assumed to have equal lengths"))
+  }  else {
+    assertthat::assert_that(nrow(tree$edge) == length(tree$edge.length))
   }
+
+  ## create branch matrix
+  bm <- branch_matrix(tree)
 
   ## determine which projects need to be locked
   locked_in <- integer(0)
@@ -201,7 +195,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
   # formulate the problem
   f <- rcpp_mip_formulation(spp = spp_probs,
                             budget = budget,
-                            branch_matrix = branch_matrix(tree),
+                            branch_matrix = bm,
                             branch_lengths = tree$edge.length,
                             costs = x[[cost_column_name]],
                             locked_in = locked_in,
@@ -220,29 +214,36 @@ ppp_gurobi_solution <- function(x, tree, budget,
                               LogFile = "",
                               PoolSearchMode = 2,
                               PoolSolutions = number_solutions))
-
   # verify that solution is feasible
   if (s$status == "INFEASIBLE")
     stop(paste0("problem is infeasible. This should not happen. ",
                 "Please file an issue at:\n",
                 "  https://github.com/prioritizr/optimalppp/issues"))
-  # format result for output
-  obj <- sapply(s$pool, `[[`, "objval", simplify = TRUE)
+
+  # prepare results for output
   out <- sapply(s$pool, `[[`, "xn", simplify = TRUE)
   if (!is.matrix(out))
     out <- matrix(out, ncol = 1)
-  out <- out > 0.5
-  colnames(out) <- paste0("solution_", seq_len(ncol(out)))
-  out <- tibble::as_tibble(out[seq_len(nrow(x)), , drop = FALSE])
-  attr(out, "status") <- s$status
-  attr(out, "runtime") <- s$runtime
-  attr(out, "objective") <- obj
-  attr(out, "optimal") <- (s$status == "OPTIMAL") & (abs(obj[1] - obj) < 1.0e-5)
+  out <- out[seq_len(nrow(x)), , drop = FALSE]
+  out <- t(out) > 0.5
+  colnames(out) <- x[[project_column_name]]
+  out <- tibble::as_tibble(out)
 
-  # throw warning if less solutions returned then requested
-  if (ncol(out) < number_solutions)
-    warning(paste0("although ", number_solutions, "requested, only ",
-                   ncol(number_solutions), "solutions exist."))
+  ## format statistics for output
+  out <- tibble::as_tibble(cbind(
+    tibble::tibble(
+      solution = seq_along(s$pool),
+      objective = ppp_objective_value(x, tree, project_column_name,
+                                      success_column_name, out),
+      cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
+                            ncol = ncol(out), nrow = nrow(out)) *
+                     as.matrix(out)),
+      optimal = (s$status == "OPTIMAL") &
+                (abs(objective[1] - objective) < 1.0e-5)), out))
+
+  ## add attributes with runtime and status
+  attr(out, "runtime") <- s$runtime
+  attr(out, "status") <- s$status
 
   # return result
   out

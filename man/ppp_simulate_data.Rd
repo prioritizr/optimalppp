@@ -88,9 +88,9 @@ Simulate data to prioritize project funding schemes for species conservation.
 }
 \details{
 The simulated data set will contain one conservation project for
-   each species and a baseline "do nothing" project to reflect species'
-   persistence when their conservation projects are not funded. The
-   data are simulated as follows:
+  each species and a baseline "do nothing" project to reflect species'
+  persistence when their conservation projects are not funded. The
+  data are simulated as follows:
 
   \enumerate{
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ppp_gurobi_solution.R
 \name{ppp_gurobi_solution}
 \alias{ppp_gurobi_solution}
-\title{Project prioritization protocol}
+\title{Solve the 'Project Prioritization Protocol' problem using Gurobi}
 \usage{
 ppp_gurobi_solution(x, tree, budget, cost_column_name, success_column_name,
   locked_in_column_name = NULL, locked_out_column_name = NULL,
@@ -81,41 +81,80 @@ No missing values are permitted. Defaults to \code{300}.}
 the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
-A \code{\link[tibble]{tbl_df}} object that contains a column
-  for each solution. Each row corresponds to a different project,
-  (following the same order as the data in the argument to \code{x}), and
-  each column corresponds to a different solution. Cell values are
-  \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
-  project is selected for funding in a given solution. The column names
-  are formatted where the name \code{"solution_N"} contains the
-  the n'th solution. For example, if only one solution is returned
-  (as specified in the \code{number_solutions} argument) then the
-  output object will only contain a single column called
-  \code{"solution_1"}. The output object is also associated with the
-  following attributes that describe the solution(s).
+A \code{ppp_results} class object containing the solutions.
+  This is a \code{list} object which contains the following components:
 
-  \describe{
+ \describe{
 
-    \item{\code{status}}{\code{character} description of the
-      solver (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
-      were found.)}
+   \item{\code{$call}}{\code{\link[base]{call}} command used to generate the
+     solution(s).}
 
-    \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
-      while solving the problem.}
+   \item{\code{$project_data}}{\code{\link[tibble]{tbl_df}} object that
+     contains the project data used to generate the solution(s).}
 
-    \item{\code{objective}}{\code{numeric} objective value associated with
-      each of the solution(s).}
+   \item{\code{$tree}}{\code{\link[ape]{phylo}} phylogenetic tree used to
+     generate the solution(s).}
 
-    \item{\code{optimality}}{\code{logical} indicating if each solution
-      is known to be optimal or not.)}
+   \item{\code{$solution}}{\code[\link[tibble]{tbl_df} object that contains a
+     column for each solution. Each row corresponds to a different project,
+     (following the same order as the data in the argument to \code{x}), and
+     each column corresponds to a different solution. Cell values are
+     \code{logical} (i.e. \code{TRUE}/\code{FALSE} values) indicating if each
+     project is selected for funding in a given solution. The column names
+     are formatted where the name \code{"solution_N"} contains the
+     the n'th solution. For example, if only one solution is returned
+     (as specified in the \code{number_solutions} argument) then the
+     output object will only contain a single column called
+     \code{"solution_1"}.}
+
+  \item{\code{$statistics}}{\code[\link[tibble]{tbl_df} object that contains
+    summary statistics for each solution. Each row corresponds to a
+    different solution and each column describes a different property of the
+    solution. Specifically, it contains the following columns:
+
+    \describe{
+
+      \item{\code{name}}{\code{character} name of each solution. The solution
+        names correspond to the column names in the \code{$solution}
+        element.}
+
+      \item{\code{cost}}{\code{numeric} total cost associated with each of
+        of the solution(s).}
+
+      \item{\code{objective}}{\code{numeric} objective value associated with
+        each of the solution(s). This corresponds to the expected amount of
+        evolutionary history that is retained by each solution.}
+
+      \item{\code{optimal}}{\code{logical} indicating if each of the
+        solution(s) is known to be optimal or not.)}
+
+    }}
+
+  \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
+    while solving the problem.}
+
+  \item{\code{status}}{\code{character} description of the
+    solver status (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
+    were found.)}
+
+  \item{\code{method}}{\code{character} name of the method used to produce
+    the solutions (e.g. \code{"gurobi"} if solutions were obtained using the
+    \code{\link{ppp_gurobi_solution}} function).}
 
  }
 }
 \description{
-Prioritize funding for conservation projects. To identify optimal funding
-schemes, the Gurobi optimization software suite and the
-\pkg{gurobi} package need to be installed.
+Prioritize funding for conservation projects using the Gurobi optimization
+software suite. Unlike other methods for generating prioritizations,
+this method can identify optimal solutions (or solutions within a
+pre-specified optimality gap). \strong{As a consequence, it is strongly
+recommended to use this method for developing project prioritizations.}
 }
 \details{
 TODO
+}
+\seealso{
+The following methods can be used to extract, inspect, and
+  visualize components of the
+  solution(s): (e.g. extract the solutions, or the summary statistics)
 }

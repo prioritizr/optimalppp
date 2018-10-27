@@ -243,5 +243,5 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
                             Rcpp::Named("Ax") = model_Ax,
                             Rcpp::Named("rhs") = model_rhs,
                             Rcpp::Named("sense") = model_sense,
-                            Rcpp::Named("pwl") = model_pwl);
+                            Rcpp::Named("pwlobj") = model_pwl);
 }
