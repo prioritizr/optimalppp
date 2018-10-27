@@ -131,52 +131,57 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   # assert that arguments are valid
   assertthat::assert_that(
     assertthat::is.count(number_species),
-    assertthat::is.scalar(cost_mean),
+    isTRUE(is.finite(number_species)),
+    assertthat::is.number(cost_mean),
     isTRUE(cost_mean > 0),
-    assertthat::is.scalar(cost_sd),
+    assertthat::is.number(cost_sd),
     isTRUE(cost_sd > 0),
-    assertthat::is.scalar(success_min_probability),
+    assertthat::is.number(success_min_probability),
     isTRUE(success_min_probability >= 0),
     isTRUE(success_min_probability <= 1),
-    assertthat::is.scalar(success_max_probability),
+    assertthat::is.number(success_max_probability),
     isTRUE(success_max_probability >= 0),
     isTRUE(success_max_probability <= 1),
     isTRUE(success_max_probability > success_min_probability),
-    assertthat::is.scalar(funded_min_persistence_probability),
+    assertthat::is.number(funded_min_persistence_probability),
     isTRUE(funded_min_persistence_probability >= 0),
     isTRUE(funded_min_persistence_probability <= 1),
-    assertthat::is.scalar(funded_max_persistence_probability),
+    assertthat::is.number(funded_max_persistence_probability),
     isTRUE(funded_max_persistence_probability >= 0),
     isTRUE(funded_max_persistence_probability <= 1),
     isTRUE(funded_max_persistence_probability >
            funded_min_persistence_probability),
-    assertthat::is.scalar(not_funded_min_persistence_probability),
+    assertthat::is.number(not_funded_min_persistence_probability),
     isTRUE(not_funded_min_persistence_probability >= 0),
     isTRUE(not_funded_min_persistence_probability <= 1),
-    assertthat::is.scalar(not_funded_max_persistence_probability),
+    assertthat::is.number(not_funded_max_persistence_probability),
     isTRUE(not_funded_max_persistence_probability >= 0),
     isTRUE(not_funded_max_persistence_probability <= 1),
     isTRUE(not_funded_max_persistence_probability >
            not_funded_min_persistence_probability),
     isTRUE(funded_min_persistence_probability >
            not_funded_max_persistence_probability),
-    assertthat::is.scalar(locked_in_proportion),
+    assertthat::is.number(locked_in_proportion),
     isTRUE(locked_in_proportion >= 0),
     isTRUE(locked_in_proportion <= 1),
-    assertthat::is.scalar(locked_out_proportion),
+    assertthat::is.number(locked_out_proportion),
     isTRUE(locked_out_proportion >= 0),
-    isTRUE(locked_out_proportion <= 1),
-    isTRUE(number_species >
-           (ceiling(number_species * locked_in_proportion) +
-           ceiling(number_species * locked_out_proportion))))
+    isTRUE(locked_out_proportion <= 1))
+    assertthat::assert_that(
+      isTRUE(number_species >
+             (ceiling(number_species * locked_in_proportion) +
+             ceiling(number_species * locked_out_proportion))),
+      msg = paste("combined number of locked in and locked out projects",
+                  "exceeds the total number of projects."))
 
   # create project data
   project_data <- data.frame(
-    name = c(paste0("spp_", seq_len(number_species), "_project"),
+    name = c(paste0("S", seq_len(number_species), "_project"),
                     "baseline_project"),
     cost = c(rnorm(number_species, cost_mean, cost_sd), 0),
     success = c(runif(number_species, success_min_probability,
-                      success_max_probability), 1))
+                      success_max_probability), 1),
+    stringsAsFactors = FALSE)
   assertthat::assert_that(all(project_data$cost >= 0),
   msg = paste("some projects have subzero costs, increase the argument to",
               "cost_mean and try again"))
@@ -214,5 +219,5 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   project_data <- cbind(project_data, as.data.frame(spp_prob_matrix))
 
   ## return result
-  list(project_data = project_data, tree = tree)
+  list(project_data = tibble::as_tibble(project_data), tree = tree)
 }
