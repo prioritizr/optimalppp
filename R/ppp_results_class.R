@@ -32,21 +32,15 @@ NULL
 #'      of the solution(s).}
 #'
 #'    \item{\code{optimal}}{\code{logical} indicating if each of the
-#'      solution(s) is known to be optimal or not.)}
+#'      solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
+#'      Missing values (\code{NA}) indicate that optimality is unknown
+#'      (i.e. because the method used to produce the solution(s) does not
+#'      provide any bounds on their quality).}
+#'
+#'    \item{\code{method}}{\code{character} name of method used to produce the
+#'      solution(s).)}
 #'
 #'  }}
-#'
-#'  Finally, the object also contains following attributes
-#'  (which can be accessed, for example, using \code{attr(output, "status")}):
-#'
-#'  \describe{
-#'
-#'    \item{\code{runtime}}{\code{numeric} number of seconds that elapsed
-#'      while solving the problem.}
-#'
-#'    \item{\code{status}}{\code{character} description of the
-#'      solver status (e.g. \code{"OPTIMAL"} indicates that optimal solution(s)
-#'      were found.)}
 #'
 #'  }
 NULL

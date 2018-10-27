@@ -245,12 +245,12 @@ ppp_gurobi_solution <- function(x, tree, budget,
       cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
                             ncol = ncol(out), nrow = nrow(out)) *
                      as.matrix(out)),
-      optimal = (s$status == "OPTIMAL") &
-                (abs(objective[1] - objective) < 1.0e-5)), out))
-
-  ## add attributes with runtime and status
-  attr(out, "runtime") <- s$runtime
-  attr(out, "status") <- s$status
+      optimal = if (s$status == "OPTIMAL") {
+                  (abs(objective[1] - objective) < 1.0e-5)
+                } else {
+                  NA_logical_
+                },
+      method = "gurobi"), out))
 
   # return result
   out

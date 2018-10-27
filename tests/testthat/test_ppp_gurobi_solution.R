@@ -18,7 +18,7 @@ test_that("solution (single solution, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
@@ -29,17 +29,12 @@ test_that("solution (single solution, no constraints)", {
                (5 * (1.00 * 0.1)))
   expect_equal(s$cost, 0.15)
   expect_equal(s$optimal, TRUE)
+  expect_equal(s$method, "gurobi")
   ## solution columns
   expect_equal(s$a, FALSE)
   expect_equal(s$b, FALSE)
   expect_equal(s$c, TRUE)
   expect_equal(s$d, TRUE)
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "OPTIMAL")
 })
 
 test_that("solution (single solution, locked in + out constraints)", {
@@ -64,7 +59,7 @@ test_that("solution (single solution, locked in + out constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 1)
-  expect_equal(ncol(s), 7)
+  expect_equal(ncol(s), 8)
   ## solution columns
   expect_equal(s$a, TRUE)
   expect_equal(s$b, FALSE)
@@ -77,12 +72,7 @@ test_that("solution (single solution, locked in + out constraints)", {
                (1 * (1 * 0.1)))
   expect_equal(s$cost, 1.0)
   expect_equal(s$optimal, TRUE)
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "OPTIMAL")
+  expect_equal(s$method, "gurobi")
 })
 
 test_that("solution (multiple solutions, no constraints)", {
@@ -107,7 +97,7 @@ test_that("solution (multiple solutions, no constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 7)
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   ## solution columns
   expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
                "logical")
@@ -120,12 +110,7 @@ test_that("solution (multiple solutions, no constraints)", {
   expect_is(s$cost, "numeric")
   expect_true(all(s$cost >= 0))
   expect_equal(s$optimal, c(TRUE, rep(FALSE, 6)))
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "OPTIMAL")
+  expect_equal(s$method, rep("gurobi", 7))
 })
 
 test_that("solution (multiple solutions, locked in + out constraints)", {
@@ -151,7 +136,7 @@ test_that("solution (multiple solutions, locked in + out constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 2)
-  expect_equal(ncol(s), 7)
+  expect_equal(ncol(s), 8)
   ## solution columns
   expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
                "logical")
@@ -164,12 +149,7 @@ test_that("solution (multiple solutions, locked in + out constraints)", {
   expect_is(s$cost, "numeric")
   expect_true(all(s$cost >= 0))
   expect_equal(s$optimal, c(TRUE, FALSE))
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "OPTIMAL")
+  expect_equal(s$method, rep("gurobi", 2))
 })
 
 test_that("invalid arguments", {

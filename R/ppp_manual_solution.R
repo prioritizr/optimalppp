@@ -69,8 +69,6 @@ ppp_manual_solution <- function(x, tree, budget, solution,
   }
 
   # main processing
-  ## store start time
-  start_time <- Sys.time()
   ## format statistics for output
   s <- solution
   out <- tibble::as_tibble(cbind(
@@ -81,13 +79,9 @@ ppp_manual_solution <- function(x, tree, budget, solution,
       cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
                             ncol = ncol(s), nrow = nrow(s)) *
                      as.matrix(s[, x[[project_column_name]], drop = FALSE])),
-      optimal = FALSE),
+      optimal = NA,
+      method = "manual"),
     s[, x[[project_column_name]], drop = FALSE]))
-
-  ## add attributes with runtime and status
-  attr(out, "runtime") <- as.numeric(difftime(Sys.time(), start_time,
-                                              units = "secs"))
-  attr(out, "status") <- "UNKNOWN"
 
   # return result
   out

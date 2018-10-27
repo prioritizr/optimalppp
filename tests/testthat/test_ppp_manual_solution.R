@@ -15,7 +15,7 @@ test_that("single solution", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
@@ -25,18 +25,13 @@ test_that("single solution", {
                (5 * (0.94 * 0.8)) +
                (5 * (1.00 * 0.1)))
   expect_equal(s$cost, 0.15)
-  expect_equal(s$optimal, FALSE)
+  expect_equal(s$optimal, NA)
+  expect_equal(s$method, "manual")
   ## solution columns
   expect_equal(s$a, FALSE)
   expect_equal(s$b, FALSE)
   expect_equal(s$c, TRUE)
   expect_equal(s$d, TRUE)
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "UNKNOWN")
 })
 
 test_that("multiple solutions", {
@@ -59,25 +54,20 @@ test_that("multiple solutions", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 2)
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   ## solution columns
   expect_equal(s[, c("a", "b", "c", "d")], m)
   ## statistics columns
   expect_equal(s$solution, seq_len(2))
   expect_equal(s$cost, c(0.15, 0))
-  expect_equal(s$optimal, c(FALSE, FALSE))
   expect_equal(s$objective,
                c((100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                 (5 * (0.94 * 0.8)) +
                 (5 * (0.94 * 0.8)) +
                 (5 * (1.00 * 0.1)),
                 0))
-  ## runtime
-  expect_is(attr(s, "runtime"), "numeric")
-  expect_gte(attr(s, "runtime"), 0)
-  expect_lte(attr(s, "runtime"), 10)
-  ## status
-  expect_identical(attr(s, "status"), "UNKNOWN")
+  expect_equal(s$optimal, rep(NA, 2))
+  expect_equal(s$method, rep("manual", 2))
 })
 
 test_that("invalid arguments", {
@@ -167,7 +157,7 @@ test_that("invalid arguments", {
                         "success")
   })
   expect_error({
-    m <- data.frame(a = NA_logical_, b = FALSE, c = TRUE, d = TRUE)
+    m <- data.frame(a = NA, b = FALSE, c = TRUE, d = TRUE)
     ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
                         "success")
   })
