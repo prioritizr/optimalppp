@@ -11,7 +11,7 @@ ppp_gurobi_solution(x, tree, budget, project_column_name, cost_column_name,
   number_approx_points = 300, verbose = FALSE)
 }
 \arguments{
-\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
+\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 table containing project data. Here, each row should correspond to
 a different project and columns should contain that correspond to
 each project. See the Details section below for more information.}
@@ -85,7 +85,7 @@ No missing values are permitted. Defaults to \code{300}.}
 the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
-A \code{\link[tibble]{tbl_df}} object containing the
+A \code{\link[tibble]{tibble}} object containing the
   solution(s) data. Each row corresponds to a different solution, and
   each column describes a different property of the solution. The object
   contains a column for each project (based on the argument to
@@ -115,14 +115,39 @@ A \code{\link[tibble]{tbl_df}} object containing the
  }
 }
 \description{
-Prioritize funding for conservation projects using the Gurobi optimization
-software suite. Unlike other methods for generating prioritizations,
-this method can identify optimal solutions (or solutions within a
-pre-specified optimality gap). \strong{As a consequence, it is strongly
-recommended to use this method for developing project prioritizations.}
+Prioritize funding for conservation projects using the
+\href{https://www.gurobi.com}{Gurobi optimization software suite}. Unlike
+other methods for generating prioritizations, this method can identify
+solutions that are guaranteed to be optimal (or within a pre-specified
+optimality gap). \strong{As a consequence, it is strongly recommended to use
+this method for #' developing project prioritizations.}
 }
 \details{
-TODO
+This function works by formulating the 'Project Prioritization
+  Protocol' as a mixed integer programming problem (MIP) and solving it
+  using the
+  \href{https://www.gurobi.com}{Gurobi optimization software suite}.
+  Specifically, the problem aims to maximize
+  the amount of evolutionary history that is expected to
+  persist. This is achieved by funding different conservation projects, with
+  known costs, that have a known effect on species' survival. Please refer
+  to the package vignette for the complete formulation of this problem.
+
+  Although \href{https://www.gurobi.com}{Gurobi} is a commercial software,
+  academics can obtain a \href{https://user.gurobi.com/download/licenses/free-academic}{special license for no cost}.
+   After downloading and installing the Gurobi software suite, the
+  \pkg{gurobi} package will also need to be installed. For instructions on
+  installing the \href{https://www.gurobi.com}{Gurobi} software suite,
+  please consult the relevant documentation on the
+  \href{https://www.gurobi.com}{Gurobi} website for
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_linux/software_installation_guid.html}{Linux},
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html}{Mac OSX}, or
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/software_installation_guid.html}{Windows} operating systems. Additionally, for
+  instructions on installing the \pkg{gurobi} package, please
+  please consult the relevant documentation for
+ \href{http://www.gurobi.com/documentation/8.1/quickstart_linux/r_installing_the_r_package.html}{Linux},
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html}{Mac OSX}, or
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems.
 }
 \seealso{
 For other methods for solving the 'Project Prioritization Protocol'

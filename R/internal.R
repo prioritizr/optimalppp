@@ -5,7 +5,7 @@
 #'
 #' @inheritParams ppp_gurobi_solution
 #'
-#' @param solution \code{\link[tibble]{tbl_df}} indicating if each project
+#' @param solution \code{\link[tibble]{tibble}} indicating if each project
 #'   is funded or not. Here, each column corresponds to a different project and
 #'   each row corresponds to a different solution.
 #'

@@ -8,7 +8,7 @@ ppp_objective_value(x, tree, project_column_name, success_column_name,
   solution)
 }
 \arguments{
-\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
+\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 table containing project data. Here, each row should correspond to
 a different project and columns should contain that correspond to
 each project. See the Details section below for more information.}
@@ -28,7 +28,7 @@ denotes the probability that each project will succeed if it is funded.
 This column must have \code{numeric} values which lay between zero and one.
 No missing values are permitted.}
 
-\item{solution}{\code{\link[tibble]{tbl_df}} indicating if each project
+\item{solution}{\code{\link[tibble]{tibble}} indicating if each project
 is funded or not. Here, each column corresponds to a different project and
 each row corresponds to a different solution.}
 }

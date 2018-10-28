@@ -4,7 +4,7 @@
 \alias{ppp_results_class}
 \title{'Project Prioritization Protocol' solution class}
 \value{
-A \code{\link[tibble]{tbl_df}} object containing the
+A \code{\link[tibble]{tibble}} object containing the
   solution(s) data. Each row corresponds to a different solution, and
   each column describes a different property of the solution. The object
   contains a column for each project (based on the argument to
@@ -35,10 +35,6 @@ A \code{\link[tibble]{tbl_df}} object containing the
 }
 \description{
 This manual page documents information about the
-\code{\link[tibble]{tbl_df}} object output from the solver functions.
-}
-\seealso{
-The following methods can be used to extract, inspect, and
-  visualize the solution(s): TODO
+\code{\link[tibble]{tibble}} object output from the solver functions.
 }
 \keyword{internal}

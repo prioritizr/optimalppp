@@ -54,7 +54,7 @@ A \code{list} object containing the elements:
 
   \describe{
 
-    \item{\code{"project_data"}}{A \code{\link[tibble]{tbl_df}} containing
+    \item{\code{"project_data"}}{A \code{\link[tibble]{tibble}} containing
       the data for the conservation projects. It contains the following
       columns:
 

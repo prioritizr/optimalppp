@@ -8,7 +8,7 @@ algorithms}
 ppp_heuristic_solution()
 }
 \value{
-A \code{\link[tibble]{tbl_df}} object containing the
+A \code{\link[tibble]{tibble}} object containing the
   solution(s) data. Each row corresponds to a different solution, and
   each column describes a different property of the solution. The object
   contains a column for each project (based on the argument to

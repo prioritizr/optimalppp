@@ -9,7 +9,7 @@ ppp_manual_solution(x, tree, budget, solution, project_column_name,
   cost_column_name, success_column_name, verbose = FALSE)
 }
 \arguments{
-\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tbl_df}}
+\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 table containing project data. Here, each row should correspond to
 a different project and columns should contain that correspond to
 each project. See the Details section below for more information.}
@@ -41,7 +41,7 @@ No missing values are permitted.}
 the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
-A \code{\link[tibble]{tbl_df}} object containing the
+A \code{\link[tibble]{tibble}} object containing the
   solution(s) data. Each row corresponds to a different solution, and
   each column describes a different property of the solution. The object
   contains a column for each project (based on the argument to
