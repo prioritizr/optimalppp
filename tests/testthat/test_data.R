@@ -36,6 +36,6 @@ test_that("sim_project_data", {
 test_that("sim_tree", {
   data(sim_tree)
   expect_is(sim_tree, "phylo")
-  expect_is(ape::checkValidPhylo(sim_tree), "NULL")
+  expect_is(suppressMessages(ape::checkValidPhylo(sim_tree)), "NULL")
   expect_equal(sort(sim_tree$tip.label), paste0("S", seq_len(5)))
 })
