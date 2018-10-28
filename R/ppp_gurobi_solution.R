@@ -139,7 +139,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
   assertthat::assert_that(inherits(x, "tbl_df"),
                           ncol(x) > 0, nrow(x) > 0,
                           inherits(tree, "phylo"),
-                          assertthat::is.scalar(budget),
+                          assertthat::is.number(budget),
                           is.finite(budget),
                           isTRUE(budget >= 0),
                           assertthat::is.string(project_column_name),
@@ -155,7 +155,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
                           assertthat::has_name(x, success_column_name),
                           is.numeric(x[[success_column_name]]),
                           assertthat::noNA(x[[success_column_name]]),
-                          assertthat::is.scalar(gap),
+                          assertthat::is.number(gap),
                           is.finite(gap),
                           isTRUE(gap >= 0),
                           assertthat::is.count(time_limit),
@@ -203,9 +203,6 @@ ppp_gurobi_solution <- function(x, tree, budget,
     assertthat::assert_that(nrow(tree$edge) == length(tree$edge.length))
   }
 
-  ## create branch matrix
-  bm <- branch_matrix(tree)
-
   ## determine which projects need to be locked
   locked_in <- integer(0)
   locked_out <- integer(0)
@@ -213,6 +210,8 @@ ppp_gurobi_solution <- function(x, tree, budget,
     locked_in <- which(x[[locked_in_column_name]])
   if (!is.null(locked_out_column_name))
     locked_out <- which(x[[locked_out_column_name]])
+  assertthat::assert_that(sum(x[[cost_column_name]][locked_in]) <= budget,
+                          msg = "locked in projects exceed budget.")
 
   ## pre-compute conditional probabilities of species persistence
   ## and project success
@@ -225,7 +224,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
   # formulate the problem
   f <- rcpp_mip_formulation(spp = spp_probs,
                             budget = budget,
-                            branch_matrix = bm,
+                            branch_matrix = branch_matrix(tree),
                             branch_lengths = tree$edge.length,
                             costs = x[[cost_column_name]],
                             locked_in = locked_in,
@@ -278,7 +277,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
       optimal = if (s$status == "OPTIMAL") {
                   (abs(objective[1] - objective) < 1.0e-5)
                 } else {
-                  NA_logical_
+                  NA
                 },
       method = "gurobi"), out))
 

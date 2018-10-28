@@ -17,6 +17,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_heuristic_solution
+Rcpp::LogicalMatrix rcpp_heuristic_solution(arma::sp_mat spp, double budget, arma::sp_mat branch_matrix, Rcpp::NumericVector branch_lengths, Rcpp::NumericVector costs, Rcpp::IntegerVector locked_in, Rcpp::IntegerVector locked_out);
+RcppExport SEXP _optimalppp_rcpp_heuristic_solution(SEXP sppSEXP, SEXP budgetSEXP, SEXP branch_matrixSEXP, SEXP branch_lengthsSEXP, SEXP costsSEXP, SEXP locked_inSEXP, SEXP locked_outSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type spp(sppSEXP);
+    Rcpp::traits::input_parameter< double >::type budget(budgetSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type branch_matrix(branch_matrixSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type branch_lengths(branch_lengthsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type costs(costsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type locked_in(locked_inSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type locked_out(locked_outSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_heuristic_solution(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_mip_formulation
 Rcpp::List rcpp_mip_formulation(arma::sp_mat spp, double budget, arma::sp_mat branch_matrix, Rcpp::NumericVector branch_lengths, Rcpp::NumericVector costs, Rcpp::IntegerVector locked_in, Rcpp::IntegerVector locked_out, std::size_t n_approx_points);
 RcppExport SEXP _optimalppp_rcpp_mip_formulation(SEXP sppSEXP, SEXP budgetSEXP, SEXP branch_matrixSEXP, SEXP branch_lengthsSEXP, SEXP costsSEXP, SEXP locked_inSEXP, SEXP locked_outSEXP, SEXP n_approx_pointsSEXP) {

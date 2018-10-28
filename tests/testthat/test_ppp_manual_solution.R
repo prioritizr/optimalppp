@@ -10,7 +10,7 @@ test_that("single solution", {
   m <- data.frame(a =  FALSE, b = FALSE, c = TRUE, d = TRUE)
   tree <- ape::read.tree(text = "((S1,S2),S3);")
   tree$edge.length <- c(100, 5, 5, 5)
-  s <- ppp_manual_solution(project_data, tree, 0.18, m, "name",
+  s <- ppp_manual_solution(project_data, tree, m, "name",
                            "cost", "success")
   # tests
   ## class
@@ -48,7 +48,7 @@ test_that("multiple solutions", {
                   d = c(TRUE, FALSE))
   tree <- ape::read.tree(text = "((S1,S2),S3);")
   tree$edge.length <- c(100, 5, 5, 5)
-  s <- ppp_manual_solution(project_data, tree, 0.18, m, "name", "cost",
+  s <- ppp_manual_solution(project_data, tree, m, "name", "cost",
                            "success")
   # tests
   ## class
@@ -85,57 +85,57 @@ test_that("invalid arguments", {
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$cost[1] <- NA_real_
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name",
                         "cost", "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$cost[1] <- -5
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$cost <- as.character(sim_project_data$cost)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   # invalid success
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$success[1] <- NA_real_
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$success[1] <- -1
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$success[1] <- 2
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$success <- as.character(sim_project_data$success)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   # invalid species probabilities
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$S1[1] <- NA_real_
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$S1[1] <- -1
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
@@ -147,23 +147,23 @@ test_that("invalid arguments", {
   expect_error({
     data(sim_project_data, sim_tree)
     sim_project_data$S1 <- as.character(sim_project_data$S1)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   # invalid solutions
   expect_error({
     m <- data.frame(a = 9, b = FALSE, c = TRUE, d = TRUE)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     m <- data.frame(a = NA, b = FALSE, c = TRUE, d = TRUE)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
   expect_error({
     m <- data.frame(a = "a", b = FALSE, c = TRUE, d = TRUE)
-    ppp_manual_solution(sim_project_data, sim_tree, 200, m, "name", "cost",
+    ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
 

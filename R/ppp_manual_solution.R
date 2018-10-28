@@ -20,7 +20,7 @@ NULL
 #' particular solution, see \code{\link{ppp_plot}}.
 #'
 #' @export
-ppp_manual_solution <- function(x, tree, budget, solution,
+ppp_manual_solution <- function(x, tree, solution,
                                 project_column_name,
                                 cost_column_name,
                                 success_column_name,
@@ -38,9 +38,6 @@ ppp_manual_solution <- function(x, tree, budget, solution,
                           inherits(solution, "tbl_df"),
                           ncol(solution) > 0, nrow(solution) > 0,
                           inherits(tree, "phylo"),
-                          assertthat::is.scalar(budget),
-                          is.finite(budget),
-                          isTRUE(budget >= 0),
                           assertthat::is.string(project_column_name),
                           assertthat::has_name(x, project_column_name),
                           assertthat::noNA(x[[project_column_name]]),
