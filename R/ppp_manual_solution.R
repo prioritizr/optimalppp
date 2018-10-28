@@ -14,10 +14,11 @@ NULL
 #'
 #' @inherit ppp_results_class return seealso
 #'
-#' @seealso For other methods for solving the 'Project Prioritization Protocol'
-#' problem, see \code{\link{ppp_heuristic_solution}} and
-#' \code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
-#' particular solution, see \code{\link{ppp_plot}}.
+#' @seealso For other methods for generating solutions for the 'Project
+#'   Prioritization Protocol' problem, see \code{\link{ppp_gurobi_solution}},
+#'   \code{\link{ppp_heuristic_solution}}, and
+#'   \code{\link{ppp_random_solution}}. To visualize the effectiveness of a
+#'   particular solution, see \code{\link{ppp_plot}}.
 #'
 #' @export
 ppp_manual_solution <- function(x, tree, solution,

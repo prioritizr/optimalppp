@@ -5,7 +5,7 @@
 \title{Solve the 'Project Prioritization Protocol' problem by manually specifying
 a solution}
 \usage{
-ppp_manual_solution(x, tree, budget, solution, project_column_name,
+ppp_manual_solution(x, tree, solution, project_column_name,
   cost_column_name, success_column_name, verbose = FALSE)
 }
 \arguments{
@@ -19,9 +19,6 @@ evolutionary history of the species affected by the conservation
 projects that could potentially be funded. Note that every single
 species that is affected by the various conservation projects should
 be represented in this tree.}
-
-\item{budget}{\code{numeric} value that represents the total budget available
-for funding conservation projects.}
 
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. Note that the project names
@@ -79,8 +76,9 @@ their optimality is unknown.}.
 TODO
 }
 \seealso{
-For other methods for solving the 'Project Prioritization Protocol'
-problem, see \code{\link{ppp_heuristic_solution}} and
-\code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
-particular solution, see \code{\link{ppp_plot}}.
+For other methods for generating solutions for the 'Project
+  Prioritization Protocol' problem, see \code{\link{ppp_gurobi_solution}},
+  \code{\link{ppp_heuristic_solution}}, and
+  \code{\link{ppp_random_solution}}. To visualize the effectiveness of a
+  particular solution, see \code{\link{ppp_plot}}.
 }

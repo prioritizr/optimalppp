@@ -151,7 +151,8 @@ This function works by formulating the 'Project Prioritization
 }
 \seealso{
 For other methods for solving the 'Project Prioritization Protocol'
-problem, see \code{\link{ppp_manual_solution}} and
-\code{\link{ppp_heuristic_solution}}. To visualize the effectiveness of a
-particular solution, see \code{\link{ppp_plot}}.
+  problem, see \code{\link{ppp_heuristic_solution}},
+  \code{\link{ppp_manual_solution}}, and \code{\link{ppp_random_solution}}.
+  To visualize the effectiveness of a particular solution, see
+  \code{\link{ppp_plot}}.
 }

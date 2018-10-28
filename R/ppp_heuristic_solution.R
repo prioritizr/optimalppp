@@ -67,10 +67,11 @@ NULL
 #'
 #' \deqn{P\(I\) = \sum_{b = 0}^{B} L_b \times \\ \(1 - \prod_{s = 0}^{S} ifelse\(T_{bs} == 1, E_s, 1\)\)}{P(I) = sum_{b = 0}^{B} L_b (1 - prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
 #'
-#' @seealso For other methods for solving the 'Project Prioritization Protocol'
-#' problem, see \code{\link{ppp_heuristic_solution}} and
-#' \code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
-#' particular solution, see \code{\link{ppp_plot}}.
+#' @seealso For other methods for generating solutions for the 'Project
+#'   Prioritization Protocol' problem,see \code{\link{ppp_heuristic_solution}}
+#'   \code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_random_solution}}.
+#'   To visualize the effectiveness of a particular solution, see
+#'   \code{\link{ppp_plot}}.
 #
 #' @references
 #' Bennett, J. R., Elliott, G., Mellish, B., Joseph, L. N., Tulloch, A. I.,

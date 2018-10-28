@@ -5,7 +5,59 @@
 \title{Solve the 'Project Prioritization Protocol' problem using heuristic
 algorithms}
 \usage{
-ppp_heuristic_solution()
+ppp_heuristic_solution(x, tree, budget, project_column_name,
+  cost_column_name, success_column_name, locked_in_column_name = NULL,
+  locked_out_column_name = NULL, verbose = FALSE)
+}
+\arguments{
+\item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing project data. Here, each row should correspond to
+a different project and columns should contain that correspond to
+each project. See the Details section below for more information.}
+
+\item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
+evolutionary history of the species affected by the conservation
+projects that could potentially be funded. Note that every single
+species that is affected by the various conservation projects should
+be represented in this tree.}
+
+\item{budget}{\code{numeric} value that represents the total budget available
+for funding conservation projects.}
+
+\item{project_column_name}{\code{character} name of column that contains
+the name for each conservation project. Note that the project names
+must not contain any duplicates or missing values.}
+
+\item{cost_column_name}{\code{character} name of column that
+indicates the cost for funding each project. This column must have
+\code{numeric} values which are equal to or greater than zero. No missing
+values are permitted.}
+
+\item{success_column_name}{\code{character} name of column that
+denotes the probability that each project will succeed if it is funded.
+This column must have \code{numeric} values which lay between zero and one.
+No missing values are permitted.}
+
+\item{locked_in_column_name}{\code{character} name of column that
+indicates which projects should be locked into the funding scheme. For
+example, it may be desirable to mandate that projects for
+iconic species are funded in the prioritization. This column should
+contain \code{logical} values, and projects associated with \code{TRUE}
+values are locked into the solution. No missing values are permitted.
+Defaults to \code{NULL} such that no projects are locked into the
+solution.}
+
+\item{locked_out_column_name}{\code{character} name of column that
+indicates which projects should be locked out of the funding scheme. For
+example, it may be desirable to lock out projects for certain species
+that are expected to have little support from the public. This column
+should contain \code{logical} values, and projects associated with
+\code{TRUE} values are locked out of the solution. No missing values are
+permitted. Defaults to \code{NULL} such that no projects are locked out of
+the solution.}
+
+\item{verbose}{\code{logical} should information be printed while solving
+the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} object containing the
@@ -110,8 +162,9 @@ allocation of resources among threatened species: a project prioritization
 protocol. \emph{Conservation biology}, \strong{23}, 328--338.
 }
 \seealso{
-For other methods for solving the 'Project Prioritization Protocol'
-problem, see \code{\link{ppp_heuristic_solution}} and
-\code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
-particular solution, see \code{\link{ppp_plot}}.
+For other methods for generating solutions for the 'Project
+  Prioritization Protocol' problem,see \code{\link{ppp_heuristic_solution}}
+  \code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_random_solution}}.
+  To visualize the effectiveness of a particular solution, see
+  \code{\link{ppp_plot}}.
 }
