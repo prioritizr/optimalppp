@@ -90,8 +90,7 @@ ppp_heuristic_solution <- function(x, tree, budget,
                                    cost_column_name,
                                    success_column_name,
                                    locked_in_column_name = NULL,
-                                   locked_out_column_name = NULL,
-                                   verbose = FALSE) {
+                                   locked_out_column_name = NULL) {
   # assertions
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))
