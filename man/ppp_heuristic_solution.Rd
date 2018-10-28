@@ -7,7 +7,7 @@ algorithms}
 \usage{
 ppp_heuristic_solution(x, tree, budget, project_column_name,
   cost_column_name, success_column_name, locked_in_column_name = NULL,
-  locked_out_column_name = NULL, verbose = FALSE)
+  locked_out_column_name = NULL)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -55,9 +55,6 @@ should contain \code{logical} values, and projects associated with
 \code{TRUE} values are locked out of the solution. No missing values are
 permitted. Defaults to \code{NULL} such that no projects are locked out of
 the solution.}
-
-\item{verbose}{\code{logical} should information be printed while solving
-the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} object containing the

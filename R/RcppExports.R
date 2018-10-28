@@ -17,3 +17,7 @@ rcpp_ppp_objective <- function(spp, branch_matrix, branch_lengths, solutions) {
     .Call(`_optimalppp_rcpp_ppp_objective`, spp, branch_matrix, branch_lengths, solutions)
 }
 
+rcpp_random_solution <- function(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_solutions) {
+    .Call(`_optimalppp_rcpp_random_solution`, spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_solutions)
+}
+

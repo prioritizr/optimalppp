@@ -6,7 +6,7 @@
 \usage{
 ppp_random_solution(x, tree, budget, project_column_name, cost_column_name,
   success_column_name, locked_in_column_name = NULL,
-  locked_out_column_name = NULL)
+  locked_out_column_name = NULL, number_solutions = 1L)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -54,6 +54,11 @@ should contain \code{logical} values, and projects associated with
 \code{TRUE} values are locked out of the solution. No missing values are
 permitted. Defaults to \code{NULL} such that no projects are locked out of
 the solution.}
+
+\item{number_solutions}{\code{numeric} number of solutions to return. If
+the argument is greater than \code{1}, then the output will contain the
+set number of solutions that are closest to optimality. No missing values
+are permitted. Defaults to \code{1}.}
 }
 \description{
 Generate random solutions for the 'Project Prioritization Protocol' problem.
@@ -61,15 +66,16 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decision in order to evaluate their effectiveness.
 \strong{When informing conservation actions, it is strongly recommended to
- use the \code{\link{ppp_gurobi_solutions}} method because it can identify
+ use the \code{\link{ppp_gurobi_solution}} method because it can identify
  optimal funding schemes with a guarantee.}
 }
 \details{
 The random solutions are generated using the following algorithm.
  All projects are initially selected for funding. Next,
- a project is randomly selected to be defunded (removed), and this step
+ a project is randomly deselected for funding (removed), and this step
  is repeated until the cost of the remaining projects is within the
- budget.
+ budget. Projects that have zero cost are never deselected for funding, and
+ are always included in the solutions.
 }
 \seealso{
 For other methods for generating solutions for the 'Project
