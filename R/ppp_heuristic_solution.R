@@ -16,7 +16,8 @@ NULL
 #'
 #' @details Briefly, this algorithm works by starting off with all
 #' conservation projects selected for funding and then begins iteratively
-#' defunding (removing) projects until the budget is met. In a given iteration,
+#' defunding (removing) projects until the budget is met (Bennett \emph{et al}.
+#' 2014; Joseph \emph{et al. 2009}). In a given iteration,
 #' each project is evaluated in terms of the amount of evolutionary
 #' history that is expected to be lost per unit cost when the project is not
 #' funded. Although this algorithm may identify funding schemes that perform
@@ -84,10 +85,5 @@ NULL
 #'
 #' @export
 ppp_heuristic_solution <- function() {
-
-
-
-
-
-
+ stop("TODO")
 }
