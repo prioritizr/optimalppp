@@ -28,9 +28,12 @@ denotes the probability that each project will succeed if it is funded.
 This column must have \code{numeric} values which lay between zero and one.
 No missing values are permitted.}
 
-\item{solution}{\code{\link[tibble]{tibble}} indicating if each project
-is funded or not. Here, each column corresponds to a different project and
-each row corresponds to a different solution.}
+\item{solution}{\code{\link[tibble]{tibble}} object containing the solution
+data. Here, each row corresponds to a different solution. This object
+should contain a column for each project---with the column name matching
+the project name---and the column should contain \code{logical} values
+that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
+Although additional columns can also be included, they will be ignored.}
 }
 \value{
 \code{numeric} vector with an objective value for each solution

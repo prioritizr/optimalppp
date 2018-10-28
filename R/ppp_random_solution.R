@@ -11,7 +11,7 @@ NULL
 #'  use the \code{\link{ppp_gurobi_solution}} method because it can identify
 #'  optimal funding schemes with a guarantee.}
 #'
-#' @inheritParams ppp_gurobi_solution
+#' @inheritParams help
 #'
 #' @details The random solutions are generated using the following algorithm.
 #'  All projects are initially selected for funding. Next,

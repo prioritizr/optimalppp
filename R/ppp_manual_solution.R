@@ -8,11 +8,9 @@ NULL
 #' their effectiveness. \strong{Since the solutions are manually specified,
 #' their optimality is unknown.}.
 #'
-#' @inheritParams ppp_gurobi_solution
+#' @inheritParams help
 #'
-#' @details TODO
-#'
-#' @inherit ppp_results_class return seealso
+#' @inherit help return
 #'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_gurobi_solution}},

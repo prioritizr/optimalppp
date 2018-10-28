@@ -20,6 +20,13 @@ projects that could potentially be funded. Note that every single
 species that is affected by the various conservation projects should
 be represented in this tree.}
 
+\item{solution}{\code{\link[tibble]{tibble}} object containing the solution
+data. Here, each row corresponds to a different solution. This object
+should contain a column for each project---with the column name matching
+the project name---and the column should contain \code{logical} values
+that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
+Although additional columns can also be included, they will be ignored.}
+
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. Note that the project names
 must not contain any duplicates or missing values.}
@@ -71,9 +78,6 @@ A \code{\link[tibble]{tibble}} object containing the
 Manually specify funding schemes for conservation projects and examine
 their effectiveness. \strong{Since the solutions are manually specified,
 their optimality is unknown.}.
-}
-\details{
-TODO
 }
 \seealso{
 For other methods for generating solutions for the 'Project

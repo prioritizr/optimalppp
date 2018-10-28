@@ -3,11 +3,7 @@
 #' Calculate the objective value for a set of solutions to a Project
 #' Prioritization Protocol problem.
 #'
-#' @inheritParams ppp_gurobi_solution
-#'
-#' @param solution \code{\link[tibble]{tibble}} indicating if each project
-#'   is funded or not. Here, each column corresponds to a different project and
-#'   each row corresponds to a different solution.
+#' @inheritParams help
 #'
 #' @return \code{numeric} vector with an objective value for each solution
 #'  in the argument to \code{solutions}.
