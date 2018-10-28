@@ -5,13 +5,19 @@ NULL
 #' a solution
 #'
 #' Manually specify funding schemes for conservation projects and examine
-#' their effectiveness.
+#' their effectiveness. \strong{Since the solutions are manually specified,
+#' their optimality is unknown.}.
 #'
 #' @inheritParams ppp_gurobi_solution
 #'
 #' @details TODO
 #'
 #' @inherit ppp_results_class return seealso
+#'
+#' @seealso For other methods for solving the 'Project Prioritization Protocol'
+#' problem, see \code{\link{ppp_heuristic_solution}} and
+#' \code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
+#' particular solution, see \code{\link{ppp_plot}}.
 #'
 #' @export
 ppp_manual_solution <- function(x, tree, budget, solution,

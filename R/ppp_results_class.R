@@ -13,7 +13,7 @@ NULL
 #' @seealso The following methods can be used to extract, inspect, and
 #'   visualize the solution(s): TODO
 #'
-#' @return A \code{\code{link[tibble]{tbl_df}} object containing the
+#' @return A \code{\link[tibble]{tbl_df}} object containing the
 #'   solution(s) data. Each row corresponds to a different solution, and
 #'   each column describes a different property of the solution. The object
 #'   contains a column for each project (based on the argument to
@@ -40,7 +40,6 @@ NULL
 #'    \item{\code{method}}{\code{character} name of method used to produce the
 #'      solution(s).)}
 #'
-#'  }}
-#'
 #'  }
+#'
 NULL

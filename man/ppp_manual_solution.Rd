@@ -40,14 +40,47 @@ No missing values are permitted.}
 \item{verbose}{\code{logical} should information be printed while solving
 the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 }
+\value{
+A \code{\link[tibble]{tbl_df}} object containing the
+  solution(s) data. Each row corresponds to a different solution, and
+  each column describes a different property of the solution. The object
+  contains a column for each project (based on the argument to
+  \code{project_column_name}) which contains \code{logical} values indicating
+  if the project was prioritized for funded (\code{TRUE}) or not
+  (\code{FALSE}) in a given solution. Additionally, the object also contains
+  the following columns:
+
+ \describe{
+
+   \item{\code{objective}}{\code{numeric} objective value associated with
+     each of the solution(s). This corresponds to the expected amount of
+     evolutionary history that is retained by each solution.}
+
+   \item{\code{cost}}{\code{numeric} total cost associated with each of
+     of the solution(s).}
+
+   \item{\code{optimal}}{\code{logical} indicating if each of the
+     solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
+     Missing values (\code{NA}) indicate that optimality is unknown
+     (i.e. because the method used to produce the solution(s) does not
+     provide any bounds on their quality).}
+
+   \item{\code{method}}{\code{character} name of method used to produce the
+     solution(s).)}
+
+ }
+}
 \description{
 Manually specify funding schemes for conservation projects and examine
-their effectiveness.
+their effectiveness. \strong{Since the solutions are manually specified,
+their optimality is unknown.}.
 }
 \details{
 TODO
 }
 \seealso{
-The following methods can be used to extract, inspect, and
-  visualize the solution(s): TODO
+For other methods for solving the 'Project Prioritization Protocol'
+problem, see \code{\link{ppp_heuristic_solution}} and
+\code{\link{ppp_gurobi_solution}}. To visualize the effectiveness of a
+particular solution, see \code{\link{ppp_plot}}.
 }
