@@ -14,10 +14,11 @@ test_that("single solution, no constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective,
                (100 * (1 - ((1 - (1.0 * 0.1)) * (1 - (0.96 * 0.92))))) +
                (5 * (1 * 0.1)) +
@@ -49,10 +50,11 @@ test_that("single solution, locked in constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +
@@ -84,10 +86,11 @@ test_that("single solution, locked out constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +

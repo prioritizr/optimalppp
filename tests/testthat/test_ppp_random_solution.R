@@ -15,10 +15,11 @@ test_that("single solution, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))
@@ -56,10 +57,11 @@ test_that("single solution, locked in constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))
@@ -96,10 +98,11 @@ test_that("single solution, locked out constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))
@@ -133,10 +136,11 @@ test_that("multiple solutions, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
+  expect_equal(s$budget, rep(0.18, 100L))
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))
@@ -174,10 +178,11 @@ test_that("multiple solutions, locked in constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
+  expect_equal(s$budget, rep(0.18, 100L))
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))
@@ -215,10 +220,11 @@ test_that("multiple solutions, locked out constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
+  expect_equal(s$budget, rep(0.18, 100L))
   expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
                                                 "success",
                                                 s[, project_data$name]))

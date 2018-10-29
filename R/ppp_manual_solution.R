@@ -126,6 +126,7 @@ ppp_manual_solution <- function(x, tree, solution,
       solution = seq_len(nrow(solution)),
       objective = ppp_objective_value(x, tree, project_column_name,
                                       success_column_name, s),
+      budget = NA_real_,
       cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
                             ncol = ncol(s), nrow = nrow(s)) *
                      as.matrix(s[, x[[project_column_name]], drop = FALSE])),

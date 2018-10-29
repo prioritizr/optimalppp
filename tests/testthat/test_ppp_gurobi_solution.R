@@ -18,10 +18,11 @@ test_that("solution (single solution, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0.18)
   expect_equal(s$objective,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +
@@ -59,13 +60,14 @@ test_that("solution (single solution, locked in + out constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 1)
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   ## solution columns
   expect_equal(s$a, TRUE)
   expect_equal(s$b, FALSE)
   expect_equal(s$c, TRUE)
   ## statistics columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 2)
   expect_equal(s$objective,
                (1 * (1 - ((1 - (1 * 0.1)) * (1 - (1 * 0.1))))) +
                (1 * (1 * 0.1)) +
@@ -97,13 +99,14 @@ test_that("solution (multiple solutions, no constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 7)
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   ## solution columns
   expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
                "logical")
   expect_equal(anyDuplicated(vapply(s[, project_data$name], paste, character(1),
                                     collapse = ",")), 0)
   ## statistics columns
+  expect_equal(s$budget, rep(0.18, 7))
   expect_equal(s$solution, seq_len(7))
   expect_is(s$objective, "numeric")
   expect_true(all(s$objective >= 0))
@@ -136,13 +139,14 @@ test_that("solution (multiple solutions, locked in + out constraints)", {
   ## class
   expect_is(s, "tbl_df")
   expect_equal(nrow(s), 2)
-  expect_equal(ncol(s), 8)
+  expect_equal(ncol(s), 9)
   ## solution columns
   expect_equal(unique(vapply(s[, project_data$name], class, character(1))),
                "logical")
   expect_equal(anyDuplicated(vapply(s[, project_data$name], paste, character(1),
                                     collapse = ",")), 0)
   ## statistics columns
+  expect_equal(s$budget, rep(0.18, 2))
   expect_equal(s$solution, seq_len(2))
   expect_is(s$objective, "numeric")
   expect_true(all(s$objective >= 0))

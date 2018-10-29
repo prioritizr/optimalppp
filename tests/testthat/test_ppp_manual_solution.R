@@ -15,10 +15,11 @@ test_that("single solution", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 9)
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
+  expect_equal(s$budget, NA_real_)
   expect_equal(s$objective,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +
@@ -53,12 +54,13 @@ test_that("multiple solutions", {
   # tests
   ## class
   expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10)
   expect_equal(nrow(s), 2)
-  expect_equal(ncol(s), 9)
   ## solution columns
   expect_equal(as.data.frame(s[, c("a", "b", "c", "d")]), m)
   ## statistics columns
   expect_equal(s$solution, seq_len(2))
+  expect_equal(s$budget, rep(NA_real_, nrow(s)))
   expect_equal(s$cost, c(0.15, 0))
   expect_equal(s$objective,
                c((100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +

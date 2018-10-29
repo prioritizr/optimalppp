@@ -340,22 +340,22 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
 #&gt; 
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot the simulated phylogeny</span>
-<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_gurobi_solution-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># verify if guorbi package is installed</span>
+<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_gurobi_solution-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># verify if guorbi package is installed</span>
 <span class='kw'>if</span> (!<span class='fu'>require</span>(<span class='no'>gurobi</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
- <span class='fu'>stop</span>(<span class='st'>"the gurobi R package is not installed."</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package â€˜gurobiâ€™ was built under R version 3.5.0</span></div><div class='input'><span class='co'># find a solution that meets a budget of 300</span>
+ <span class='fu'>stop</span>(<span class='st'>"the gurobi R package is not installed."</span>)</div><div class='output co'>#&gt; <span class='warning'>NA</span></div><div class='input'>
+<span class='co'># find a solution that meets a budget of 300</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_gurobi_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
                              <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.43  214. TRUE    gurobi FALSE      TRUE       TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.43    300  214. TRUE    gurobi FALSE      TRUE      
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># print the names of which projects were funded</span>
-<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "objective"  "cost"       "S1_project"</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "objective" "budget"    "method"   </div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='output co'>#&gt; <span class='message'>Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</span></div><div class='output co'>#&gt; <span class='message'>Also defined by ü¾Œ¦”¼ü¾Œƒ ¼ü¾Žƒ¤¼treeioü¾Œ¦”¼ü¾Œƒ ¼ü¾Ž“¤¼</span></div><div class='img'><img src='ppp_gurobi_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
@@ -368,12 +368,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
                               <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.08  209. NA      heuriâ€¦ TRUE       FALSE      TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.08    300  209. NA      heuriâ€¦ TRUE       FALSE     
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_gurobi_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
@@ -388,12 +388,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
                              <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.41  209. NA      heuriâ€¦ FALSE      FALSE      TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.41    300  209. NA      heuriâ€¦ FALSE      FALSE     
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_gurobi_solution-4.png' alt='' width='700' height='433' /></div></pre>
   </div>

@@ -72,11 +72,11 @@ NULL
 #'
 #' # plot the simulated phylogeny
 #' plot(sim_tree, main = "simulated phylogeny")
-#'
+#' \donttest{
 #' # verify if guorbi package is installed
 #' if (!require(gurobi, quietly = TRUE))
 #'  stop("the gurobi R package is not installed.")
-#' \donttest{
+#'
 #' # find a solution that meets a budget of 300
 #' s1 <- ppp_gurobi_solution(sim_project_data, sim_tree, 300,
 #'                              "name", "cost", "success")
@@ -275,6 +275,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
   out2 <- tibble::tibble(solution = seq_along(s$pool))
   out2$objective <- ppp_objective_value(x, tree, project_column_name,
                                        success_column_name, out)
+  out2$budget <- budget
   out2$cost <- rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
                               ncol = ncol(out), nrow = nrow(out)) *
                        as.matrix(out))

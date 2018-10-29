@@ -173,6 +173,7 @@ ppp_random_solution <- function(x, tree, budget,
       solution = seq_len(nrow(out)),
       objective = ppp_objective_value(x, tree, project_column_name,
                                       success_column_name, out),
+      budget = budget,
       cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
                             ncol = ncol(out), nrow = nrow(out)) *
                      as.matrix(out)),
