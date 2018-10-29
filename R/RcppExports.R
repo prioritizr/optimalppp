@@ -5,6 +5,10 @@ rcpp_branch_matrix <- function(x) {
     .Call(`_optimalppp_rcpp_branch_matrix`, x)
 }
 
+rcpp_branch_probabilities <- function(spp, branch_matrix, solutions) {
+    .Call(`_optimalppp_rcpp_branch_probabilities`, spp, branch_matrix, solutions)
+}
+
 rcpp_heuristic_solution <- function(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out) {
     .Call(`_optimalppp_rcpp_heuristic_solution`, spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out)
 }

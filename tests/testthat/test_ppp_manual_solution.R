@@ -166,5 +166,4 @@ test_that("invalid arguments", {
     ppp_manual_solution(sim_project_data, sim_tree, m, "name", "cost",
                         "success")
   })
-
 })

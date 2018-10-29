@@ -21,7 +21,8 @@ Imports:
     assertthat(>= 0.2.0),
     tibble(>= 1.4.2),
     ape(>= 5.2),
-    tidytree(>= 0.1.9)
+    tidytree(>= 0.1.9),
+    ggplot2(>= 3.0.0)
 Suggests:
     testthat(>= 2.0.0),
     knitr(>= 1.20),

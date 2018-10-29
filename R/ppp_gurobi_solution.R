@@ -13,7 +13,7 @@ NULL
 #' @inheritParams help
 #'
 #' @inherit help return
-
+#'
 #' @details This function works by formulating the 'Project Prioritization
 #'   Protocol' as a mixed integer programming problem (MIP) and solving it
 #'   using the

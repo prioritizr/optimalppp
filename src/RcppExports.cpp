@@ -17,6 +17,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_branch_probabilities
+Rcpp::NumericMatrix rcpp_branch_probabilities(arma::sp_mat spp, arma::sp_mat branch_matrix, arma::sp_mat solutions);
+RcppExport SEXP _optimalppp_rcpp_branch_probabilities(SEXP sppSEXP, SEXP branch_matrixSEXP, SEXP solutionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type spp(sppSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type branch_matrix(branch_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type solutions(solutionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_branch_probabilities(spp, branch_matrix, solutions));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_heuristic_solution
 Rcpp::LogicalMatrix rcpp_heuristic_solution(arma::sp_mat spp, double budget, arma::sp_mat branch_matrix, Rcpp::NumericVector branch_lengths, Rcpp::NumericVector costs, Rcpp::IntegerVector locked_in, Rcpp::IntegerVector locked_out);
 RcppExport SEXP _optimalppp_rcpp_heuristic_solution(SEXP sppSEXP, SEXP budgetSEXP, SEXP branch_matrixSEXP, SEXP branch_lengthsSEXP, SEXP costsSEXP, SEXP locked_inSEXP, SEXP locked_outSEXP) {

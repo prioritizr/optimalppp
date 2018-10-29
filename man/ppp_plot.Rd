@@ -4,8 +4,8 @@
 \alias{ppp_plot}
 \title{Plot a 'Project Prioritization Protocol' solution}
 \usage{
-ppp_plot(x, tree, project_column_name, success_column_name, solution,
-  n = 1)
+ppp_plot(x, tree, project_column_name, cost_column_name,
+  success_column_name, solution, n = 1)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -23,6 +23,11 @@ be represented in this tree.}
 the name for each conservation project. Note that the project names
 must not contain any duplicates or missing values.}
 
+\item{cost_column_name}{\code{character} name of column that
+indicates the cost for funding each project. This column must have
+\code{numeric} values which are equal to or greater than zero. No missing
+values are permitted.}
+
 \item{success_column_name}{\code{character} name of column that
 denotes the probability that each project will succeed if it is funded.
 This column must have \code{numeric} values which lay between zero and one.
@@ -34,6 +39,11 @@ should contain a column for each project---with the column name matching
 the project name---and the column should contain \code{logical} values
 that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
 Although additional columns can also be included, they will be ignored.}
+
+\item{n}{\code{integer} solution to display. This should argument
+correspond to a row number in the argument to \code{solution}. Defaults
+to \code{1} such that the solution in the first row of the argument
+to \code{solution} is plotted.}
 }
 \description{
 Create a plot displaying a phylogenetic tree (phylogram) to visualize a
