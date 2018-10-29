@@ -1,10 +1,9 @@
 #' @include internal.R
 NULL
 
-#' Solve the 'Project Prioritization Protocol' problem using Gurobi
+#' Solve the 'Project Prioritization Protocol' problem using exact algorithms
 #'
-#' Prioritize funding for conservation projects using the
-#' \href{https://www.gurobi.com}{Gurobi optimization software suite}. Unlike
+#' Prioritize funding for conservation projects using exact algorithms. Unlike
 #' other methods for generating prioritizations, this method can identify
 #' solutions that are guaranteed to be optimal (or within a pre-specified
 #' optimality gap; see Underhill 1994; Rodrigues & Gaston 2002).
@@ -76,8 +75,8 @@ NULL
 #'  stop("the gurobi R package is not installed.")
 #'
 #' # find a solution that meets a budget of 300
-#' s1 <- ppp_gurobi_solution(sim_project_data, sim_tree, 300,
-#'                              "name", "cost", "success")
+#' s1 <- ppp_exact_solution(sim_project_data, sim_tree, 300,
+#'                          "name", "cost", "success")
 #'
 #' # print solution
 #' print(s1)
@@ -93,9 +92,9 @@ NULL
 #' # be an iconic species that has cultural and economic importance.
 #' sim_project_data2 <- sim_project_data
 #' sim_project_data2$locked_in <- sim_project_data2$name == "S1_project"
-#' s2 <- ppp_heuristic_solution(sim_project_data2, sim_tree, 300,
-#'                              "name", "cost", "success",
-#'                               locked_in_column_name = "locked_in")
+#' s2 <- ppp_exact_solution(sim_project_data2, sim_tree, 300,
+#'                          "name", "cost", "success",
+#'                          locked_in_column_name = "locked_in")
 #'
 #' # print solution
 #' print(s2)
@@ -110,9 +109,9 @@ NULL
 #' # "lock out" unimportant species.
 #' sim_project_data3 <- sim_project_data
 #' sim_project_data3$locked_out <- sim_project_data2$name == "S2_project"
-#' s3 <- ppp_heuristic_solution(sim_project_data3, sim_tree, 300,
-#'                              "name", "cost", "success",
-#'                              locked_out_column_name = "locked_out")
+#' s3 <- ppp_exact_solution(sim_project_data3, sim_tree, 300,
+#'                          "name", "cost", "success",
+#'                          locked_out_column_name = "locked_out")
 #'
 #' # print solution
 #' print(s3)
@@ -121,17 +120,17 @@ NULL
 #' ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
 #' }
 #' @export
-ppp_gurobi_solution <- function(x, tree, budget,
-                                project_column_name,
-                                cost_column_name,
-                                success_column_name,
-                                locked_in_column_name = NULL,
-                                locked_out_column_name = NULL,
-                                gap = 0.000001, threads = 1L,
-                                number_solutions = 1L,
-                                time_limit = .Machine$integer.max,
-                                number_approx_points = 300,
-                                verbose = FALSE) {
+ppp_exact_solution <- function(x, tree, budget,
+                               project_column_name,
+                               cost_column_name,
+                               success_column_name,
+                               locked_in_column_name = NULL,
+                               locked_out_column_name = NULL,
+                               gap = 0.000001, threads = 1L,
+                               number_solutions = 1L,
+                               time_limit = .Machine$integer.max,
+                               number_approx_points = 300,
+                               verbose = FALSE) {
   # assertions
   ## assert that gurobi R package is installed
   assertthat::assert_that(requireNamespace("gurobi", quietly = TRUE),

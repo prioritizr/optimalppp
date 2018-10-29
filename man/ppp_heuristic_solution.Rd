@@ -235,7 +235,7 @@ algorithms. \emph{Biological Conservation}, \strong{70}, 85--87.
 \seealso{
 For other methods for generating solutions for the 'Project
   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-  \code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_random_solution}}.
+  \code{\link{ppp_exact_solution}}, and \code{\link{ppp_random_solution}}.
   To visualize the effectiveness of a particular solution, see
   \code{\link{ppp_plot}}.
 }

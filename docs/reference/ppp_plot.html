@@ -204,7 +204,7 @@ Evolution</em>, <strong>8</strong>, 28--36.</p>
 
     <div class='dont-index'><p>To generate solutions for the 'Project
   Prioritization Protocol' problem, see <code><a href='ppp_heuristic_solution.html'>ppp_heuristic_solution</a></code>
-  <code><a href='ppp_gurobi_solution.html'>ppp_gurobi_solution</a></code>, <code><a href='ppp_manual_solution.html'>ppp_manual_solution</a></code>,
+  <code><a href='ppp_exact_solution.html'>ppp_exact_solution</a></code>, <code><a href='ppp_manual_solution.html'>ppp_manual_solution</a></code>,
   or <code><a href='ppp_random_solution.html'>ppp_random_solution</a></code>.</p></div>
     
 
@@ -253,14 +253,14 @@ Evolution</em>, <strong>8</strong>, 28--36.</p>
                           <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
 <span class='co'># print output</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      3.24  315. NA      manual FALSE      TRUE       FALSE     
-#&gt; 2        2      1.87    0  NA      manual FALSE      FALSE      FALSE     
-#&gt; 3        3      4.87  524. NA      manual TRUE       TRUE       TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      3.24     NA  315. NA      manual FALSE      TRUE      
+#&gt; 2        2      1.87     NA    0  NA      manual FALSE      FALSE     
+#&gt; 3        3      4.87     NA  524. NA      manual TRUE       TRUE      
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot the first solution</span>
 <span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot the second solution</span>

@@ -28,7 +28,7 @@ Prioritization Protocol' and visualizing the implications of different
 funding schemes. Here, you can generate solutions by using a stingy
 heuristic algorithm (\code{\link{ppp_heuristic_solution}}; similar to
 Bennett \emph{et al.} 2014), or using exact algorithms
-(\code{\link{ppp_gurobi_solution}}) which are
+(\code{\link{ppp_exact_solution}}) which are
 guaranteed to deliver optimal solutions. You can also generate solutions
 by randomly selecting projects within a given budget
 (\code{\link{ppp_random_solution}}), and evaluate solutions identified

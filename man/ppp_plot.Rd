@@ -139,6 +139,6 @@ Evolution}, \strong{8}, 28--36.
 \seealso{
 To generate solutions for the 'Project
   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-  \code{\link{ppp_gurobi_solution}}, \code{\link{ppp_manual_solution}},
+  \code{\link{ppp_exact_solution}}, \code{\link{ppp_manual_solution}},
   or \code{\link{ppp_random_solution}}.
 }

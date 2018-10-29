@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Solve the 'Project Prioritization Protocol' problem using Gurobi â€” ppp_gurobi_solution â€¢ optimalppp</title>
+<title>Solve the 'Project Prioritization Protocol' problem using exact algorithms â€” ppp_exact_solution â€¢ optimalppp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Solve the 'Project Prioritization Protocol' problem using Gurobi â€” ppp_gurobi_solution" />
+<meta property="og:title" content="Solve the 'Project Prioritization Protocol' problem using exact algorithms â€” ppp_exact_solution" />
 
-<meta property="og:description" content="Prioritize funding for conservation projects using the
-Gurobi optimization software suite. Unlike
+<meta property="og:description" content="Prioritize funding for conservation projects using exact algorithms. Unlike
 other methods for generating prioritizations, this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
 optimality gap; see Underhill 1994; Rodrigues &amp;amp; Gaston 2002).
@@ -109,15 +108,14 @@ this method for developing project prioritizations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Solve the 'Project Prioritization Protocol' problem using Gurobi</h1>
-    <small class="dont-index">Source: <a href='https://github.com/prioritizr/optimalppp/blob/master/R/ppp_gurobi_solution.R'><code>R/ppp_gurobi_solution.R</code></a></small>
-    <div class="hidden name"><code>ppp_gurobi_solution.Rd</code></div>
+    <h1>Solve the 'Project Prioritization Protocol' problem using exact algorithms</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioritizr/optimalppp/blob/master/R/ppp_exact_solution.R'><code>R/ppp_exact_solution.R</code></a></small>
+    <div class="hidden name"><code>ppp_exact_solution.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prioritize funding for conservation projects using the
-<a href='https://www.gurobi.com'>Gurobi optimization software suite</a>. Unlike
+    <p>Prioritize funding for conservation projects using exact algorithms. Unlike
 other methods for generating prioritizations, this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
 optimality gap; see Underhill 1994; Rodrigues &amp; Gaston 2002).
@@ -126,7 +124,7 @@ this method for developing project prioritizations.</strong></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ppp_gurobi_solution</span>(<span class='no'>x</span>, <span class='no'>tree</span>, <span class='no'>budget</span>, <span class='no'>project_column_name</span>, <span class='no'>cost_column_name</span>,
+    <pre class="usage"><span class='fu'>ppp_exact_solution</span>(<span class='no'>x</span>, <span class='no'>tree</span>, <span class='no'>budget</span>, <span class='no'>project_column_name</span>, <span class='no'>cost_column_name</span>,
   <span class='no'>success_column_name</span>, <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gap</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>time_limit</span> <span class='kw'>=</span> <span class='no'>.Machine</span>$<span class='no'>integer.max</span>,
@@ -341,12 +339,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
 #&gt; 
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot the simulated phylogeny</span>
-<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_gurobi_solution-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># verify if guorbi package is installed</span>
+<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_exact_solution-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># verify if guorbi package is installed</span>
 <span class='kw'>if</span> (!<span class='fu'>require</span>(<span class='no'>gurobi</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
  <span class='fu'>stop</span>(<span class='st'>"the gurobi R package is not installed."</span>)</div><div class='output co'>#&gt; <span class='warning'>NA</span></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300</span>
-<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_gurobi_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
-                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
+<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
+                         <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
@@ -358,25 +356,25 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
 <span class='co'># print the names of which projects were funded</span>
 <span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "objective" "budget"    "method"   </div><div class='input'>
 <span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='output co'>#&gt; <span class='message'>Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</span></div><div class='output co'>#&gt; <span class='message'>Also defined by ü¾Œ¦”¼ü¾Œƒ ¼ü¾Žƒ¤¼treeioü¾Œ¦”¼ü¾Œƒ ¼ü¾Ž“¤¼</span></div><div class='img'><img src='ppp_gurobi_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='output co'>#&gt; <span class='message'>Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</span></div><div class='output co'>#&gt; <span class='message'>Also defined by ü¾Œ¦”¼ü¾Œƒ ¼ü¾Žƒ¤¼treeioü¾Œ¦”¼ü¾Œƒ ¼ü¾Ž“¤¼</span></div><div class='img'><img src='ppp_exact_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
 <span class='co'># funding for the "S1_project" project. For instance, species "S1" might</span>
 <span class='co'># be an iconic species that has cultural and economic importance.</span>
 <span class='no'>sim_project_data2</span> <span class='kw'>&lt;-</span> <span class='no'>sim_project_data</span>
 <span class='no'>sim_project_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_project_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S1_project"</span>
-<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ppp_heuristic_solution.html'>ppp_heuristic_solution</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
-                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
-                              <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
+<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_solution</span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
+                         <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
+                         <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
 #&gt;   solution objective budget  cost optimal method S1_project S2_project
 #&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.08    300  209. NA      heuriâ€¦ TRUE       FALSE     
+#&gt; 1        1      4.08    300  209. TRUE    gurobi TRUE       FALSE     
 #&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
 #&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_gurobi_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_exact_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
 <span class='co'># funding for the "S2_project" project. For instance, species "S2"</span>
 <span class='co'># might have very little cultural or economic importance. Broadly speaking,</span>
@@ -384,19 +382,19 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
 <span class='co'># "lock out" unimportant species.</span>
 <span class='no'>sim_project_data3</span> <span class='kw'>&lt;-</span> <span class='no'>sim_project_data</span>
 <span class='no'>sim_project_data3</span>$<span class='no'>locked_out</span> <span class='kw'>&lt;-</span> <span class='no'>sim_project_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S2_project"</span>
-<span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ppp_heuristic_solution.html'>ppp_heuristic_solution</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
-                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
-                             <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
+<span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_solution</span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
+                         <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
+                         <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
 #&gt;   solution objective budget  cost optimal method S1_project S2_project
 #&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.41    300  209. NA      heuriâ€¦ FALSE      FALSE     
+#&gt; 1        1      4.41    300  209. TRUE    gurobi FALSE      FALSE     
 #&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
 #&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_gurobi_solution-4.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_exact_solution-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
