@@ -18,13 +18,21 @@ NULL
 #'  a project is randomly deselected for funding (removed), and this step
 #'  is repeated until the cost of the remaining projects is within the
 #'  budget. Note that projects that have zero cost are never deselected for
-#'  funding, and are always included in the solutions.
+#'  funding, and are always included in the solutions. The different solutions
+#'  are then evaluated according to the 'expected phylogenetic diversity'
+#'  metric (Faith 2008).
 #'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
 #'   \code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_manual_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
 #'   \code{\link{ppp_plot}}.
+#'
+#' @references
+#' Faith, D. P. (2008). Threatened species and the potential loss of
+#' phylogenetic diversity: conservation scenarios based on estimated extinction
+#' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+#' \strong{22}, 1461--1470.
 #'
 #' @examples
 #' # load built-in data

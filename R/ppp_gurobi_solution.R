@@ -21,7 +21,8 @@ NULL
 #'   \href{https://www.gurobi.com}{Gurobi optimization software suite}.
 #'   Specifically, the problem aims to maximize
 #'   the amount of evolutionary history that is expected to
-#'   persist. This is achieved by funding different conservation projects, with
+#'   persist (i.e. the 'expected phylogenetic diversity' metric; Faith 2008).
+#'   This is achieved by funding different conservation projects, with
 #'   known costs, that have a known effect on species' survival. Please refer
 #'   to the package vignette for the complete formulation of this problem.
 #'
@@ -48,6 +49,11 @@ NULL
 #'   \code{\link{ppp_plot}}.
 #'
 #' @references
+#' Faith, D. P. (2008). Threatened species and the potential loss of
+#' phylogenetic diversity: conservation scenarios based on estimated extinction
+#' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+#' \strong{22}, 1461--1470.
+#'
 #' Rodrigues, A. S., & Gaston, K. J. (2002). Optimisation in reserve selection
 #' procedures---why not?. \emph{Biological Conservation}, \strong{107}, 123-129.
 #'

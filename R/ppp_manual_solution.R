@@ -11,11 +11,20 @@ NULL
 #'
 #' @inherit help return
 #'
+#' @details The effectiveness of different funding schemes is calculated
+#'   following the "expected phylogenetic diversity" metric (Faith 2008).
+#'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_gurobi_solution}},
 #'   \code{\link{ppp_heuristic_solution}}, and
 #'   \code{\link{ppp_random_solution}}. To visualize the effectiveness of a
 #'   particular solution, see \code{\link{ppp_plot}}.
+#'
+#' @references
+#' Faith, D. P. (2008). Threatened species and the potential loss of
+#' phylogenetic diversity: conservation scenarios based on estimated extinction
+#' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+#' \strong{22}, 1461--1470.
 #'
 #' @examples
 #' # load built-in data

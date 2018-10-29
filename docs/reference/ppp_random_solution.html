@@ -211,7 +211,16 @@ are permitted. Defaults to <code>1</code>.</p></td>
  a project is randomly deselected for funding (removed), and this step
  is repeated until the cost of the remaining projects is within the
  budget. Note that projects that have zero cost are never deselected for
- funding, and are always included in the solutions.</p>
+ funding, and are always included in the solutions. The different solutions
+ are then evaluated according to the 'expected phylogenetic diversity'
+ metric (Faith 2008).</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Faith, D. P. (2008). Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>, 1461--1470.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -271,7 +280,8 @@ are permitted. Defaults to <code>1</code>.</p></td>
 <span class='co'># view histogram of their objective values</span>
 <span class='fu'>hist</span>(<span class='no'>s1</span>$<span class='no'>objective</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution objective"</span>)</div><div class='img'><img src='ppp_random_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their costs</span>
-<span class='fu'>hist</span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution cost"</span>)</div><div class='img'><img src='ppp_random_solution-4.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>hist</span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution cost"</span>)</div><div class='img'><img src='ppp_random_solution-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -279,6 +289,8 @@ are permitted. Defaults to <code>1</code>.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

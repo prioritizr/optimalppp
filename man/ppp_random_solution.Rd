@@ -75,7 +75,9 @@ The random solutions are generated using the following algorithm.
  a project is randomly deselected for funding (removed), and this step
  is repeated until the cost of the remaining projects is within the
  budget. Note that projects that have zero cost are never deselected for
- funding, and are always included in the solutions.
+ funding, and are always included in the solutions. The different solutions
+ are then evaluated according to the 'expected phylogenetic diversity'
+ metric (Faith 2008).
 }
 \examples{
 # load built-in data
@@ -106,6 +108,12 @@ hist(s1$objective, xlab = "solution objective")
 # view histogram of their costs
 hist(s1$cost, xlab = "solution cost")
 
+}
+\references{
+Faith, D. P. (2008). Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+\strong{22}, 1461--1470.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

@@ -75,6 +75,10 @@ A \code{\link[tibble]{tibble}} object containing the
 Manually specify funding schemes for conservation projects and calculate
 their effectiveness.
 }
+\details{
+The effectiveness of different funding schemes is calculated
+  following the "expected phylogenetic diversity" metric (Faith 2008).
+}
 \examples{
 # load built-in data
 data(sim_project_data, sim_tree)
@@ -116,6 +120,12 @@ ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
          n = 2) + ggtitle("solution 2")
 ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
          n = 3) + ggtitle("solution 3")
+}
+\references{
+Faith, D. P. (2008). Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+\strong{22}, 1461--1470.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

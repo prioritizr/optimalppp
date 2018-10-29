@@ -235,11 +235,12 @@ defunding (removing) projects until the budget is met (Bennett <em>et al</em>.
 2014; Joseph <em>et al. 2009</em>). In a given iteration,
 each project is evaluated in terms of the amount of evolutionary
 history that is expected to be lost per unit cost when the project is not
-funded, and the project associated with the lowest utility is defunded.
+funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),
+and the project associated with the lowest utility is defunded.
 Although this algorithm may identify funding schemes that perform
 better than random, it is worth noting that this algorithm is extremely
 unlikely to identify optimal solutions. These calculations can be expressed
-mathematically using the follow definitions.</p>
+mathematically with the following definitions.</p>
 <p>To calculate the utility for funding a given project (\(j\))
 among a set of projects (\(J\)), let the expected amount of evolutionary
 history that will persist into the future when all the projects are funded
@@ -282,6 +283,10 @@ Probert, W. J., ... &amp; Maloney, R. (2014). Balancing phylogenetic diversity
 and species numbers in conservation prioritization, using a case study of
 threatened species in New Zealand. <em>Biological Conservation</em>,
 <strong>174</strong>, 47-54.</p>
+<p>Faith, D. P. (2008). Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>, 1461--1470.</p>
 <p>Joseph, L. N., Maloney, R. F., &amp; Possingham, H. P. (2009). Optimal
 allocation of resources among threatened species: a project prioritization
 protocol. <em>Conservation biology</em>, <strong>23</strong>, 328--338.</p>
