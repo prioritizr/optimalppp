@@ -31,6 +31,9 @@ apt_packages:
   - curl
   - qpdf
 
+before_script:
+  - Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('ggtree')"
+
 before_install:
   - echo "TRAVIS_OS_NAME = $TRAVIS_OS_NAME"
   - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
@@ -38,13 +41,9 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install ghostscript; fi;
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo tlmgr update --self; fi;
 
-before_script:
-  - Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('lpsymphony')"
-
-r_packages:
-  - covr
-  - rmarkdown
-  - testthat
+install:
+  - R -e "install.packages('remotes'); suppressWarnings(remotes::install_deps(dependencies = TRUE))"
+  - R -e "install.packages(c('covr', 'rmarkdown', 'testthat'))"
 
 after_success:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then Rscript -e 'covr::codecov()'; fi;

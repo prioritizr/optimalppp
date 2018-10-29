@@ -20,6 +20,7 @@ install:
 
 build_script:
   - R -e "options(repos=c(CRAN='https://cran.rstudio.com/')); install.packages('remotes'); suppressWarnings(remotes::install_deps(dependencies = TRUE, type = 'binary'))"
+  - R -e "source('https://bioconductor.org/biocLite.R');biocLite('ggtree')"
 
 test_script:
   - travis-tool.sh run_tests
@@ -45,4 +46,4 @@ artifacts:
     name: Bits
 
   - path: '\*_*.zip'
-    name: Bits 
+    name: Bits
