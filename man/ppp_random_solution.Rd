@@ -66,8 +66,8 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decision in order to evaluate their effectiveness.
 \strong{When informing conservation actions, it is strongly recommended to
- use the \code{\link{ppp_gurobi_solution}} method because it can identify
- optimal funding schemes with a guarantee.}
+use the \code{\link{ppp_gurobi_solution}} method because it can identify
+optimal funding schemes with a guarantee.}
 }
 \details{
 The random solutions are generated using the following algorithm.

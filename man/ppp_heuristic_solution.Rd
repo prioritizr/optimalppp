@@ -68,36 +68,39 @@ A \code{\link[tibble]{tibble}} object containing the
 
  \describe{
 
-   \item{\code{objective}}{\code{numeric} objective value associated with
+   \item{\code{"objective"}}{\code{numeric} objective value associated with
      each of the solution(s). This corresponds to the expected amount of
      evolutionary history that is retained by each solution.}
 
-   \item{\code{cost}}{\code{numeric} total cost associated with each of
+   \item{\code{"budget"}}{\code{numeric} budget used for generating each of
+     the of the solution(s).}
+
+   \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
 
-   \item{\code{optimal}}{\code{logical} indicating if each of the
+   \item{\code{"optimal"}}{\code{logical} indicating if each of the
      solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
      Missing values (\code{NA}) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).}
 
-   \item{\code{method}}{\code{character} name of method used to produce the
+   \item{\code{"method"}}{\code{character} name of method used to produce the
      solution(s).)}
 
  }
 }
 \description{
 Prioritize funding for conservation projects using a stingy heuristic
-algorithm (Bennett \emph{et al}. 2014; Joseph \emph{et al. 2009}).
+algorithm (Joseph \emph{et al.} 2009; Bennett \emph{et al}. 2014).
 \strong{Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
-are optimal (see Rodrigues & Gaston 2002; Underhill 1994).}
+are optimal (Underhill 1994; Rodrigues & Gaston 2002).}
 }
 \details{
 Briefly, this algorithm works by starting off with all
 conservation projects selected for funding and then begins iteratively
-defunding (removing) projects until the budget is met (Bennett \emph{et al}.
-2014; Joseph \emph{et al. 2009}). In a given iteration,
+defunding (removing) projects until the budget is met (Joseph \emph{et al.}
+2009; Bennett \emph{et al}. 2014). In a given iteration,
 each project is evaluated in terms of the amount of evolutionary
 history that is expected to be lost per unit cost when the project is not
 funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),

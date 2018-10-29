@@ -100,20 +100,23 @@ NULL
 #'
 #'  \describe{
 #'
-#'    \item{\code{objective}}{\code{numeric} objective value associated with
+#'    \item{\code{"objective"}}{\code{numeric} objective value associated with
 #'      each of the solution(s). This corresponds to the expected amount of
 #'      evolutionary history that is retained by each solution.}
 #'
-#'    \item{\code{cost}}{\code{numeric} total cost associated with each of
+#'    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
+#'      the of the solution(s).}
+#'
+#'    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
 #'      of the solution(s).}
 #'
-#'    \item{\code{optimal}}{\code{logical} indicating if each of the
+#'    \item{\code{"optimal"}}{\code{logical} indicating if each of the
 #'      solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
 #'      Missing values (\code{NA}) indicate that optimality is unknown
 #'      (i.e. because the method used to produce the solution(s) does not
 #'      provide any bounds on their quality).}
 #'
-#'    \item{\code{method}}{\code{character} name of method used to produce the
+#'    \item{\code{"method"}}{\code{character} name of method used to produce the
 #'      solution(s).)}
 #'
 #'  }

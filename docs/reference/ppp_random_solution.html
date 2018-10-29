@@ -37,8 +37,8 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decision in order to evaluate their effectiveness.
 When informing conservation actions, it is strongly recommended to
- use the ppp_gurobi_solution method because it can identify
- optimal funding schemes with a guarantee." />
+use the ppp_gurobi_solution method because it can identify
+optimal funding schemes with a guarantee." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,8 +121,8 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decision in order to evaluate their effectiveness.
 <strong>When informing conservation actions, it is strongly recommended to
- use the <code><a href='ppp_gurobi_solution.html'>ppp_gurobi_solution</a></code> method because it can identify
- optimal funding schemes with a guarantee.</strong></p>
+use the <code><a href='ppp_gurobi_solution.html'>ppp_gurobi_solution</a></code> method because it can identify
+optimal funding schemes with a guarantee.</strong></p>
     
     </div>
 
@@ -260,21 +260,21 @@ probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
                           <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># print solutions</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 11
-#&gt;    solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt;  1        1      2.90  210. NA      random FALSE      TRUE       FALSE     
-#&gt;  2        2      4.41  209. NA      random FALSE      FALSE      TRUE      
-#&gt;  3        3      2.59  205. NA      random TRUE       FALSE      FALSE     
-#&gt;  4        4      4.43  214. NA      random FALSE      TRUE       TRUE      
-#&gt;  5        5      3.23  215. NA      random FALSE      TRUE       FALSE     
-#&gt;  6        6      2.90  205. NA      random FALSE      FALSE      FALSE     
-#&gt;  7        7      3.52  205. NA      random FALSE      FALSE      TRUE      
-#&gt;  8        8      3.23  215. NA      random FALSE      TRUE       FALSE     
-#&gt;  9        9      2.90  210. NA      random FALSE      TRUE       FALSE     
-#&gt; 10       10      3.12  215. NA      random TRUE       TRUE       FALSE     
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 12
+#&gt;    solution objective budget  cost optimal method S1_project S2_project
+#&gt;       &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt;  1        1      2.90    300  210. NA      random FALSE      TRUE      
+#&gt;  2        2      4.41    300  209. NA      random FALSE      FALSE     
+#&gt;  3        3      2.59    300  205. NA      random TRUE       FALSE     
+#&gt;  4        4      4.43    300  214. NA      random FALSE      TRUE      
+#&gt;  5        5      3.23    300  215. NA      random FALSE      TRUE      
+#&gt;  6        6      2.90    300  205. NA      random FALSE      FALSE     
+#&gt;  7        7      3.52    300  205. NA      random FALSE      FALSE     
+#&gt;  8        8      3.23    300  215. NA      random FALSE      TRUE      
+#&gt;  9        9      2.90    300  210. NA      random FALSE      TRUE      
+#&gt; 10       10      3.12    300  215. NA      random TRUE       TRUE      
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot first solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their objective values</span>

@@ -96,20 +96,23 @@ A \code{\link[tibble]{tibble}} object containing the
 
  \describe{
 
-   \item{\code{objective}}{\code{numeric} objective value associated with
+   \item{\code{"objective"}}{\code{numeric} objective value associated with
      each of the solution(s). This corresponds to the expected amount of
      evolutionary history that is retained by each solution.}
 
-   \item{\code{cost}}{\code{numeric} total cost associated with each of
+   \item{\code{"budget"}}{\code{numeric} budget used for generating each of
+     the of the solution(s).}
+
+   \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
 
-   \item{\code{optimal}}{\code{logical} indicating if each of the
+   \item{\code{"optimal"}}{\code{logical} indicating if each of the
      solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
      Missing values (\code{NA}) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).}
 
-   \item{\code{method}}{\code{character} name of method used to produce the
+   \item{\code{"method"}}{\code{character} name of method used to produce the
      solution(s).)}
 
  }
@@ -119,7 +122,7 @@ Prioritize funding for conservation projects using the
 \href{https://www.gurobi.com}{Gurobi optimization software suite}. Unlike
 other methods for generating prioritizations, this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
-optimality gap; see Rodrigues & Gaston 2002; Underhill 1994).
+optimality gap; see Underhill 1994; Rodrigues & Gaston 2002).
 \strong{As a consequence, it is strongly recommended to use
 this method for developing project prioritizations.}
 }
@@ -137,19 +140,17 @@ This function works by formulating the 'Project Prioritization
 
   Although \href{https://www.gurobi.com}{Gurobi} is a commercial software,
   academics can obtain a \href{https://user.gurobi.com/download/licenses/free-academic}{special license for no cost}.
-   After downloading and installing the Gurobi software suite, the
-  \pkg{gurobi} package will also need to be installed. For instructions on
-  installing the \href{https://www.gurobi.com}{Gurobi} software suite,
-  please consult the relevant documentation on the
-  \href{https://www.gurobi.com}{Gurobi} website for
+   After downloading and installing the
+  href{https://www.gurobi.com}{Gurobi} software suite, the
+  \pkg{gurobi} package will also need to be installed (see instructions for
   \href{http://www.gurobi.com/documentation/8.1/quickstart_linux/software_installation_guid.html}{Linux},
-  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html}{Mac OSX}, or
-  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/software_installation_guid.html}{Windows} operating systems. Additionally, for
-  instructions on installing the \pkg{gurobi} package, please
-  please consult the relevant documentation for
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html}{Mac OSX}, and
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/software_installation_guid.html}{Windows} operating systems).
+Finally, the \pkg{gurobi} package will also need to be installed (see
+instructions for
  \href{http://www.gurobi.com/documentation/8.1/quickstart_linux/r_installing_the_r_package.html}{Linux},
-  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html}{Mac OSX}, or
-  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems.
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html}{Mac OSX}, and
+  \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems).
 }
 \examples{
 # load built-in data

@@ -36,7 +36,7 @@
 Gurobi optimization software suite. Unlike
 other methods for generating prioritizations, this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
-optimality gap; see Rodrigues &amp;amp; Gaston 2002; Underhill 1994).
+optimality gap; see Underhill 1994; Rodrigues &amp;amp; Gaston 2002).
 As a consequence, it is strongly recommended to use
 this method for developing project prioritizations." />
 <meta name="twitter:card" content="summary" />
@@ -120,7 +120,7 @@ this method for developing project prioritizations." />
 <a href='https://www.gurobi.com'>Gurobi optimization software suite</a>. Unlike
 other methods for generating prioritizations, this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
-optimality gap; see Rodrigues &amp; Gaston 2002; Underhill 1994).
+optimality gap; see Underhill 1994; Rodrigues &amp; Gaston 2002).
 <strong>As a consequence, it is strongly recommended to use
 this method for developing project prioritizations.</strong></p>
     
@@ -250,20 +250,23 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
   the following columns:</p>
 <p></p><dl class='dl-horizontal'>
 
-   <dt><code>objective</code></dt><dd><p><code>numeric</code> objective value associated with
+   <dt><code>"objective"</code></dt><dd><p><code>numeric</code> objective value associated with
      each of the solution(s). This corresponds to the expected amount of
      evolutionary history that is retained by each solution.</p></dd>
 
-   <dt><code>cost</code></dt><dd><p><code>numeric</code> total cost associated with each of
+   <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
+     the of the solution(s).</p></dd>
+
+   <dt><code>"cost"</code></dt><dd><p><code>numeric</code> total cost associated with each of
      of the solution(s).</p></dd>
 
-   <dt><code>optimal</code></dt><dd><p><code>logical</code> indicating if each of the
+   <dt><code>"optimal"</code></dt><dd><p><code>logical</code> indicating if each of the
      solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>.
      Missing values (<code>NA</code>) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).</p></dd>
 
-   <dt><code>method</code></dt><dd><p><code>character</code> name of method used to produce the
+   <dt><code>"method"</code></dt><dd><p><code>character</code> name of method used to produce the
      solution(s).)</p></dd>
 
  </dl>
@@ -283,19 +286,17 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
   to the package vignette for the complete formulation of this problem.</p>
 <p>Although <a href='https://www.gurobi.com'>Gurobi</a> is a commercial software,
   academics can obtain a <a href='https://user.gurobi.com/download/licenses/free-academic'>special license for no cost</a>.
-   After downloading and installing the Gurobi software suite, the
-  <span class="pkg">gurobi</span> package will also need to be installed. For instructions on
-  installing the <a href='https://www.gurobi.com'>Gurobi</a> software suite,
-  please consult the relevant documentation on the
-  <a href='https://www.gurobi.com'>Gurobi</a> website for
+   After downloading and installing the
+  hrefhttps://www.gurobi.comGurobi software suite, the
+  <span class="pkg">gurobi</span> package will also need to be installed (see instructions for
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_linux/software_installation_guid.html'>Linux</a>,
-  <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html'>Mac OSX</a>, or
-  <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/software_installation_guid.html'>Windows</a> operating systems. Additionally, for
-  instructions on installing the <span class="pkg">gurobi</span> package, please
-  please consult the relevant documentation for
+  <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html'>Mac OSX</a>, and
+  <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/software_installation_guid.html'>Windows</a> operating systems).
+Finally, the <span class="pkg">gurobi</span> package will also need to be installed (see
+instructions for
  <a href='http://www.gurobi.com/documentation/8.1/quickstart_linux/r_installing_the_r_package.html'>Linux</a>,
-  <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html'>Mac OSX</a>, or
-  <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html'>Windows</a> operating systems.</p>
+  <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html'>Mac OSX</a>, and
+  <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html'>Windows</a> operating systems).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

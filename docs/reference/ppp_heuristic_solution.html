@@ -35,10 +35,10 @@ algorithms — ppp_heuristic_solution • optimalppp</title>
 algorithms — ppp_heuristic_solution" />
 
 <meta property="og:description" content="Prioritize funding for conservation projects using a stingy heuristic
-algorithm (Bennett et al. 2014; Joseph et al. 2009).
+algorithm (Joseph et al. 2009; Bennett et al. 2014).
 Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
-are optimal (see Rodrigues &amp;amp; Gaston 2002; Underhill 1994)." />
+are optimal (Underhill 1994; Rodrigues &amp;amp; Gaston 2002)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,10 +118,10 @@ algorithms</h1>
     <div class="ref-description">
     
     <p>Prioritize funding for conservation projects using a stingy heuristic
-algorithm (Bennett <em>et al</em>. 2014; Joseph <em>et al. 2009</em>).
+algorithm (Joseph <em>et al.</em> 2009; Bennett <em>et al</em>. 2014).
 <strong>Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
-are optimal (see Rodrigues &amp; Gaston 2002; Underhill 1994).</strong></p>
+are optimal (Underhill 1994; Rodrigues &amp; Gaston 2002).</strong></p>
     
     </div>
 
@@ -208,20 +208,23 @@ the solution.</p></td>
   the following columns:</p>
 <p></p><dl class='dl-horizontal'>
 
-   <dt><code>objective</code></dt><dd><p><code>numeric</code> objective value associated with
+   <dt><code>"objective"</code></dt><dd><p><code>numeric</code> objective value associated with
      each of the solution(s). This corresponds to the expected amount of
      evolutionary history that is retained by each solution.</p></dd>
 
-   <dt><code>cost</code></dt><dd><p><code>numeric</code> total cost associated with each of
+   <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
+     the of the solution(s).</p></dd>
+
+   <dt><code>"cost"</code></dt><dd><p><code>numeric</code> total cost associated with each of
      of the solution(s).</p></dd>
 
-   <dt><code>optimal</code></dt><dd><p><code>logical</code> indicating if each of the
+   <dt><code>"optimal"</code></dt><dd><p><code>logical</code> indicating if each of the
      solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>.
      Missing values (<code>NA</code>) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).</p></dd>
 
-   <dt><code>method</code></dt><dd><p><code>character</code> name of method used to produce the
+   <dt><code>"method"</code></dt><dd><p><code>character</code> name of method used to produce the
      solution(s).)</p></dd>
 
  </dl>
@@ -231,8 +234,8 @@ the solution.</p></td>
 
     <p>Briefly, this algorithm works by starting off with all
 conservation projects selected for funding and then begins iteratively
-defunding (removing) projects until the budget is met (Bennett <em>et al</em>.
-2014; Joseph <em>et al. 2009</em>). In a given iteration,
+defunding (removing) projects until the budget is met (Joseph <em>et al.</em>
+2009; Bennett <em>et al</em>. 2014). In a given iteration,
 each project is evaluated in terms of the amount of evolutionary
 history that is expected to be lost per unit cost when the project is not
 funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),
@@ -317,7 +320,7 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
 #&gt; 3 S3_project  104.   0.922 FALSE     FALSE      0      0      0.830 0     0    
 #&gt; 4 S4_project  100.   0.748 FALSE     TRUE       0      0      0     0.516 0    
 #&gt; 5 S5_project  105.   0.912 FALSE     FALSE      0      0      0     0     0.872
-#&gt; 6 baseline_~    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'>
+#&gt; 6 baseline_…    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'>
 <span class='co'># print simulated phylogenetic tree data set</span>
 <span class='fu'>print</span>(<span class='no'>sim_tree</span>)</div><div class='output co'>#&gt; 
 #&gt; Phylogenetic tree with 5 tips and 4 internal nodes.
@@ -333,16 +336,16 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
                              <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.43  214. NA      heuri~ FALSE      TRUE       TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.43    300  214. NA      heuri… FALSE      TRUE      
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># print the names of which projects were funded</span>
-<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "objective"  "cost"       "S1_project"</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "objective" "budget"    "method"   </div><div class='input'>
 <span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='output co'>#&gt; <span class='message'>Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</span></div><div class='output co'>#&gt; <span class='message'>Also defined by ‘treeio’</span></div><div class='img'><img src='ppp_heuristic_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
 <span class='co'># funding for the "S1_project" project. For instance, species "S1" might</span>
 <span class='co'># be an iconic species that has cultural and economic importance.</span>
@@ -353,12 +356,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
                               <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.08  209. NA      heuri~ TRUE       FALSE      TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.08    300  209. NA      heuri… TRUE       FALSE     
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
@@ -373,12 +376,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>, 85--87.</p>
                              <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
 
 <span class='co'># print solution</span>
-<span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      4.41  209. NA      heuri~ FALSE      FALSE      TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      4.41    300  209. NA      heuri… FALSE      FALSE     
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-4.png' alt='' width='700' height='433' /></div></pre>
   </div>

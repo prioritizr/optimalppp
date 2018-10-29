@@ -5,10 +5,10 @@ NULL
 #' algorithms
 #'
 #' Prioritize funding for conservation projects using a stingy heuristic
-#' algorithm (Bennett \emph{et al}. 2014; Joseph \emph{et al. 2009}).
+#' algorithm (Joseph \emph{et al.} 2009; Bennett \emph{et al}. 2014).
 #' \strong{Although this algorithm can deliver solutions that perform
 #' better than random, it is extremely unlikely to identify solutions that
-#' are optimal (see Rodrigues & Gaston 2002; Underhill 1994).}
+#' are optimal (Underhill 1994; Rodrigues & Gaston 2002).}
 #'
 #' @inheritParams help
 #'
@@ -16,8 +16,8 @@ NULL
 #'
 #' @details Briefly, this algorithm works by starting off with all
 #' conservation projects selected for funding and then begins iteratively
-#' defunding (removing) projects until the budget is met (Bennett \emph{et al}.
-#' 2014; Joseph \emph{et al. 2009}). In a given iteration,
+#' defunding (removing) projects until the budget is met (Joseph \emph{et al.}
+#' 2009; Bennett \emph{et al}. 2014). In a given iteration,
 #' each project is evaluated in terms of the amount of evolutionary
 #' history that is expected to be lost per unit cost when the project is not
 #' funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),

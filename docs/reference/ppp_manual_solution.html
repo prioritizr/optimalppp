@@ -183,20 +183,23 @@ No missing values are permitted.</p></td>
   the following columns:</p>
 <p></p><dl class='dl-horizontal'>
 
-   <dt><code>objective</code></dt><dd><p><code>numeric</code> objective value associated with
+   <dt><code>"objective"</code></dt><dd><p><code>numeric</code> objective value associated with
      each of the solution(s). This corresponds to the expected amount of
      evolutionary history that is retained by each solution.</p></dd>
 
-   <dt><code>cost</code></dt><dd><p><code>numeric</code> total cost associated with each of
+   <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
+     the of the solution(s).</p></dd>
+
+   <dt><code>"cost"</code></dt><dd><p><code>numeric</code> total cost associated with each of
      of the solution(s).</p></dd>
 
-   <dt><code>optimal</code></dt><dd><p><code>logical</code> indicating if each of the
+   <dt><code>"optimal"</code></dt><dd><p><code>logical</code> indicating if each of the
      solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>.
      Missing values (<code>NA</code>) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).</p></dd>
 
-   <dt><code>method</code></dt><dd><p><code>character</code> name of method used to produce the
+   <dt><code>"method"</code></dt><dd><p><code>character</code> name of method used to produce the
      solution(s).)</p></dd>
 
  </dl>
@@ -268,14 +271,14 @@ probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
                           <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
 <span class='co'># print the output</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 11
-#&gt;   solution objective  cost optimal method S1_project S2_project S3_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      3.24  315. NA      manual FALSE      TRUE       FALSE     
-#&gt; 2        2      1.87    0  NA      manual FALSE      FALSE      FALSE     
-#&gt; 3        3      4.87  524. NA      manual TRUE       TRUE       TRUE      
-#&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-#&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 12
+#&gt;   solution objective budget  cost optimal method S1_project S2_project
+#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1        1      3.24     NA  315. NA      manual FALSE      TRUE      
+#&gt; 2        2      1.87     NA    0  NA      manual FALSE      FALSE     
+#&gt; 3        3      4.87     NA  524. NA      manual TRUE       TRUE      
+#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># visualize the effectiveness of the different solutions</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
          <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_solution-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
