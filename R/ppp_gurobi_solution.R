@@ -7,8 +7,9 @@ NULL
 #' \href{https://www.gurobi.com}{Gurobi optimization software suite}. Unlike
 #' other methods for generating prioritizations, this method can identify
 #' solutions that are guaranteed to be optimal (or within a pre-specified
-#' optimality gap). \strong{As a consequence, it is strongly recommended to use
-#' this method for #' developing project prioritizations.}
+#' optimality gap; see Rodrigues & Gaston 2002; Underhill 1994).
+#' \strong{As a consequence, it is strongly recommended to use
+#' this method for developing project prioritizations.}
 #'
 #' @inheritParams help
 #'
@@ -41,11 +42,80 @@ NULL
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems.
 #'
 #' @seealso For other methods for solving the 'Project Prioritization Protocol'
-#'   problem, see \code{\link{ppp_heuristic_solution}},
+#'   problem, see \code{\link[optimppp]{ppp_heuristic_solution}},
 #'   \code{\link{ppp_manual_solution}}, and \code{\link{ppp_random_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
 #'   \code{\link{ppp_plot}}.
 #'
+#' @references
+#' Rodrigues, A. S., & Gaston, K. J. (2002). Optimisation in reserve selection
+#' procedures---why not?. \emph{Biological Conservation}, \strong{107}, 123-129.
+#'
+#' Underhill, L. G. (1994). Optimal and suboptimal reserve selection
+#' algorithms. \emph{Biological Conservation}, \strong{70}, 85--87.
+#'
+#' @examples
+#' # load built-in data
+#' data(sim_project_data, sim_tree)
+#'
+#' # print simulated project data set
+#' print(sim_project_data)
+#'
+#' # print simulated phylogenetic tree data set
+#' print(sim_tree)
+#'
+#' # plot the simulated phylogeny
+#' plot(sim_tree, main = "simulated phylogeny")
+#'
+#' # verify if guorbi package is installed
+#' if (!require(gurobi, quietly = TRUE))
+#'  stop("the gurobi R package is not installed.")
+#' \donttest{
+#' # find a solution that meets a budget of 300
+#' s1 <- ppp_gurobi_solution(sim_project_data, sim_tree, 300,
+#'                              "name", "cost", "success")
+#'
+#' # print solution
+#' print(s1)
+#'
+#' # print the names of which projects were funded
+#' print(names(s1)[which(unlist(s1[1, sim_project_data$name]))])
+#'
+#' # plot solution
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+#'
+#' # find a solution that meets a budget of 300 and allocates
+#' # funding for the "S1_project" project. For instance, species "S1" might
+#' # be an iconic species that has cultural and economic importance.
+#' sim_project_data2 <- sim_project_data
+#' sim_project_data2$locked_in <- sim_project_data2$name == "S1_project"
+#' s2 <- ppp_heuristic_solution(sim_project_data2, sim_tree, 300,
+#'                              "name", "cost", "success",
+#'                               locked_in_column_name = "locked_in")
+#'
+#' # print solution
+#' print(s2)
+#'
+#' # plot solution
+#' ppp_plot(sim_project_data2, sim_tree, s2, "name", "cost", "success")
+#'
+#' # find a solution that meets a budget of 300 and does not allocate
+#' # funding for the "S2_project" project. For instance, species "S2"
+#' # might have very little cultural or economic importance. Broadly speaking,
+#' # though, it is better to "lock in" "important" species rather than
+#' # "lock out" unimportant species.
+#' sim_project_data3 <- sim_project_data
+#' sim_project_data3$locked_out <- sim_project_data2$name == "S2_project"
+#' s3 <- ppp_heuristic_solution(sim_project_data3, sim_tree, 300,
+#'                              "name", "cost", "success",
+#'                              locked_out_column_name = "locked_out")
+#'
+#' # print solution
+#' print(s3)
+#'
+#' # plot solution
+#' ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
+#' }
 #' @export
 ppp_gurobi_solution <- function(x, tree, budget,
                                 project_column_name,

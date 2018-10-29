@@ -4,7 +4,37 @@
     <loc>https://prioritizr.github.io/optimalppp/index.html</loc>
   </url>
   <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/branch_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/help.html</loc>
+  </url>
+  <url>
     <loc>https://prioritizr.github.io/optimalppp/reference/optimalppp.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_gurobi_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_heuristic_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_manual_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_objective_value.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_random_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_simulate_data.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/sim_data.html</loc>
   </url>
   <url>
     <loc>https://prioritizr.github.io/optimalppp/articles/optimalppp.html</loc>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • optimalppp</title>
+<title>'Project Prioritization Protocol' objective value — ppp_objective_value • optimalppp</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="'Project Prioritization Protocol' objective value — ppp_objective_value" />
+
+<meta property="og:description" content="Calculate the objective value for a set of solutions to a Project
+Prioritization Protocol problem." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +50,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -98,92 +102,80 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>'Project Prioritization Protocol' objective value</h1>
+    <small class="dont-index">Source: <a href='https://github.com/prioritizr/optimalppp/blob/master/R/internal.R'><code>R/internal.R</code></a></small>
+    <div class="hidden name"><code>ppp_objective_value.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Calculate the objective value for a set of solutions to a Project
+Prioritization Protocol problem.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="branch_matrix.html">branch_matrix()</a></code> </p>
-        </td>
-        <td><p>Branch matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="optimalppp.html">optimalppp</a></code> </p>
-        </td>
-        <td><p><span class="pkg">optimalppp</span></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_gurobi_solution.html">ppp_gurobi_solution()</a></code> </p>
-        </td>
-        <td><p>Solve the 'Project Prioritization Protocol' problem using Gurobi</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_heuristic_solution.html">ppp_heuristic_solution()</a></code> </p>
-        </td>
-        <td><p>Solve the 'Project Prioritization Protocol' problem using heuristic
-algorithms</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_manual_solution.html">ppp_manual_solution()</a></code> </p>
-        </td>
-        <td><p>Solve the 'Project Prioritization Protocol' problem by manually specifying
-a solution</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_plot.html">ppp_plot()</a></code> </p>
-        </td>
-        <td><p>Plot a 'Project Prioritization Protocol' solution</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_random_solution.html">ppp_random_solution()</a></code> </p>
-        </td>
-        <td><p>Random solutions for the 'Project Prioritization Protocol' problem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ppp_simulate_data.html">ppp_simulate_data()</a></code> </p>
-        </td>
-        <td><p>Simulate conservation project data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sim_data.html">sim_project_data</a></code> <code><a href="sim_data.html">sim_project_data</a></code> <code><a href="sim_data.html">sim_tree</a></code> </p>
-        </td>
-        <td><p>Simulated project and phylogenetic data</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>ppp_objective_value</span>(<span class='no'>x</span>, <span class='no'>tree</span>, <span class='no'>project_column_name</span>, <span class='no'>success_column_name</span>,
+  <span class='no'>solution</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p><code><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></code> or <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code>
+table containing project data. Here, each row should correspond to
+a different project and columns should contain that correspond to
+each project. See the Details section below for more information.</p></td>
+    </tr>
+    <tr>
+      <th>tree</th>
+      <td><p><code><a href='http://www.rdocumentation.org/packages/ape/topics/read.tree'>phylo</a></code> phylogenetic tree describing the
+evolutionary history of the species affected by the conservation
+projects that could potentially be funded. Note that every single
+species that is affected by the various conservation projects should
+be represented in this tree.</p></td>
+    </tr>
+    <tr>
+      <th>project_column_name</th>
+      <td><p><code>character</code> name of column that contains
+the name for each conservation project. Note that the project names
+must not contain any duplicates or missing values.</p></td>
+    </tr>
+    <tr>
+      <th>success_column_name</th>
+      <td><p><code>character</code> name of column that
+denotes the probability that each project will succeed if it is funded.
+This column must have <code>numeric</code> values which lay between zero and one.
+No missing values are permitted.</p></td>
+    </tr>
+    <tr>
+      <th>solution</th>
+      <td><p><code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code> object containing the solution
+data. Here, each row corresponds to a different solution. This object
+should contain a column for each project---with the column name matching
+the project name---and the column should contain <code>logical</code> values
+that indicate if the project is funded (<code>TRUE</code>) or not (<code>FALSE</code>).
+Although additional columns can also be included, they will be ignored.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p><code>numeric</code> vector with an objective value for each solution
+ in the argument to <code>solutions</code>.</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

@@ -74,13 +74,42 @@ The random solutions are generated using the following algorithm.
  All projects are initially selected for funding. Next,
  a project is randomly deselected for funding (removed), and this step
  is repeated until the cost of the remaining projects is within the
- budget. Projects that have zero cost are never deselected for funding, and
- are always included in the solutions.
+ budget. Note that projects that have zero cost are never deselected for
+ funding, and are always included in the solutions.
+}
+\examples{
+# load built-in data
+data(sim_project_data, sim_tree)
+
+# print simulated project data set
+print(sim_project_data)
+
+# print simulated phylogenetic tree data set
+print(sim_tree)
+
+# plot the simulated phylogeny
+plot(sim_tree, main = "simulated phylogeny")
+
+# generate 10 random solutions that meet a budget of 300
+s1 <- ppp_random_solution(sim_project_data, sim_tree, 300,
+                          "name", "cost", "success", number_solutions = 10)
+
+# print solutions
+print(s1)
+
+# plot first solution
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success", n = 1)
+
+# view histogram of their objective values
+hist(s1$objective, xlab = "solution objective")
+
+# view histogram of their costs
+hist(s1$cost, xlab = "solution cost")
 }
 \seealso{
 For other methods for generating solutions for the 'Project
   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-\code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_manual_solution}}. To
-visualize the effectiveness of a particular solution, see
-\code{\link{ppp_plot}}.
+  \code{\link{ppp_gurobi_solution}}, and \code{\link{ppp_manual_solution}}.
+  To visualize the effectiveness of a particular solution, see
+  \code{\link{ppp_plot}}.
 }

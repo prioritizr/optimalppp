@@ -31,15 +31,14 @@ each species have experienced.
 }
 \examples{
 # load data
-data(sim_phylogeny)
+data(sim_tree)
 
 # generate species by branch matrix
-m <- branch_matrix(sim_phylogeny)
+m <- branch_matrix(sim_tree)
 
 # plot data
 par(mfrow = c(1,2))
-plot(sim_phylogeny, main = "phylogeny")
-plot(raster(as.matrix(m)), main = "branch matrix", axes = FALSE,
-     box = FALSE)
+plot(sim_tree, main = "phylogeny")
+plot(m, main = "branch matrix", axes = FALSE)
 
 }

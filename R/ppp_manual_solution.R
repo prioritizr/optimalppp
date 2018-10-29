@@ -4,9 +4,8 @@ NULL
 #' Solve the 'Project Prioritization Protocol' problem by manually specifying
 #' a solution
 #'
-#' Manually specify funding schemes for conservation projects and examine
-#' their effectiveness. \strong{Since the solutions are manually specified,
-#' their optimality is unknown.}.
+#' Manually specify funding schemes for conservation projects and calculate
+#' their effectiveness.
 #'
 #' @inheritParams help
 #'
@@ -18,12 +17,52 @@ NULL
 #'   \code{\link{ppp_random_solution}}. To visualize the effectiveness of a
 #'   particular solution, see \code{\link{ppp_plot}}.
 #'
+#' @examples
+#' # load built-in data
+#' data(sim_project_data, sim_tree)
+#'
+#' # load packages to help with plotting
+#' library(ggplot2)
+#'
+#' # print simulated project data set
+#' print(sim_project_data)
+#'
+#' # print simulated phylogenetic tree data set
+#' print(sim_tree)
+#'
+#' # plot the simulated phylogeny
+#' plot(sim_tree, main = "simulated phylogeny")
+#'
+#' # create some solutions, note that the column names the same as the values
+#' # in the "name" column of the sim_project_data object
+#' solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
+#'                         S2_project = c(TRUE, FALSE, TRUE),
+#'                         S4_project = c(TRUE, FALSE, TRUE),
+#'                         S3_project = c(FALSE, FALSE, TRUE),
+#'                         S5_project = c(TRUE, FALSE, TRUE),
+#'                         baseline_project = c(TRUE, TRUE, TRUE))
+#'
+#' print(solutions)
+#'
+#' # evaluate the solutions
+#' s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
+#'                           "name", "cost", "success")
+#'
+#' # print the output
+#' print(s1)
+#'
+#' # visualize the effectiveness of the different solutions
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
+#'          n = 1) + ggtitle("solution 1")
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
+#'          n = 2) + ggtitle("solution 2")
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
+#'          n = 3) + ggtitle("solution 3")
 #' @export
 ppp_manual_solution <- function(x, tree, solution,
                                 project_column_name,
                                 cost_column_name,
-                                success_column_name,
-                                verbose = FALSE) {
+                                success_column_name) {
   # assertions
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))

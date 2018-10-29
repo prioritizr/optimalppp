@@ -91,7 +91,7 @@ Prioritize funding for conservation projects using a stingy heuristic
 algorithm (Bennett \emph{et al}. 2014; Joseph \emph{et al. 2009}).
 \strong{Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
-are optimal.}.
+are optimal (see Rodrigues & Gaston 2002; Underhill 1994).}
 }
 \details{
 Briefly, this algorithm works by starting off with all
@@ -100,22 +100,23 @@ defunding (removing) projects until the budget is met (Bennett \emph{et al}.
 2014; Joseph \emph{et al. 2009}). In a given iteration,
 each project is evaluated in terms of the amount of evolutionary
 history that is expected to be lost per unit cost when the project is not
-funded. Although this algorithm may identify funding schemes that perform
+funded, and the project associated with the lowest utility is defunded.
+Although this algorithm may identify funding schemes that perform
 better than random, it is worth noting that this algorithm is extremely
 unlikely to identify optimal solutions. These calculations can be expressed
 mathematically using the follow definitions.
 
-To calculate the relative benefit for funding a given project (\eqn{j})
+To calculate the utility for funding a given project (\eqn{j})
 among a set of projects (\eqn{J}), let the expected amount of evolutionary
 history that will persist into the future when all the projects are funded
 be expressed as \eqn{P(J)}. Also, let the expected amount of evolutionary
 history that will persist into the future when all the remaining projects
 are funded except for project \eqn{j} be expressed as \eqn{P(J - j)}.
 Furthermore, allow the cost for funding project \eqn{j} to be \eqn{C_j}.
-Given this, the benefit for funding project \eqn{j} (\eqn{B_j}) in a given
-iteration can be expressed as:
+Given this, the relative benefit (or utility) for funding project \eqn{j}
+(\eqn{U_j}) in a given iteration can be expressed as:
 
-\deqn{B_j = \big(P(J) - P(J - j)\big) / C_j}{B_j = (P(J) - P(J - j)) / C_j}
+\deqn{U_j = \frac{P(J) - P(J - j)}{C_j}}{U_j = (P(J) - P(J - j)) / C_j}
 
 To calculate the expected amount of evolutionary history that will persist
 into the future for a given set of funded projects, we will adopt a new set
@@ -124,15 +125,15 @@ funded projects (indexed by \eqn{i}). For example, \eqn{I} could denote all
 of the projects in a given iteration (\eqn{P(J)}) or all of the project in a
 given iteration except for a specific project (\eqn{P(J - j)}). Next, let
 \eqn{P_i} represent the probability of project \eqn{i} being successful if
-it is funded. Also, let $S$ represent each species (e.g. species; indexed by
-\eqn{s}). To represent the conservation outcome for funding each project,
-let $B_{is}$ denote the probability of persistence for the species \eqn{s} if
-project \eqn{i} is funded and project $i$ is used to conserve that species.
+it is funded. Also, let \eqn{S} represent each species (e.g. species;
+project, let \eqn{B_{is}} denote the probability of persistence for the
+species \eqn{s} if project \eqn{i} is funded and project \eqn{i} is used to
+conserve that species.
 
 The probability that each species will go extinct (\eqn{E_s}) when a given
 set of projects are funded (\eqn{I}) can then be  expressed as as:
 
-\deqn{E_s = 1 - \text{max}\(B_{1s}, \text{\ldots}, B_{Is}\)}{E_s = 1 - max(B_{1s}, ..., B_{Is})}
+\deqn{E_s = 1 - \text{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})}{E_s = 1 - max(P_1 B_{1s}, ..., P_I B_{Is})}
 
 To account for the phylogenetic contributions of funding a project,
 consider a phylogenetic tree that contains species \eqn{s \in S}{s in S} and
@@ -143,9 +144,67 @@ lengths \eqn{L_b} and let \eqn{T_{bs}} indicate which species
 phylogenetic branches \eqn{b \in B}{b in B} (using zeros and ones).
 
 The amount of evolutionary history that is expected to persist when a
-given set of projects are funded can be expressed as:
+given set of projects are funded can then be expressed as:
 
-\deqn{P\(I\) = \sum_{b = 0}^{B} L_b \times \\ \(1 - \prod_{s = 0}^{S} ifelse\(T_{bs} == 1, E_s, 1\)\)}{P(I) = sum_{b = 0}^{B} L_b (1 - prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
+\deqn{P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1)\big)}{P(I) = sum_{b = 0}^{B} L_b (1 - prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
+}
+\examples{
+# load built-in data
+data(sim_project_data, sim_tree)
+
+# print simulated project data set
+print(sim_project_data)
+
+# print simulated phylogenetic tree data set
+print(sim_tree)
+
+# plot the simulated phylogeny
+plot(sim_tree, main = "simulated phylogeny")
+
+# find a solution that meets a budget of 300
+s1 <- ppp_heuristic_solution(sim_project_data, sim_tree, 300,
+                             "name", "cost", "success")
+
+# print solution
+print(s1)
+
+# print the names of which projects were funded
+print(names(s1)[which(unlist(s1[1, sim_project_data$name]))])
+
+# plot solution
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+
+# find a solution that meets a budget of 300 and allocates
+# funding for the "S1_project" project. For instance, species "S1" might
+# be an iconic species that has cultural and economic importance.
+sim_project_data2 <- sim_project_data
+sim_project_data2$locked_in <- sim_project_data2$name == "S1_project"
+s2 <- ppp_heuristic_solution(sim_project_data2, sim_tree, 300,
+                             "name", "cost", "success",
+                              locked_in_column_name = "locked_in")
+
+# print solution
+print(s2)
+
+# plot solution
+ppp_plot(sim_project_data2, sim_tree, s2, "name", "cost", "success")
+
+# find a solution that meets a budget of 300 and does not allocate
+# funding for the "S2_project" project. For instance, species "S2"
+# might have very little cultural or economic importance. Broadly speaking,
+# though, it is better to "lock in" "important" species rather than
+# "lock out" unimportant species.
+sim_project_data3 <- sim_project_data
+sim_project_data3$locked_out <- sim_project_data2$name == "S2_project"
+s3 <- ppp_heuristic_solution(sim_project_data3, sim_tree, 300,
+                             "name", "cost", "success",
+                             locked_out_column_name = "locked_out")
+
+# print solution
+print(s3)
+
+# plot solution
+ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
 }
 \references{
 Bennett, J. R., Elliott, G., Mellish, B., Joseph, L. N., Tulloch, A. I.,
@@ -157,6 +216,12 @@ threatened species in New Zealand. \emph{Biological Conservation},
 Joseph, L. N., Maloney, R. F., & Possingham, H. P. (2009). Optimal
 allocation of resources among threatened species: a project prioritization
 protocol. \emph{Conservation biology}, \strong{23}, 328--338.
+
+Rodrigues, A. S., & Gaston, K. J. (2002). Optimisation in reserve selection
+procedures---why not?. \emph{Biological Conservation}, \strong{107}, 123-129.
+
+Underhill, L. G. (1994). Optimal and suboptimal reserve selection
+algorithms. \emph{Biological Conservation}, \strong{70}, 85--87.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

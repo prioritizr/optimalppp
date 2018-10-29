@@ -4,8 +4,8 @@
 \alias{ppp_plot}
 \title{Plot a 'Project Prioritization Protocol' solution}
 \usage{
-ppp_plot(x, tree, project_column_name, cost_column_name,
-  success_column_name, solution, n = 1)
+ppp_plot(x, tree, solution, project_column_name, cost_column_name,
+  success_column_name, n = 1L)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -18,6 +18,13 @@ evolutionary history of the species affected by the conservation
 projects that could potentially be funded. Note that every single
 species that is affected by the various conservation projects should
 be represented in this tree.}
+
+\item{solution}{\code{\link[tibble]{tibble}} object containing the solution
+data. Here, each row corresponds to a different solution. This object
+should contain a column for each project---with the column name matching
+the project name---and the column should contain \code{logical} values
+that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
+Although additional columns can also be included, they will be ignored.}
 
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. Note that the project names
@@ -33,13 +40,6 @@ denotes the probability that each project will succeed if it is funded.
 This column must have \code{numeric} values which lay between zero and one.
 No missing values are permitted.}
 
-\item{solution}{\code{\link[tibble]{tibble}} object containing the solution
-data. Here, each row corresponds to a different solution. This object
-should contain a column for each project---with the column name matching
-the project name---and the column should contain \code{logical} values
-that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
-Although additional columns can also be included, they will be ignored.}
-
 \item{n}{\code{integer} solution to display. This should argument
 correspond to a row number in the argument to \code{solution}. Defaults
 to \code{1} such that the solution in the first row of the argument
@@ -54,16 +54,81 @@ benefit from at least a single funded project with a non-zero cost are
 denoted with large labels.
 }
 \details{
-This function requires the \pkg{ggtree} package (). Since the
-  \pkg{ggtree} package is distributed exclusively through
-  \href{https://bioconductor.org}{Bioconductor}, please execute the
-  following commands to install it:
+This function requires the \pkg{ggtree} and \pkg{treeio} packages.
+  Since these packages are distributed exclusively through
+  \href{https://bioconductor.org}{Bioconductor}, and are not available on the
+  \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
+  please execute the following commands to install them:
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
-  If the installation process fails, please consult the \pkg{ggtree}
-  package's
-  \href{online documentation}{https://bioconductor.org/packages/release/bioc/html/ggtree.html}.
-  For more information on customizing the plot, please refer to the package's
-  vignettes.
+  If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}} packages' online documentation.
+}
+\examples{
+# load built-in data
+data(sim_project_data, sim_tree)
+
+# load packages to help with plotting
+library(ggplot2)
+
+# print simulated project data set
+print(sim_project_data)
+
+# print simulated phylogenetic tree data set
+print(sim_tree)
+
+# plot the simulated phylogeny
+plot(sim_tree, main = "simulated phylogeny")
+
+# create some solutions, note that the column names the same as the values
+# in the "name" column of the sim_project_data object
+solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
+                        S2_project = c(TRUE, FALSE, TRUE),
+                        S4_project = c(TRUE, FALSE, TRUE),
+                        S3_project = c(FALSE, FALSE, TRUE),
+                        S5_project = c(TRUE, FALSE, TRUE),
+                        baseline_project = c(TRUE, TRUE, TRUE))
+
+print(solutions)
+
+# evaluate the solutions
+s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
+                          "name", "cost", "success")
+
+# print output
+print(s1)
+
+# plot the first solution
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+
+# plot the second solution
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success", n = 2)
+
+# since this function returns a ggplot2 plot object, we can customize the
+# appearance of the plot using standard ggplot2 commands!
+# for example, we can add a title
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+ggtitle("solution")
+
+# we could also also set the minimum and maximum values in the color ramp to
+# correspond to those in the data, rather than being capped at 0 and 1
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+scale_color_gradientn(name = "Probability of\\npersistence",
+                      colors = viridisLite::inferno(150, begin = 0,
+                                                    end = 0.9,
+                                                    direction = -1)) +
+ggtitle("solution")
+
+# we could also change the color ramp
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+scale_color_gradient(name = "Probability of\\npersistence",
+                     low = "red", high = "black") +
+ggtitle("solution")
+
+# we could even hide the legend if desired
+ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+scale_color_gradient(name = "Probability of\\npersistence",
+                     low = "red", high = "black") +
+theme(legend.position = "hide") +
+ggtitle("solution")
 }
 \references{
 Yu, G., Smith, D. K., Zhu, H., Guan, Y., & Lam, T. T. Y. (2017). ggtree: An

@@ -17,16 +17,13 @@ NULL
 #'   to \code{1} such that the solution in the first row of the argument
 #'   to \code{solution} is plotted.
 #'
-#' @details This function requires the \pkg{ggtree} package (). Since the
-#'   \pkg{ggtree} package is distributed exclusively through
-#'   \href{https://bioconductor.org}{Bioconductor}, please execute the
-#'   following commands to install it:
+#' @details This function requires the \pkg{ggtree} and \pkg{treeio} packages.
+#'   Since these packages are distributed exclusively through
+#'   \href{https://bioconductor.org}{Bioconductor}, and are not available on the
+#'   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
+#'   please execute the following commands to install them:
 #'   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
-#'   If the installation process fails, please consult the \pkg{ggtree}
-#'   package's
-#'   \href{online documentation}{https://bioconductor.org/packages/release/bioc/html/ggtree.html}.
-#'   For more information on customizing the plot, please refer to the package's
-#'   vignettes.
+#'   If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}} packages' online documentation.
 #'
 #' @seealso To generate solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
@@ -39,9 +36,76 @@ NULL
 #' covariates and other associated data. \emph{Methods in Ecology and
 #' Evolution}, \strong{8}, 28--36.
 #'
+#' @examples
+#' # load built-in data
+#' data(sim_project_data, sim_tree)
+#'
+#' # load packages to help with plotting
+#' library(ggplot2)
+#'
+#' # print simulated project data set
+#' print(sim_project_data)
+#'
+#' # print simulated phylogenetic tree data set
+#' print(sim_tree)
+#'
+#' # plot the simulated phylogeny
+#' plot(sim_tree, main = "simulated phylogeny")
+#'
+#' # create some solutions, note that the column names the same as the values
+#' # in the "name" column of the sim_project_data object
+#' solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
+#'                         S2_project = c(TRUE, FALSE, TRUE),
+#'                         S4_project = c(TRUE, FALSE, TRUE),
+#'                         S3_project = c(FALSE, FALSE, TRUE),
+#'                         S5_project = c(TRUE, FALSE, TRUE),
+#'                         baseline_project = c(TRUE, TRUE, TRUE))
+#'
+#' print(solutions)
+#'
+#' # evaluate the solutions
+#' s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
+#'                           "name", "cost", "success")
+#'
+#' # print output
+#' print(s1)
+#'
+#' # plot the first solution
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+#'
+#' # plot the second solution
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success", n = 2)
+#'
+#' # since this function returns a ggplot2 plot object, we can customize the
+#' # appearance of the plot using standard ggplot2 commands!
+#' # for example, we can add a title
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+#' ggtitle("solution")
+#'
+#' # we could also also set the minimum and maximum values in the color ramp to
+#' # correspond to those in the data, rather than being capped at 0 and 1
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+#' scale_color_gradientn(name = "Probability of\npersistence",
+#'                       colors = viridisLite::inferno(150, begin = 0,
+#'                                                     end = 0.9,
+#'                                                     direction = -1)) +
+#' ggtitle("solution")
+#'
+#' # we could also change the color ramp
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+#' scale_color_gradient(name = "Probability of\npersistence",
+#'                      low = "red", high = "black") +
+#' ggtitle("solution")
+#'
+#' # we could even hide the legend if desired
+#' ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+#' scale_color_gradient(name = "Probability of\npersistence",
+#'                      low = "red", high = "black") +
+#' theme(legend.position = "hide") +
+#' ggtitle("solution")
 #' @export
-ppp_plot <- function(x, tree, project_column_name, cost_column_name,
-                     success_column_name, solution, n = 1) {
+ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
+                     success_column_name, n = 1L) {
   # assertions
   ## assert that ggtree R package is installed
   assertthat::assert_that(requireNamespace("ggtree", quietly = TRUE),
@@ -113,7 +177,6 @@ ppp_plot <- function(x, tree, project_column_name, cost_column_name,
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
   spp_probs <- Matrix::drop0(as(round(spp_probs, 5), "dgCMatrix"))
-
   ## pre-compute probabilities that each branch will persist
   branch_probs <- rcpp_branch_probabilities(spp_probs, branch_matrix(tree),
                                             as(as.matrix(solution),
@@ -133,9 +196,11 @@ ppp_plot <- function(x, tree, project_column_name, cost_column_name,
   ## make plot
   p <- ggtree::ggtree(tree2, ggplot2::aes(color = prob), size = 1.1) +
        ggtree::geom_tiplab(ggplot2::aes(size = status), color = "black") +
-       ggplot2::scale_color_continuous(name = "Probability of\npersistence",
-                                       low = "red", high = "darkgreen",
-                                       limits = c(0, 1)) +
+       ggplot2::scale_color_gradientn(name = "Probability of\npersistence",
+                                      colors = viridisLite::inferno(
+                                        150, begin = 0, end = 0.9,
+                                        direction = -1),
+                                      limits = c(0, 1)) +
        ggplot2::scale_size_manual(name = "Species",
                                   values = c("Funded" = 4.5,
                                              "Not funded" = 2.5)) +
