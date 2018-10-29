@@ -15,3 +15,30 @@ authors:
 template:
   params:
     bootswatch: flatly
+
+reference:
+  - title: Summary
+    desc: Summary of the package
+    contents:
+      - optimalppp
+
+  - title: Data
+    desc: Data sets distributed with the package
+    contents:
+      - sim_project_data
+      - sim_tree
+
+  - title: Solution methods
+    desc: Functions for generating solutions
+    contents:
+      - ppp_gurobi_solution
+      - ppp_heuristic_solution
+      - ppp_manual_solution
+      - ppp_random_solution
+
+  - title: Miscellaneous
+    desc: Miscellaneous functions
+    contents:
+      - branch_matrix
+      - ppp_plot
+      - ppp_simulate_data

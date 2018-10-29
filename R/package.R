@@ -9,5 +9,6 @@ NULL
 #' This package is still under construction - please check back soon.
 #'
 #' @name optimalppp
+#'
 #' @docType package
 NULL

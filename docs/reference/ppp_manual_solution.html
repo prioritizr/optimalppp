@@ -227,7 +227,7 @@ No missing values are permitted.</p></td>
 #&gt; 3 S3_project  104.   0.922 FALSE     FALSE      0      0      0.830 0     0    
 #&gt; 4 S4_project  100.   0.748 FALSE     TRUE       0      0      0     0.516 0    
 #&gt; 5 S5_project  105.   0.912 FALSE     FALSE      0      0      0     0     0.872
-#&gt; 6 baseline_…    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'>
+#&gt; 6 baseline_~    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'>
 <span class='co'># print simulated phylogenetic tree data set</span>
 <span class='fu'>print</span>(<span class='no'>sim_tree</span>)</div><div class='output co'>#&gt; 
 #&gt; Phylogenetic tree with 5 tips and 4 internal nodes.
@@ -266,7 +266,7 @@ No missing values are permitted.</p></td>
 #&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># visualize the effectiveness of the different solutions</span>
 <span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
-         <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='output co'>#&gt; <span class='message'>Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</span></div><div class='output co'>#&gt; <span class='message'>Also defined by ‘treeio’</span></div><div class='img'><img src='ppp_manual_solution-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
+         <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_solution-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
          <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 2"</span>)</div><div class='img'><img src='ppp_manual_solution-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
          <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 3"</span>)</div><div class='img'><img src='ppp_manual_solution-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
