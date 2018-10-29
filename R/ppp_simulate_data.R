@@ -178,9 +178,9 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   project_data <- data.frame(
     name = c(paste0("S", seq_len(number_species), "_project"),
                     "baseline_project"),
-    cost = c(rnorm(number_species, cost_mean, cost_sd), 0),
-    success = c(runif(number_species, success_min_probability,
-                      success_max_probability), 1),
+    cost = c(stats::rnorm(number_species, cost_mean, cost_sd), 0),
+    success = c(stats::runif(number_species, success_min_probability,
+                             success_max_probability), 1),
     stringsAsFactors = FALSE)
   assertthat::assert_that(all(project_data$cost >= 0),
   msg = paste("some projects have subzero costs, increase the argument to",
@@ -210,12 +210,12 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
   spp_prob_matrix <- matrix(0, ncol = number_species,
                             nrow = number_species + 1,
                             dimnames = list(NULL, sort(tree$tip.label)))
-   diag(spp_prob_matrix) <- runif(number_species,
-                                 funded_min_persistence_probability,
-                                 funded_max_persistence_probability)
+   diag(spp_prob_matrix) <- stats::runif(number_species,
+                                         funded_min_persistence_probability,
+                                         funded_max_persistence_probability)
   spp_prob_matrix[nrow(spp_prob_matrix), ] <-
-    runif(number_species, not_funded_min_persistence_probability,
-          not_funded_max_persistence_probability)
+    stats::runif(number_species, not_funded_min_persistence_probability,
+                 not_funded_max_persistence_probability)
   project_data <- cbind(project_data, as.data.frame(spp_prob_matrix))
 
   ## return result

@@ -30,6 +30,9 @@ it creates a matrix that shows which periods of evolutionary history
 each species have experienced.
 }
 \examples{
+# load Matrix package to plot matrices
+library(Matrix)
+
 # load data
 data(sim_tree)
 
@@ -39,6 +42,6 @@ m <- branch_matrix(sim_tree)
 # plot data
 par(mfrow = c(1,2))
 plot(sim_tree, main = "phylogeny")
-plot(m, main = "branch matrix", axes = FALSE)
+image(m, main = "branch matrix")
 
 }

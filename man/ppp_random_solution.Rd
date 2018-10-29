@@ -105,6 +105,7 @@ hist(s1$objective, xlab = "solution objective")
 
 # view histogram of their costs
 hist(s1$cost, xlab = "solution cost")
+
 }
 \seealso{
 For other methods for generating solutions for the 'Project

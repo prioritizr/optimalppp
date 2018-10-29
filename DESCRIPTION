@@ -17,6 +17,7 @@ Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
 Imports:
     utils,
     methods,
+    stats,
     Matrix,
     assertthat(>= 0.2.0),
     tibble(>= 1.4.2),

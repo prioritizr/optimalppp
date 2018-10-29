@@ -42,7 +42,7 @@ NULL
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems.
 #'
 #' @seealso For other methods for solving the 'Project Prioritization Protocol'
-#'   problem, see \code{\link[optimppp]{ppp_heuristic_solution}},
+#'   problem, see \code{\link{ppp_heuristic_solution}},
 #'   \code{\link{ppp_manual_solution}}, and \code{\link{ppp_random_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
 #'   \code{\link{ppp_plot}}.
@@ -219,7 +219,7 @@ ppp_gurobi_solution <- function(x, tree, budget,
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
-  spp_probs <- Matrix::drop0(as(round(spp_probs, 5), "dgCMatrix"))
+  spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
 
   # formulate the problem
   f <- rcpp_mip_formulation(spp = spp_probs,
@@ -266,20 +266,19 @@ ppp_gurobi_solution <- function(x, tree, budget,
                   "solutions exist."))
 
   ## format statistics for output
-  out <- tibble::as_tibble(cbind(
-    tibble::tibble(
-      solution = seq_along(s$pool),
-      objective = ppp_objective_value(x, tree, project_column_name,
-                                      success_column_name, out),
-      cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
-                            ncol = ncol(out), nrow = nrow(out)) *
-                     as.matrix(out)),
-      optimal = if (s$status == "OPTIMAL") {
-                  (abs(objective[1] - objective) < 1.0e-5)
-                } else {
-                  NA
-                },
-      method = "gurobi"), out))
+  out2 <- tibble::tibble(solution = seq_along(s$pool))
+  out2$objective <- ppp_objective_value(x, tree, project_column_name,
+                                       success_column_name, out)
+  out2$cost <- rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
+                              ncol = ncol(out), nrow = nrow(out)) *
+                       as.matrix(out))
+  if (s$status == "OPTIMAL") {
+    out2$optimal <- (abs(out2$objective[1] - out2$objective) < 1.0e-5)
+  } else {
+    out2$optimal <- NA
+  }
+  out2$method <- "gurobi"
+  out <- tibble::as_tibble(cbind(out2, out))
 
   # return result
   out

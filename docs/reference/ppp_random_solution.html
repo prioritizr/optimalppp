@@ -121,7 +121,7 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decision in order to evaluate their effectiveness.
 <strong>When informing conservation actions, it is strongly recommended to
- use the <code>ppp_gurobi_solution</code> method because it can identify
+ use the <code><a href='ppp_gurobi_solution.html'>ppp_gurobi_solution</a></code> method because it can identify
  optimal funding schemes with a guarantee.</strong></p>
     
     </div>
@@ -216,10 +216,10 @@ are permitted. Defaults to <code>1</code>.</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For other methods for generating solutions for the 'Project
-  Prioritization Protocol' problem, see <code>ppp_heuristic_solution</code>
-  <code>ppp_gurobi_solution</code>, and <code>ppp_manual_solution</code>.
+  Prioritization Protocol' problem, see <code><a href='ppp_heuristic_solution.html'>ppp_heuristic_solution</a></code>
+  <code><a href='ppp_gurobi_solution.html'>ppp_gurobi_solution</a></code>, and <code><a href='ppp_manual_solution.html'>ppp_manual_solution</a></code>.
   To visualize the effectiveness of a particular solution, see
-  <code>ppp_plot</code>.</p></div>
+  <code><a href='ppp_plot.html'>ppp_plot</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -267,7 +267,7 @@ are permitted. Defaults to <code>1</code>.</p></td>
 #&gt; # ... with 3 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
 #&gt; #   baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot first solution</span>
-<span class='fu'>ppp_plot</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their objective values</span>
 <span class='fu'>hist</span>(<span class='no'>s1</span>$<span class='no'>objective</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution objective"</span>)</div><div class='img'><img src='ppp_random_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their costs</span>

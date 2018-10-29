@@ -176,10 +176,10 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
-  spp_probs <- Matrix::drop0(as(round(spp_probs, 5), "dgCMatrix"))
+  spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
   ## pre-compute probabilities that each branch will persist
   branch_probs <- rcpp_branch_probabilities(spp_probs, branch_matrix(tree),
-                                            as(as.matrix(solution),
+                                            methods::as(as.matrix(solution),
                                                "dgCMatrix"))
 
   # Main processing
@@ -194,8 +194,9 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
   tree2 <- tidytree::as.treedata(tree2)
 
   ## make plot
-  p <- ggtree::ggtree(tree2, ggplot2::aes(color = prob), size = 1.1) +
-       ggtree::geom_tiplab(ggplot2::aes(size = status), color = "black") +
+  p <- ggtree::ggtree(tree2, ggplot2::aes_string(color = "prob"), size = 1.1) +
+       ggtree::geom_tiplab(ggplot2::aes_string(size = "status"),
+                           color = "black") +
        ggplot2::scale_color_gradientn(name = "Probability of\npersistence",
                                       colors = viridisLite::inferno(
                                         150, begin = 0, end = 0.9,

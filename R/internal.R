@@ -51,9 +51,9 @@ ppp_objective_value <- function(x, tree, project_column_name,
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
-  spp_probs <- Matrix::drop0(as(round(spp_probs, 5), "dgCMatrix"))
+  spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
 
   # Exports
   rcpp_ppp_objective(spp_probs, branch_matrix(tree), tree$edge.length,
-                     as(as.matrix(solution[, x$name]), "dgCMatrix"))
+                     methods::as(as.matrix(solution[, x$name]), "dgCMatrix"))
 }

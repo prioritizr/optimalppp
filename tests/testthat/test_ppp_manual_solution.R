@@ -56,7 +56,7 @@ test_that("multiple solutions", {
   expect_equal(nrow(s), 2)
   expect_equal(ncol(s), 9)
   ## solution columns
-  expect_equal(s[, c("a", "b", "c", "d")], m)
+  expect_equal(as.data.frame(s[, c("a", "b", "c", "d")]), m)
   ## statistics columns
   expect_equal(s$solution, seq_len(2))
   expect_equal(s$cost, c(0.15, 0))

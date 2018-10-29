@@ -22,6 +22,9 @@ NULL
 #' @rdname branch_matrix
 #'
 #' @examples
+#' # load Matrix package to plot matrices
+#' library(Matrix)
+#'
 #' # load data
 #' data(sim_tree)
 #'
@@ -31,7 +34,7 @@ NULL
 #' # plot data
 #' par(mfrow = c(1,2))
 #' plot(sim_tree, main = "phylogeny")
-#' plot(m, main = "branch matrix", axes = FALSE)
+#' image(m, main = "branch matrix")
 #'
 #' @export
 branch_matrix <- function(x) UseMethod("branch_matrix")
