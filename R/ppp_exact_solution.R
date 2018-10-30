@@ -281,7 +281,7 @@ ppp_exact_solution <- function(x, tree, budget,
   } else {
     out2$optimal <- NA
   }
-  out2$method <- "gurobi"
+  out2$method <- "exact"
   out <- tibble::as_tibble(cbind(out2, out))
 
   # return result
