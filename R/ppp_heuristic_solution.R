@@ -110,7 +110,7 @@ NULL
 #'
 #' # plot the simulated phylogeny
 #' plot(sim_tree, main = "simulated phylogeny")
-#'
+#' \dontest{
 #' # find a solution that meets a budget of 300
 #' s1 <- ppp_heuristic_solution(sim_project_data, sim_tree, 300,
 #'                              "name", "cost", "success")
@@ -172,6 +172,7 @@ NULL
 #' plot(objective ~ cost, data = s4,
 #'      main = "Heuristic solutions", xlab = "Cost ($)",
 #'      ylab = "Expected phylogenetic diversity")
+#' }
 #' @export
 ppp_heuristic_solution <- function(x, tree, budget,
                                    project_column_name,
