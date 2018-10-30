@@ -64,6 +64,9 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
   If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}} packages' online documentation.
 }
 \examples{
+# set seed for reproducibility
+set.seed(500)
+
 # load built-in data
 data(sim_project_data, sim_tree)
 
@@ -79,8 +82,7 @@ print(sim_tree)
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
 
-# create some solutions, note that the column names the same as the values
-# in the "name" column of the sim_project_data object
+
 solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
                         S2_project = c(TRUE, FALSE, TRUE),
                         S4_project = c(TRUE, FALSE, TRUE),
@@ -90,9 +92,9 @@ solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
 
 print(solutions)
 
-# evaluate the solutions
-s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
-                          "name", "cost", "success")
+# create random some solutions with a budget of 700
+s1 <- ppp_random_solution(sim_project_data, sim_tree, 700,
+                          "name", "cost", "success", number_solutions = 10)
 
 # print output
 print(s1)

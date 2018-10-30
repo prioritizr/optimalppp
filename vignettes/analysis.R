@@ -1,6 +1,6 @@
 # Initialization
 ## set parameters
-number_species <- 50
+number_species <- 100
 cost_mean <- 100
 cost_sd <- 5
 success_min_probability <- 0.7
@@ -9,7 +9,7 @@ funded_min_persistence_probability <- 0.5
 funded_max_persistence_probability <- 0.9
 not_funded_min_persistence_probability <- 0.01
 not_funded_max_persistence_probability <- 0.4
-budget_increments  <- 1000
+budget_increments  <- 500
 number_random_solutions_per_budget_increment <- 100
 
 ## load packages
@@ -66,10 +66,14 @@ random_data <-
   random_raw_data %>%
   dplyr::group_by(budget) %>%
   dplyr::summarize(
-   lower = suppressWarning(gmodels::ci(budget)[[2]]),
-   upper = suppressWarning(gmodels::ci(budget)[[3]]),
-   median = median(budget)) %>%
-  dplyr::ungroup()
+   lower = suppressWarnings(gmodels::ci(objective)[[2]]),
+   upper = suppressWarnings(gmodels::ci(objective)[[3]]),
+   objective = median(objective)) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(method = "random")
 
-## save results
-save.image("results.rda", compress = "xz")
+## create complete data set
+sim_data <- rbind(dplyr::select(heuristic_data, budget, method,
+                                objective),
+                  dplyr::select(exact_data, budget, method, objective),
+                  dplyr::select(random_data, budget, method, objective))

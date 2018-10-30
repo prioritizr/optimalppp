@@ -149,26 +149,26 @@ s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_heurist
 <span class="co"># print output</span>
 <span class="kw">print</span>(s1)</code></pre></div>
 <pre><code>## # A tibble: 1 x 57
-##   solution objective budget  cost optimal method S1_project S2_project
-##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-## 1        1      6.63    500  409. NA      heuri… FALSE      FALSE     
-## # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-## #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;,
-## #   S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
-## #   S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
-## #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
-## #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;,
-## #   S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;,
-## #   S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
-## #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
-## #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;,
-## #   S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;,
-## #   S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
-## #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
-## #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;,
-## #   S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;,
-## #   S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
-## #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</code></pre>
+##   objective budget  cost optimal method S1_project S2_project S3_project
+##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+## 1      6.63    500  409. NA      heuri… FALSE      FALSE      FALSE     
+## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
+## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
+## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
+## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
+## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
+## #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;,
+## #   S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;,
+## #   S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
+## #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
+## #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;,
+## #   S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;,
+## #   S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
+## #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
+## #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;,
+## #   S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;,
+## #   baseline_project &lt;lgl&gt;, solution &lt;int&gt;</code></pre>
 <p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, <code>"S4_project"</code>, <code>"S5_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
 <p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.629 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
@@ -191,26 +191,26 @@ s2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_heurist
 <span class="co"># print output</span>
 <span class="kw">print</span>(s2)</code></pre></div>
 <pre><code>## # A tibble: 1 x 57
-##   solution objective budget  cost optimal method S1_project S2_project
-##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-## 1        1      6.57    500  403. NA      heuri… TRUE       FALSE     
-## # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-## #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;,
-## #   S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
-## #   S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
-## #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
-## #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;,
-## #   S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;,
-## #   S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
-## #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
-## #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;,
-## #   S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;,
-## #   S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
-## #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
-## #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;,
-## #   S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;,
-## #   S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
-## #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</code></pre>
+##   objective budget  cost optimal method S1_project S2_project S3_project
+##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+## 1      6.57    500  403. NA      heuri… TRUE       FALSE      FALSE     
+## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
+## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
+## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
+## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
+## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
+## #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;,
+## #   S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;,
+## #   S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
+## #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
+## #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;,
+## #   S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;,
+## #   S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
+## #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
+## #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;,
+## #   S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;,
+## #   baseline_project &lt;lgl&gt;, solution &lt;int&gt;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s2, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>) <span class="op">+</span>
@@ -279,7 +279,7 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_s
 <pre><code>## # A tibble: 1 x 57
 ##   solution objective budget  cost optimal method S1_project S2_project
 ##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-## 1        1      6.63    500  492. TRUE    gurobi TRUE       FALSE     
+## 1        1      6.63    500  492. TRUE    exact  TRUE       FALSE     
 ## # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
 ## #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;,
 ## #   S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,

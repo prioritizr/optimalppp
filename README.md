@@ -100,26 +100,26 @@ print(s1)
 ```
 
     ## # A tibble: 1 x 57
-    ##   solution objective budget  cost optimal method S1_project S2_project
-    ##      <int>     <dbl>  <dbl> <dbl> <lgl>   <chr>  <lgl>      <lgl>     
+    ##   objective budget  cost optimal method S1_project S2_project S3_project
+    ##       <dbl>  <dbl> <dbl> <lgl>   <chr>  <lgl>      <lgl>      <lgl>     
     NA
-    ## # ... with 49 more variables: S3_project <lgl>, S4_project <lgl>,
-    ## #   S5_project <lgl>, S6_project <lgl>, S7_project <lgl>,
-    ## #   S8_project <lgl>, S9_project <lgl>, S10_project <lgl>,
-    ## #   S11_project <lgl>, S12_project <lgl>, S13_project <lgl>,
-    ## #   S14_project <lgl>, S15_project <lgl>, S16_project <lgl>,
-    ## #   S17_project <lgl>, S18_project <lgl>, S19_project <lgl>,
-    ## #   S20_project <lgl>, S21_project <lgl>, S22_project <lgl>,
-    ## #   S23_project <lgl>, S24_project <lgl>, S25_project <lgl>,
-    ## #   S26_project <lgl>, S27_project <lgl>, S28_project <lgl>,
-    ## #   S29_project <lgl>, S30_project <lgl>, S31_project <lgl>,
-    ## #   S32_project <lgl>, S33_project <lgl>, S34_project <lgl>,
-    ## #   S35_project <lgl>, S36_project <lgl>, S37_project <lgl>,
-    ## #   S38_project <lgl>, S39_project <lgl>, S40_project <lgl>,
-    ## #   S41_project <lgl>, S42_project <lgl>, S43_project <lgl>,
-    ## #   S44_project <lgl>, S45_project <lgl>, S46_project <lgl>,
-    ## #   S47_project <lgl>, S48_project <lgl>, S49_project <lgl>,
-    ## #   S50_project <lgl>, baseline_project <lgl>
+    ## # ... with 49 more variables: S4_project <lgl>, S5_project <lgl>,
+    ## #   S6_project <lgl>, S7_project <lgl>, S8_project <lgl>,
+    ## #   S9_project <lgl>, S10_project <lgl>, S11_project <lgl>,
+    ## #   S12_project <lgl>, S13_project <lgl>, S14_project <lgl>,
+    ## #   S15_project <lgl>, S16_project <lgl>, S17_project <lgl>,
+    ## #   S18_project <lgl>, S19_project <lgl>, S20_project <lgl>,
+    ## #   S21_project <lgl>, S22_project <lgl>, S23_project <lgl>,
+    ## #   S24_project <lgl>, S25_project <lgl>, S26_project <lgl>,
+    ## #   S27_project <lgl>, S28_project <lgl>, S29_project <lgl>,
+    ## #   S30_project <lgl>, S31_project <lgl>, S32_project <lgl>,
+    ## #   S33_project <lgl>, S34_project <lgl>, S35_project <lgl>,
+    ## #   S36_project <lgl>, S37_project <lgl>, S38_project <lgl>,
+    ## #   S39_project <lgl>, S40_project <lgl>, S41_project <lgl>,
+    ## #   S42_project <lgl>, S43_project <lgl>, S44_project <lgl>,
+    ## #   S45_project <lgl>, S46_project <lgl>, S47_project <lgl>,
+    ## #   S48_project <lgl>, S49_project <lgl>, S50_project <lgl>,
+    ## #   baseline_project <lgl>, solution <int>
 
 The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, `"S4_project"`, `"S5_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
 
@@ -155,26 +155,26 @@ print(s2)
 ```
 
     ## # A tibble: 1 x 57
-    ##   solution objective budget  cost optimal method S1_project S2_project
-    ##      <int>     <dbl>  <dbl> <dbl> <lgl>   <chr>  <lgl>      <lgl>     
+    ##   objective budget  cost optimal method S1_project S2_project S3_project
+    ##       <dbl>  <dbl> <dbl> <lgl>   <chr>  <lgl>      <lgl>      <lgl>     
     NA
-    ## # ... with 49 more variables: S3_project <lgl>, S4_project <lgl>,
-    ## #   S5_project <lgl>, S6_project <lgl>, S7_project <lgl>,
-    ## #   S8_project <lgl>, S9_project <lgl>, S10_project <lgl>,
-    ## #   S11_project <lgl>, S12_project <lgl>, S13_project <lgl>,
-    ## #   S14_project <lgl>, S15_project <lgl>, S16_project <lgl>,
-    ## #   S17_project <lgl>, S18_project <lgl>, S19_project <lgl>,
-    ## #   S20_project <lgl>, S21_project <lgl>, S22_project <lgl>,
-    ## #   S23_project <lgl>, S24_project <lgl>, S25_project <lgl>,
-    ## #   S26_project <lgl>, S27_project <lgl>, S28_project <lgl>,
-    ## #   S29_project <lgl>, S30_project <lgl>, S31_project <lgl>,
-    ## #   S32_project <lgl>, S33_project <lgl>, S34_project <lgl>,
-    ## #   S35_project <lgl>, S36_project <lgl>, S37_project <lgl>,
-    ## #   S38_project <lgl>, S39_project <lgl>, S40_project <lgl>,
-    ## #   S41_project <lgl>, S42_project <lgl>, S43_project <lgl>,
-    ## #   S44_project <lgl>, S45_project <lgl>, S46_project <lgl>,
-    ## #   S47_project <lgl>, S48_project <lgl>, S49_project <lgl>,
-    ## #   S50_project <lgl>, baseline_project <lgl>
+    ## # ... with 49 more variables: S4_project <lgl>, S5_project <lgl>,
+    ## #   S6_project <lgl>, S7_project <lgl>, S8_project <lgl>,
+    ## #   S9_project <lgl>, S10_project <lgl>, S11_project <lgl>,
+    ## #   S12_project <lgl>, S13_project <lgl>, S14_project <lgl>,
+    ## #   S15_project <lgl>, S16_project <lgl>, S17_project <lgl>,
+    ## #   S18_project <lgl>, S19_project <lgl>, S20_project <lgl>,
+    ## #   S21_project <lgl>, S22_project <lgl>, S23_project <lgl>,
+    ## #   S24_project <lgl>, S25_project <lgl>, S26_project <lgl>,
+    ## #   S27_project <lgl>, S28_project <lgl>, S29_project <lgl>,
+    ## #   S30_project <lgl>, S31_project <lgl>, S32_project <lgl>,
+    ## #   S33_project <lgl>, S34_project <lgl>, S35_project <lgl>,
+    ## #   S36_project <lgl>, S37_project <lgl>, S38_project <lgl>,
+    ## #   S39_project <lgl>, S40_project <lgl>, S41_project <lgl>,
+    ## #   S42_project <lgl>, S43_project <lgl>, S44_project <lgl>,
+    ## #   S45_project <lgl>, S46_project <lgl>, S47_project <lgl>,
+    ## #   S48_project <lgl>, S49_project <lgl>, S50_project <lgl>,
+    ## #   baseline_project <lgl>, solution <int>
 
 ``` r
 # visualize solution
@@ -266,7 +266,7 @@ print(s4)
     ## # A tibble: 1 x 57
     ##   solution objective budget  cost optimal method S1_project S2_project
     ##      <int>     <dbl>  <dbl> <dbl> <lgl>   <chr>  <lgl>      <lgl>     
-    ## 1        1      6.63    500  492. TRUE    gurobi TRUE       FALSE     
+    ## 1        1      6.63    500  492. TRUE    exact  TRUE       FALSE     
     ## # ... with 49 more variables: S3_project <lgl>, S4_project <lgl>,
     ## #   S5_project <lgl>, S6_project <lgl>, S7_project <lgl>,
     ## #   S8_project <lgl>, S9_project <lgl>, S10_project <lgl>,
@@ -298,6 +298,8 @@ Now that we have the optimal solution (objective value = 6.633 million years of 
 
 Citation
 --------
+
+**This repository is still under active development. It is not yet ready for use.**
 
 Please use the following citation to cite the *optimalppp R* package in publications:
 

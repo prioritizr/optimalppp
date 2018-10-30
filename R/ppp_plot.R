@@ -38,6 +38,9 @@ NULL
 #' Evolution}, \strong{8}: 28--36.
 #'
 #' @examples
+#' # set seed for reproducibility
+#' set.seed(500)
+#'
 #' # load built-in data
 #' data(sim_project_data, sim_tree)
 #'
@@ -53,8 +56,7 @@ NULL
 #' # plot the simulated phylogeny
 #' plot(sim_tree, main = "simulated phylogeny")
 #'
-#' # create some solutions, note that the column names the same as the values
-#' # in the "name" column of the sim_project_data object
+#'
 #' solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
 #'                         S2_project = c(TRUE, FALSE, TRUE),
 #'                         S4_project = c(TRUE, FALSE, TRUE),
@@ -64,9 +66,9 @@ NULL
 #'
 #' print(solutions)
 #'
-#' # evaluate the solutions
-#' s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
-#'                           "name", "cost", "success")
+#' # create random some solutions with a budget of 700
+#' s1 <- ppp_random_solution(sim_project_data, sim_tree, 700,
+#'                           "name", "cost", "success", number_solutions = 10)
 #'
 #' # print output
 #' print(s1)
@@ -201,9 +203,10 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
 
   ## make plot
   p <- ggtree::ggtree(tree2, ggplot2::aes_string(color = "prob"), size = 1.1) +
-       ggtree::geom_tippoint(ggplot2::aes(subset = status == "Funded",
-                                          x = x + point_padding),
-                             color = "black", pch = 8) +
+       ggtree::geom_tippoint(
+         ggplot2::aes_string(subset = "status == \"Funded\"",
+                             x = "x + point_padding"),
+         color = "black", pch = 8) +
        ggtree::geom_tiplab(color = "black", size = 2.5) +
        ggplot2::scale_color_gradientn(name = "Probability of\npersistence",
                                       colors = viridisLite::inferno(

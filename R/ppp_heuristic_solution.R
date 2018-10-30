@@ -155,13 +155,31 @@ NULL
 #'
 #' # plot solution
 #' ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
+#'
+#' # find all solutions from the heuristic algorithm
+#' # note we can set the budget higher than the total cost of all the
+#' # projects, and the number of solutions to the total number of
+#' # projects to achieve this
+#' s4 <- ppp_heuristic_solution(sim_project_data, sim_tree,
+#'                              sum(sim_project_data$cost) * 1.1,
+#'                              "name", "cost", "success",
+#'                               number_solutions = nrow(sim_project_data))
+#'
+#' # print solutions
+#' print(s4)
+#'
+#' # plot solution cost against objective
+#' plot(objective ~ cost, data = s4,
+#'      main = "Heuristic solutions", xlab = "Cost ($)",
+#'      ylab = "Expected phylogenetic diversity")
 #' @export
 ppp_heuristic_solution <- function(x, tree, budget,
                                    project_column_name,
                                    cost_column_name,
                                    success_column_name,
                                    locked_in_column_name = NULL,
-                                   locked_out_column_name = NULL) {
+                                   locked_out_column_name = NULL,
+                                   number_solutions = 1L) {
   # assertions
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))
@@ -185,7 +203,9 @@ ppp_heuristic_solution <- function(x, tree, budget,
                           assertthat::is.string(success_column_name),
                           assertthat::has_name(x, success_column_name),
                           is.numeric(x[[success_column_name]]),
-                          assertthat::noNA(x[[success_column_name]]))
+                          assertthat::noNA(x[[success_column_name]]),
+                          assertthat::is.count(number_solutions),
+                          assertthat::noNA(number_solutions))
   assertthat::assert_that(min(x[[cost_column_name]]) >= 0,
                           msg = "zero cost baseline project missing.")
   if (!is.null(locked_in_column_name))
@@ -250,7 +270,6 @@ ppp_heuristic_solution <- function(x, tree, budget,
                                costs = x[[cost_column_name]],
                                locked_in = locked_in,
                                locked_out = locked_out)
-
   # prepare results for output
   colnames(s) <- as.character(x[[project_column_name]])
   out <- tibble::as_tibble(s)
@@ -258,7 +277,6 @@ ppp_heuristic_solution <- function(x, tree, budget,
   ## format statistics for output
   out <- tibble::as_tibble(cbind(
     tibble::tibble(
-      solution = seq_len(nrow(out)),
       objective = ppp_objective_value(x, tree, project_column_name,
                                       success_column_name, out),
       budget = budget,
@@ -267,6 +285,24 @@ ppp_heuristic_solution <- function(x, tree, budget,
                      as.matrix(out)),
       optimal = NA,
       method = "heuristic"), out))
+
+  ## subset solutions with budget
+  out <- out[out$cost <= budget, , drop = FALSE]
+
+  ## sort by best objective
+  out <- out[order(out$objective, decreasing = TRUE), , drop = FALSE]
+
+  ## return n best solutions
+  out <- out[seq_len(min(nrow(out), number_solutions)), , drop = FALSE]
+
+  ## add solution column
+  out$solution <- seq_len(nrow(out))
+
+  ## throw warning if the number of output solutions is not equal to the number
+  ## of the requested solution
+  if (nrow(out) != number_solutions)
+    warning(paste("although", number_solutions, "requested, only", nrow(out),
+                  "solutions exist."))
 
   # return result
   out

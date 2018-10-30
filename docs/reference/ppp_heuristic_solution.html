@@ -127,7 +127,7 @@ are optimal (Underhill 1994; Rodrigues &amp; Gaston 2002).</strong></p>
 
     <pre class="usage"><span class='fu'>ppp_heuristic_solution</span>(<span class='no'>x</span>, <span class='no'>tree</span>, <span class='no'>budget</span>, <span class='no'>project_column_name</span>,
   <span class='no'>cost_column_name</span>, <span class='no'>success_column_name</span>, <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>1L</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,6 +193,13 @@ should contain <code>logical</code> values, and projects associated with
 <code>TRUE</code> values are locked out of the solution. No missing values are
 permitted. Defaults to <code>NULL</code> such that no projects are locked out of
 the solution.</p></td>
+    </tr>
+    <tr>
+      <th>number_solutions</th>
+      <td><p><code>numeric</code> number of solutions to return. If
+the argument is greater than <code>1</code>, then the output will contain the
+set number of solutions that are closest to optimality. No missing values
+are permitted. Defaults to <code>1</code>.</p></td>
     </tr>
     </table>
     
@@ -349,24 +356,24 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 57
-#&gt;   solution objective budget  cost optimal method S1_project S2_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      6.42    300  206. NA      heuri~ FALSE      FALSE     
-#&gt; # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-#&gt; #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
-#&gt; #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
-#&gt; #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
-#&gt; #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
-#&gt; #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;,
-#&gt; #   S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
-#&gt; #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
-#&gt; #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;,
-#&gt; #   S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
-#&gt; #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
-#&gt; #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;,
-#&gt; #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
+#&gt;   objective budget  cost optimal method S1_project S2_project S3_project
+#&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1      6.42    300  206. NA      heuri~ FALSE      FALSE      FALSE     
+#&gt; # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+#&gt; #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;,
+#&gt; #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
+#&gt; #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
+#&gt; #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;,
+#&gt; #   S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
+#&gt; #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
+#&gt; #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;,
+#&gt; #   S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
+#&gt; #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
+#&gt; #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;,
+#&gt; #   S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
+#&gt; #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;, solution &lt;int&gt;</div><div class='input'>
 <span class='co'># print the names of which projects were funded</span>
-<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "S6_project"  "S24_project" "S45_project"</div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>names</span>(<span class='no'>s1</span>)[<span class='fu'>which</span>(<span class='fu'>unlist</span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_project_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "S7_project"  "S25_project" "S46_project"</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
@@ -380,22 +387,22 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 57
-#&gt;   solution objective budget  cost optimal method S1_project S2_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      6.30    300  202. NA      heuri~ TRUE       FALSE     
-#&gt; # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-#&gt; #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
-#&gt; #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
-#&gt; #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
-#&gt; #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
-#&gt; #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;,
-#&gt; #   S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
-#&gt; #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
-#&gt; #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;,
-#&gt; #   S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
-#&gt; #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
-#&gt; #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;,
-#&gt; #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
+#&gt;   objective budget  cost optimal method S1_project S2_project S3_project
+#&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1      6.30    300  202. NA      heuri~ TRUE       FALSE      FALSE     
+#&gt; # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+#&gt; #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;,
+#&gt; #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
+#&gt; #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
+#&gt; #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;,
+#&gt; #   S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
+#&gt; #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
+#&gt; #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;,
+#&gt; #   S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
+#&gt; #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
+#&gt; #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;,
+#&gt; #   S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
+#&gt; #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;, solution &lt;int&gt;</div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
@@ -411,10 +418,48 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 
 <span class='co'># print solution</span>
 <span class='fu'>print</span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 57
-#&gt;   solution objective budget  cost optimal method S1_project S2_project
-#&gt;      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt; 1        1      6.42    300  206. NA      heuri~ FALSE      FALSE     
-#&gt; # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt;   objective budget  cost optimal method S1_project S2_project S3_project
+#&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt; 1      6.42    300  206. NA      heuri~ FALSE      FALSE      FALSE     
+#&gt; # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+#&gt; #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;,
+#&gt; #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
+#&gt; #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
+#&gt; #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;,
+#&gt; #   S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
+#&gt; #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
+#&gt; #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;,
+#&gt; #   S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
+#&gt; #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
+#&gt; #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;,
+#&gt; #   S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
+#&gt; #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;, solution &lt;int&gt;</div><div class='input'>
+<span class='co'># plot solution</span>
+<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># find all solutions from the heuristic algorithm</span>
+<span class='co'># note we can set the budget higher than the total cost of all the</span>
+<span class='co'># projects, and the number of solutions to the total number of</span>
+<span class='co'># projects to achieve this</span>
+<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_heuristic_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>,
+                             <span class='fu'>sum</span>(<span class='no'>sim_project_data</span>$<span class='no'>cost</span>) * <span class='fl'>1.1</span>,
+                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>,
+                              <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>sim_project_data</span>))
+
+<span class='co'># print solutions</span>
+<span class='fu'>print</span>(<span class='no'>s4</span>)</div><div class='output co'>#&gt; # A tibble: 51 x 57
+#&gt;    objective budget  cost optimal method S1_project S2_project S3_project
+#&gt;        &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
+#&gt;  1      7.73  5512. 5011. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  2      7.73  5512. 4914. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  3      7.73  5512. 4811. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  4      7.72  5512. 4720. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  5      7.72  5512. 4613. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  6      7.71  5512. 4518. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  7      7.71  5512. 4414. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  8      7.70  5512. 4313. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt;  9      7.69  5512. 4219. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt; 10      7.69  5512. 4116. NA      heuri~ TRUE       TRUE       TRUE      
+#&gt; # ... with 41 more rows, and 49 more variables: S4_project &lt;lgl&gt;,
 #&gt; #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
 #&gt; #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
 #&gt; #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
@@ -426,9 +471,12 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 #&gt; #   S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
 #&gt; #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
 #&gt; #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;,
-#&gt; #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
-<span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)</div><div class='img'><img src='ppp_heuristic_solution-4.png' alt='' width='700' height='433' /></div></pre>
+#&gt; #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;,
+#&gt; #   solution &lt;int&gt;</div><div class='input'>
+<span class='co'># plot solution cost against objective</span>
+<span class='fu'>plot</span>(<span class='no'>objective</span> ~ <span class='no'>cost</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>s4</span>,
+     <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Heuristic solutions"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Cost ($)"</span>,
+     <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Expected phylogenetic diversity"</span>)</div><div class='img'><img src='ppp_heuristic_solution-5.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

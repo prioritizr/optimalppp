@@ -7,7 +7,7 @@ algorithms}
 \usage{
 ppp_heuristic_solution(x, tree, budget, project_column_name,
   cost_column_name, success_column_name, locked_in_column_name = NULL,
-  locked_out_column_name = NULL)
+  locked_out_column_name = NULL, number_solutions = 1L)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -55,6 +55,11 @@ should contain \code{logical} values, and projects associated with
 \code{TRUE} values are locked out of the solution. No missing values are
 permitted. Defaults to \code{NULL} such that no projects are locked out of
 the solution.}
+
+\item{number_solutions}{\code{numeric} number of solutions to return. If
+the argument is greater than \code{1}, then the output will contain the
+set number of solutions that are closest to optimality. No missing values
+are permitted. Defaults to \code{1}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} object containing the
@@ -209,6 +214,23 @@ print(s3)
 
 # plot solution
 ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
+
+# find all solutions from the heuristic algorithm
+# note we can set the budget higher than the total cost of all the
+# projects, and the number of solutions to the total number of
+# projects to achieve this
+s4 <- ppp_heuristic_solution(sim_project_data, sim_tree,
+                             sum(sim_project_data$cost) * 1.1,
+                             "name", "cost", "success",
+                              number_solutions = nrow(sim_project_data))
+
+# print solutions
+print(s4)
+
+# plot solution cost against objective
+plot(objective ~ cost, data = s4,
+     main = "Heuristic solutions", xlab = "Cost ($)",
+     ylab = "Expected phylogenetic diversity")
 }
 \references{
 Bennett JR, Elliott G, Mellish B, Joseph LN, Tulloch AI,

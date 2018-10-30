@@ -139,6 +139,148 @@ test_that("single solution, locked out constraints", {
   expect_equal(s$d, TRUE)
 })
 
+test_that("multiple solutions, cost limit", {
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  expect_warning(s <- ppp_heuristic_solution(project_data, tree, 0.15, "name",
+                                             "cost", "success",
+                                             number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10L)
+  expect_equal(nrow(s), 2L)
+  ## statistic columns
+  expect_equal(s$solution, seq_len(2L))
+  expect_equal(s$budget, rep(0.15, 2))
+  expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
+                                                "success",
+                                                s[, project_data$name]))
+  expect_equal(s$cost, c(0.1, 0))
+  expect_equal(s$optimal, rep(NA, 2))
+  expect_equal(s$method, rep("heuristic", 2))
+  ## solution columns
+  expect_equal(s$a, c(FALSE, FALSE))
+  expect_equal(s$b, c(TRUE, FALSE))
+  expect_equal(s$c, c(FALSE, FALSE))
+  expect_equal(s$d, rep(TRUE, 2))
+})
+
+test_that("multiple solutions, no constraints", {
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  expect_warning(s <- ppp_heuristic_solution(project_data, tree, 100, "name",
+                                             "cost", "success",
+                                             number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10)
+  expect_equal(nrow(s), 4)
+  ## statistic columns
+  expect_equal(s$solution, seq_len(4L))
+  expect_equal(s$budget, rep(100, 4))
+  expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
+                                                "success",
+                                                s[, project_data$name]))
+  expect_equal(s$cost, c(0.35, 0.2, 0.1, 0))
+  expect_equal(s$optimal, rep(NA, 4))
+  expect_equal(s$method, rep("heuristic", 4))
+  ## solution columns
+  expect_equal(s$a, c(TRUE, TRUE, FALSE, FALSE))
+  expect_equal(s$b, c(TRUE, TRUE, TRUE, FALSE))
+  expect_equal(s$c, c(TRUE, FALSE, FALSE, FALSE))
+  expect_equal(s$d, rep(TRUE, 4))
+})
+
+test_that("multiple solutions, locked in constraints", {
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             locked_in = c(FALSE, FALSE, TRUE, FALSE),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  expect_warning(s <- ppp_heuristic_solution(project_data, tree, 100, "name",
+                                             "cost", "success",
+                                             locked_in_column_name =
+                                               "locked_in",
+                                             number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10L)
+  expect_equal(nrow(s), 3L)
+  ## statistic columns
+  expect_equal(s$solution, seq_len(3L))
+  expect_equal(s$budget, rep(100, 3L))
+  expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
+                                                "success",
+                                                s[, project_data$name]))
+  expect_equal(s$cost, c(0.35, 0.25, 0.15))
+  expect_equal(s$optimal, rep(NA, 3L))
+  expect_equal(s$method, rep("heuristic", 3L))
+  ## solution columns
+  expect_equal(s$a, c(TRUE, FALSE, FALSE))
+  expect_equal(s$b, c(TRUE, TRUE, FALSE))
+  expect_equal(s$c, c(TRUE, TRUE, TRUE))
+  expect_equal(s$d, rep(TRUE, 3L))
+})
+
+test_that("multiple solutions, locked out constraints", {
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             locked_out = c(TRUE, FALSE, FALSE, FALSE),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  expect_warning(s <- ppp_heuristic_solution(project_data, tree, 100, "name",
+                                             "cost", "success",
+                                             locked_out_column_name =
+                                               "locked_out",
+                                             number_solutions = 100))
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10L)
+  expect_equal(nrow(s), 3L)
+  ## statistic columns
+  expect_equal(s$solution, seq_len(3L))
+  expect_equal(s$budget, rep(100, 3L))
+  expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
+                                                "success",
+                                                s[, project_data$name]))
+  expect_equal(s$cost, c(0.25, 0.15, 0))
+  expect_equal(s$optimal, rep(NA, 3))
+  expect_equal(s$method, rep("heuristic", 3L))
+  ## solution columns
+  expect_equal(s$a, rep(FALSE, 3L))
+  expect_equal(s$b, c(TRUE, FALSE, FALSE))
+  expect_equal(s$c, c(TRUE, TRUE, FALSE))
+  expect_equal(s$d, rep(TRUE, 3L))
+})
+
 test_that("invalid arguments", {
   # invalid budget
   data(sim_project_data, sim_tree)

@@ -27,6 +27,9 @@ NULL
 #' \strong{22}: 1461--1470.
 #'
 #' @examples
+#' # set seed for reproducibility
+#' set.seed(500)
+#'
 #' # load built-in data
 #' data(sim_project_data, sim_tree)
 #'
@@ -42,18 +45,24 @@ NULL
 #' # plot the simulated phylogeny
 #' plot(sim_tree, main = "simulated phylogeny")
 #'
-#' # create some solutions, note that the column names the same as the values
-#' # in the "name" column of the sim_project_data object
-#' solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
-#'                         S2_project = c(TRUE, FALSE, TRUE),
-#'                         S4_project = c(TRUE, FALSE, TRUE),
-#'                         S3_project = c(FALSE, FALSE, TRUE),
-#'                         S5_project = c(TRUE, FALSE, TRUE),
-#'                         baseline_project = c(TRUE, TRUE, TRUE))
+#' # now we will create three solutions
+#' # first, we will initialize a data.frame with all projects defunded
+#' solutions <- as.data.frame(matrix(FALSE, ncol = nrow(sim_project_data),
+#'                            nrow = 3))
+#' names(solutions) <- sim_project_data$name
 #'
-#' print(solutions)
+#' # the first solution will have no projects funded except for the base line
+#' # project, so we will make the first value in that column TRUE
+#' solutions$baseline_project[1] <- TRUE
 #'
-#' # evaluate the solutions
+#' # the second solution will have all projects funded so we will set those
+#' # values to TRUE
+#' solutions[2, ] = TRUE
+#'
+#' # the third solution will have four randomly selected projects funded
+#' solutions[3, sample.int(nrow(sim_project_data), 4)] <- TRUE
+#'
+#' # now we can evaluate the solutions
 #' s1 <- ppp_manual_solution(sim_project_data, sim_tree, solutions,
 #'                           "name", "cost", "success")
 #'
