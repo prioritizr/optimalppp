@@ -169,7 +169,7 @@ print(sim_tree)
 
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
-\dontest{
+\donttest{
 # find a solution that meets a budget of 300
 s1 <- ppp_heuristic_solution(sim_project_data, sim_tree, 300,
                              "name", "cost", "success")
