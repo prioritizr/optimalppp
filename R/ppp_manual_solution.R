@@ -21,10 +21,10 @@ NULL
 #'   particular solution, see \code{\link{ppp_plot}}.
 #'
 #' @references
-#' Faith, D. P. (2008). Threatened species and the potential loss of
+#' Faith DP (2008) Threatened species and the potential loss of
 #' phylogenetic diversity: conservation scenarios based on estimated extinction
 #' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
-#' \strong{22}, 1461--1470.
+#' \strong{22}: 1461--1470.
 #'
 #' @examples
 #' # load built-in data

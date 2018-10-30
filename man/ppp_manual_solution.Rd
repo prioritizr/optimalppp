@@ -125,10 +125,10 @@ ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success",
          n = 3) + ggtitle("solution 3")
 }
 \references{
-Faith, D. P. (2008). Threatened species and the potential loss of
+Faith DP (2008) Threatened species and the potential loss of
 phylogenetic diversity: conservation scenarios based on estimated extinction
 probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
-\strong{22}, 1461--1470.
+\strong{22}: 1461--1470.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

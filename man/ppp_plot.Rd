@@ -51,12 +51,13 @@ solution to the 'Project Prioritization Protocol' problem. In this plot, each
 phylogenetic branch is colored according to probability
 that it is expected to persist into the future. Additionally, species that
 benefit from at least a single funded project with a non-zero cost are
-denoted with large labels.
+denoted with a red asterisk symbol.
 }
 \details{
-This function requires the \pkg{ggtree} and \pkg{treeio} packages.
-  Since these packages are distributed exclusively through
-  \href{https://bioconductor.org}{Bioconductor}, and are not available on the
+This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
+  \pkg{treeio} packages. Since these packages are distributed exclusively
+  through \href{https://bioconductor.org}{Bioconductor}, and are not
+  available on the
   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
   please execute the following commands to install them:
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
@@ -131,10 +132,10 @@ theme(legend.position = "hide") +
 ggtitle("solution")
 }
 \references{
-Yu, G., Smith, D. K., Zhu, H., Guan, Y., & Lam, T. T. Y. (2017). ggtree: An
+Yu G, Smith DK, Zhu H, Guan Y, & Lam TTY (2017) ggtree: an
 R package for visualization and annotation of phylogenetic trees with their
 covariates and other associated data. \emph{Methods in Ecology and
-Evolution}, \strong{8}, 28--36.
+Evolution}, \strong{8}: 28--36.
 }
 \seealso{
 To generate solutions for the 'Project

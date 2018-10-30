@@ -146,7 +146,7 @@ test_that("solution (multiple solutions, locked in + out constraints)", {
   expect_equal(anyDuplicated(vapply(s[, project_data$name], paste, character(1),
                                     collapse = ",")), 0)
   ## statistics columns
-  expect_equal(s$budget, rep(0.18, 2))
+  expect_equal(s$budget, rep(2, 2))
   expect_equal(s$solution, seq_len(2))
   expect_is(s$objective, "numeric")
   expect_true(all(s$objective >= 0))

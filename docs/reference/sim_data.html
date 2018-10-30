@@ -161,20 +161,32 @@
 <span class='fu'>data</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>)
 
 <span class='co'># print project data</span>
-<span class='fu'>print</span>(<span class='no'>sim_project_data</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 10
-#&gt;   name        cost success locked_in locked_out     S1     S2    S3    S4    S5
-#&gt;   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 S1_project  105.   0.782 FALSE     FALSE      0.651  0      0     0     0    
-#&gt; 2 S2_project  110.   0.959 TRUE      FALSE      0      0.837  0     0     0    
-#&gt; 3 S3_project  104.   0.922 FALSE     FALSE      0      0      0.830 0     0    
-#&gt; 4 S4_project  100.   0.748 FALSE     TRUE       0      0      0     0.516 0    
-#&gt; 5 S5_project  105.   0.912 FALSE     FALSE      0      0      0     0     0.872
-#&gt; 6 baseline_~    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'><span class='co'># print phylogenetic tree</span>
+<span class='fu'>print</span>(<span class='no'>sim_project_data</span>)</div><div class='output co'>#&gt; # A tibble: 51 x 55
+#&gt;    name   cost success locked_in locked_out    S1   S10   S11   S12   S13   S14
+#&gt;    &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1 S1_p~  94.4   0.807 FALSE     FALSE      0.743 0     0     0     0     0    
+#&gt;  2 S2_p~ 101.    0.788 FALSE     FALSE      0     0.750 0     0     0     0    
+#&gt;  3 S3_p~ 103.    0.832 FALSE     FALSE      0     0     0.561 0     0     0    
+#&gt;  4 S4_p~  99.2   0.945 FALSE     FALSE      0     0     0     0.590 0     0    
+#&gt;  5 S5_p~  99.9   0.829 FALSE     FALSE      0     0     0     0     0.789 0    
+#&gt;  6 S6_p~ 100.    0.970 FALSE     FALSE      0     0     0     0     0     0.825
+#&gt;  7 S7_p~  93.9   0.723 FALSE     FALSE      0     0     0     0     0     0    
+#&gt;  8 S8_p~  91.7   0.981 FALSE     FALSE      0     0     0     0     0     0    
+#&gt;  9 S9_p~ 100.    0.947 FALSE     FALSE      0     0     0     0     0     0    
+#&gt; 10 S10_~  93.1   0.787 FALSE     FALSE      0     0     0     0     0     0    
+#&gt; # ... with 41 more rows, and 44 more variables: S15 &lt;dbl&gt;, S16 &lt;dbl&gt;,
+#&gt; #   S17 &lt;dbl&gt;, S18 &lt;dbl&gt;, S19 &lt;dbl&gt;, S2 &lt;dbl&gt;, S20 &lt;dbl&gt;, S21 &lt;dbl&gt;, S22 &lt;dbl&gt;,
+#&gt; #   S23 &lt;dbl&gt;, S24 &lt;dbl&gt;, S25 &lt;dbl&gt;, S26 &lt;dbl&gt;, S27 &lt;dbl&gt;, S28 &lt;dbl&gt;,
+#&gt; #   S29 &lt;dbl&gt;, S3 &lt;dbl&gt;, S30 &lt;dbl&gt;, S31 &lt;dbl&gt;, S32 &lt;dbl&gt;, S33 &lt;dbl&gt;, S34 &lt;dbl&gt;,
+#&gt; #   S35 &lt;dbl&gt;, S36 &lt;dbl&gt;, S37 &lt;dbl&gt;, S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;,
+#&gt; #   S41 &lt;dbl&gt;, S42 &lt;dbl&gt;, S43 &lt;dbl&gt;, S44 &lt;dbl&gt;, S45 &lt;dbl&gt;, S46 &lt;dbl&gt;,
+#&gt; #   S47 &lt;dbl&gt;, S48 &lt;dbl&gt;, S49 &lt;dbl&gt;, S5 &lt;dbl&gt;, S50 &lt;dbl&gt;, S6 &lt;dbl&gt;, S7 &lt;dbl&gt;,
+#&gt; #   S8 &lt;dbl&gt;, S9 &lt;dbl&gt;</div><div class='input'><span class='co'># print phylogenetic tree</span>
 <span class='fu'>print</span>(<span class='no'>sim_tree</span>)</div><div class='output co'>#&gt; 
-#&gt; Phylogenetic tree with 5 tips and 4 internal nodes.
+#&gt; Phylogenetic tree with 50 tips and 49 internal nodes.
 #&gt; 
 #&gt; Tip labels:
-#&gt; [1] "S1" "S5" "S4" "S2" "S3"
+#&gt; 	S7, S30, S19, S15, S2, S49, ...
 #&gt; 
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot phylogenetic tree</span>

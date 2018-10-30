@@ -217,10 +217,10 @@ are permitted. Defaults to <code>1</code>.</p></td>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Faith, D. P. (2008). Threatened species and the potential loss of
+    <p>Faith DP (2008) Threatened species and the potential loss of
 phylogenetic diversity: conservation scenarios based on estimated extinction
 probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
-<strong>22</strong>, 1461--1470.</p>
+<strong>22</strong>: 1461--1470.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -236,21 +236,33 @@ probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
 <span class='fu'>data</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>)
 
 <span class='co'># print simulated project data set</span>
-<span class='fu'>print</span>(<span class='no'>sim_project_data</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 10
-#&gt;   name        cost success locked_in locked_out     S1     S2    S3    S4    S5
-#&gt;   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 S1_project  105.   0.782 FALSE     FALSE      0.651  0      0     0     0    
-#&gt; 2 S2_project  110.   0.959 TRUE      FALSE      0      0.837  0     0     0    
-#&gt; 3 S3_project  104.   0.922 FALSE     FALSE      0      0      0.830 0     0    
-#&gt; 4 S4_project  100.   0.748 FALSE     TRUE       0      0      0     0.516 0    
-#&gt; 5 S5_project  105.   0.912 FALSE     FALSE      0      0      0     0     0.872
-#&gt; 6 baseline_~    0    1     FALSE     FALSE      0.0279 0.0859 0.174 0.335 0.199</div><div class='input'>
+<span class='fu'>print</span>(<span class='no'>sim_project_data</span>)</div><div class='output co'>#&gt; # A tibble: 51 x 55
+#&gt;    name   cost success locked_in locked_out    S1   S10   S11   S12   S13   S14
+#&gt;    &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1 S1_p~  94.4   0.807 FALSE     FALSE      0.743 0     0     0     0     0    
+#&gt;  2 S2_p~ 101.    0.788 FALSE     FALSE      0     0.750 0     0     0     0    
+#&gt;  3 S3_p~ 103.    0.832 FALSE     FALSE      0     0     0.561 0     0     0    
+#&gt;  4 S4_p~  99.2   0.945 FALSE     FALSE      0     0     0     0.590 0     0    
+#&gt;  5 S5_p~  99.9   0.829 FALSE     FALSE      0     0     0     0     0.789 0    
+#&gt;  6 S6_p~ 100.    0.970 FALSE     FALSE      0     0     0     0     0     0.825
+#&gt;  7 S7_p~  93.9   0.723 FALSE     FALSE      0     0     0     0     0     0    
+#&gt;  8 S8_p~  91.7   0.981 FALSE     FALSE      0     0     0     0     0     0    
+#&gt;  9 S9_p~ 100.    0.947 FALSE     FALSE      0     0     0     0     0     0    
+#&gt; 10 S10_~  93.1   0.787 FALSE     FALSE      0     0     0     0     0     0    
+#&gt; # ... with 41 more rows, and 44 more variables: S15 &lt;dbl&gt;, S16 &lt;dbl&gt;,
+#&gt; #   S17 &lt;dbl&gt;, S18 &lt;dbl&gt;, S19 &lt;dbl&gt;, S2 &lt;dbl&gt;, S20 &lt;dbl&gt;, S21 &lt;dbl&gt;, S22 &lt;dbl&gt;,
+#&gt; #   S23 &lt;dbl&gt;, S24 &lt;dbl&gt;, S25 &lt;dbl&gt;, S26 &lt;dbl&gt;, S27 &lt;dbl&gt;, S28 &lt;dbl&gt;,
+#&gt; #   S29 &lt;dbl&gt;, S3 &lt;dbl&gt;, S30 &lt;dbl&gt;, S31 &lt;dbl&gt;, S32 &lt;dbl&gt;, S33 &lt;dbl&gt;, S34 &lt;dbl&gt;,
+#&gt; #   S35 &lt;dbl&gt;, S36 &lt;dbl&gt;, S37 &lt;dbl&gt;, S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;,
+#&gt; #   S41 &lt;dbl&gt;, S42 &lt;dbl&gt;, S43 &lt;dbl&gt;, S44 &lt;dbl&gt;, S45 &lt;dbl&gt;, S46 &lt;dbl&gt;,
+#&gt; #   S47 &lt;dbl&gt;, S48 &lt;dbl&gt;, S49 &lt;dbl&gt;, S5 &lt;dbl&gt;, S50 &lt;dbl&gt;, S6 &lt;dbl&gt;, S7 &lt;dbl&gt;,
+#&gt; #   S8 &lt;dbl&gt;, S9 &lt;dbl&gt;</div><div class='input'>
 <span class='co'># print simulated phylogenetic tree data set</span>
 <span class='fu'>print</span>(<span class='no'>sim_tree</span>)</div><div class='output co'>#&gt; 
-#&gt; Phylogenetic tree with 5 tips and 4 internal nodes.
+#&gt; Phylogenetic tree with 50 tips and 49 internal nodes.
 #&gt; 
 #&gt; Tip labels:
-#&gt; [1] "S1" "S5" "S4" "S2" "S3"
+#&gt; 	S7, S30, S19, S15, S2, S49, ...
 #&gt; 
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot the simulated phylogeny</span>
@@ -260,21 +272,32 @@ probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
                           <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># print solutions</span>
-<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 12
+<span class='fu'>print</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 57
 #&gt;    solution objective budget  cost optimal method S1_project S2_project
 #&gt;       &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-#&gt;  1        1      2.90    300  210. NA      random FALSE      TRUE      
-#&gt;  2        2      4.41    300  209. NA      random FALSE      FALSE     
-#&gt;  3        3      2.59    300  205. NA      random TRUE       FALSE     
-#&gt;  4        4      4.43    300  214. NA      random FALSE      TRUE      
-#&gt;  5        5      3.23    300  215. NA      random FALSE      TRUE      
-#&gt;  6        6      2.90    300  205. NA      random FALSE      FALSE     
-#&gt;  7        7      3.52    300  205. NA      random FALSE      FALSE     
-#&gt;  8        8      3.23    300  215. NA      random FALSE      TRUE      
-#&gt;  9        9      2.90    300  210. NA      random FALSE      TRUE      
-#&gt; 10       10      3.12    300  215. NA      random TRUE       TRUE      
-#&gt; # ... with 4 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-#&gt; #   S5_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
+#&gt;  1        1      6.22    300  294. NA      random FALSE      FALSE     
+#&gt;  2        2      6.28    300  285. NA      random FALSE      FALSE     
+#&gt;  3        3      6.26    300  288. NA      random FALSE      FALSE     
+#&gt;  4        4      6.19    300  207. NA      random FALSE      FALSE     
+#&gt;  5        5      6.27    300  202. NA      random FALSE      FALSE     
+#&gt;  6        6      6.23    300  292. NA      random FALSE      FALSE     
+#&gt;  7        7      6.22    300  294. NA      random FALSE      FALSE     
+#&gt;  8        8      6.29    300  202. NA      random FALSE      FALSE     
+#&gt;  9        9      6.13    300  201. NA      random FALSE      FALSE     
+#&gt; 10       10      6.13    300  202. NA      random FALSE      FALSE     
+#&gt; # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+#&gt; #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
+#&gt; #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
+#&gt; #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
+#&gt; #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
+#&gt; #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;,
+#&gt; #   S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
+#&gt; #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
+#&gt; #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;,
+#&gt; #   S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
+#&gt; #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
+#&gt; #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;,
+#&gt; #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</div><div class='input'>
 <span class='co'># plot first solution</span>
 <span class='fu'><a href='ppp_plot.html'>ppp_plot</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their objective values</span>

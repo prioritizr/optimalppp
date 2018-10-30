@@ -2,6 +2,7 @@
 
 S3method(branch_matrix,default)
 S3method(branch_matrix,phylo)
+export()
 export(branch_matrix)
 export(ppp_exact_solution)
 export(ppp_heuristic_solution)
@@ -9,4 +10,5 @@ export(ppp_manual_solution)
 export(ppp_plot)
 export(ppp_random_solution)
 export(ppp_simulate_data)
+importFrom(ape,plot.phylo)
 useDynLib(optimalppp, .registration = TRUE)

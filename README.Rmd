@@ -25,4 +25,159 @@ w = 3.5
 ow = "400"
 ```
 
-This package is still under active development - please check back soon.
+**This repository is still under active development. It is not yet ready for use.**
+
+The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify suboptimal solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
+
+## Installation
+
+The latest development version can be installed using the following code.
+
+```{r, eval = FALSE}
+if (!require(devtools))
+  install.packages("devtools")
+devtools::install_github("prioritizr/optimalppp")
+```
+
+## Usage
+
+Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ and _treeio_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the `ppp_plot` help file for [installation instructions](https://prioritizr.github.io/optimalppp/reference/ppp_plot.html)).
+
+```{r, eval = FALSE}
+set.seed(500)
+options(getClass.msg = FALSE)
+library(optimalppp)
+library(ggtree)
+```
+
+```{r, include= FALSE}
+set.seed(500)
+options(getClass.msg = FALSE)
+library(ggtree)
+options(getClass.msg = FALSE)
+```
+
+Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between `r length(sim_tree$tip.label)` simulated species (named S1, S2, S3, ...). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.
+
+```{r}
+# load data
+data(sim_tree)
+
+# plot tree
+ggtree(sim_tree) +
+geom_tiplab(size = 2.5) +
+geom_treescale(width = 2, x = 0, offset = 1)
+```
+
+Next, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the `"name"` column contains the name of each project, the `"cost"` column contains the cost of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, and the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns, but we will ignore them for now. Note that the last project---the `"baseline_project"`---has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
+
+```{r}
+# load data
+data(sim_project_data)
+
+# print table
+print(sim_project_data)
+```
+
+Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`500`), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using stingy heuristic algorithms (e.g. Bennett _et al._ 2014), so let's generate our first prioritization using this method.
+
+```{r}
+# prioritize funding using stingy heuristic algorithm
+s1 <- ppp_heuristic_solution(x = sim_project_data, tree = sim_tree,
+                             budget = 500, project_column_name = "name",
+                             cost_column_name = "cost",
+                             success_column_name = "success")
+
+# print output
+print(s1)
+```
+
+The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, `"S4_project"`, `"S5_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
+
+Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. `r round(s1$objective, 3)` million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
+
+```{r}
+# visualize solution
+ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
+         cost_column_name = "cost", success_column_name = "success")
+```
+
+In some cases, there may exist iconic species that are socially and economically important for conservation. To ensure that projects which benefit such species are funded, we can "lock in" certain projects into the solution (conversely, we can also "lock out" certain projects if desired). Let us imagine that it is absolutely critical that the project for species S1 (named `"S1_project"`) receive funding. We can then generate another solution using the stingy heuristic algorithm with this constraint.
+
+```{r}
+# set locked in column to only lock in species S3
+sim_project_data$locked_in <- sim_project_data$name == "S1_project"
+
+# prioritize funding using stingy heuristic algorithm
+s2 <- ppp_heuristic_solution(x = sim_project_data, tree = sim_tree,
+                             budget = 500, project_column_name = "name",
+                             cost_column_name = "cost",
+                             success_column_name = "success",
+                             locked_in_column_name = "locked_in")
+
+# print output
+print(s2)
+
+# visualize solution
+ppp_plot(sim_project_data, sim_tree, s2, project_column_name = "name",
+         cost_column_name = "cost", success_column_name = "success") +
+geom_treescale(width = 2, x = 0, offset = 1)
+```
+
+Next, we might want to evaluate how well this solution compares to selecting projects at random. To achieve this, we need to generate solutions that contain randomly selected projects that (i) always include the baseline scenario project, and (ii) meet the budget. Fortunately, the `ppp_random_solution` function does this for us. So, let's generate 500 random solutions with a budget of $500.
+
+```{r}
+# prioritize funding using stingy heuristic algorithm
+s3 <- ppp_random_solution(x = sim_project_data, tree = sim_tree,
+                          budget = 500, project_column_name = "name",
+                          cost_column_name = "cost",
+                          success_column_name = "success",
+                          locked_in_column_name = "locked_in",
+                          number_solutions = 500)
+
+# print output
+print(s3)
+
+# visualize second solution
+ppp_plot(sim_project_data, sim_tree, s3, project_column_name = "name",
+         cost_column_name = "cost", success_column_name = "success", n = 2) +
+geom_treescale(width = 2, x = 0, offset = 1)
+```
+
+We can now calculate how much better the solution generated using the stingy heuristic algorithm performs than random.
+
+```{r}
+# calculate how much better solution performs than random
+s2$objective - mean(s3$objective)
+```
+
+Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is relative to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem (for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues & Gaston 2002).
+
+```{r}
+# prioritize funding using stingy heuristic algorithm
+s4 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
+                         budget = 500, project_column_name = "name",
+                         cost_column_name = "cost",
+                         success_column_name = "success",
+                         locked_in_column_name = "locked_in")
+
+# print output - note that the optimal column is TRUE
+print(s4)
+
+# visualize solution
+ppp_plot(sim_project_data, sim_tree, s4, project_column_name = "name",
+         cost_column_name = "cost", success_column_name = "success") +
+geom_treescale(width = 2, x = 0, offset = 1)
+```
+
+Now that we have the optimal solution (objective value = `r round(s4$objective,3)` million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = `r round(s2$objective,3)` million years of expected evolutionary history) was indeed suboptimal. This has just been a taster of the _optimalppp R_ package. For more information, please refer to the package's vignette.
+
+## Citation
+
+**This repository is still under active development. It is not yet ready for use.**
+
+Please use the following citation to cite the _optimalppp R_ package in publications:
+
+```{r, echo = FALSE, results = "asis", comment = ""}
+cat(paste0("Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (",format(Sys.time(), "%Y"),"). optimalppp: Optimal Project Prioritization Protocol. R package version ",packageDescription("optimalppp")$Version,". Available at https://github.com/prioritizr/optimalppp.\n"))
+```

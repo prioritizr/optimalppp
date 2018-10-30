@@ -77,26 +77,26 @@ NULL
 #'   \code{\link{ppp_plot}}.
 #
 #' @references
-#' Bennett, J. R., Elliott, G., Mellish, B., Joseph, L. N., Tulloch, A. I.,
-#' Probert, W. J., ... & Maloney, R. (2014). Balancing phylogenetic diversity
+#' Bennett JR, Elliott G, Mellish B, Joseph LN, Tulloch AI,
+#' Probert WJ, ... & Maloney R (2014) Balancing phylogenetic diversity
 #' and species numbers in conservation prioritization, using a case study of
 #' threatened species in New Zealand. \emph{Biological Conservation},
-#' \strong{174}, 47-54.
+#' \strong{174}: 47--54.
 #'
-#' Faith, D. P. (2008). Threatened species and the potential loss of
+#' Faith DP (2008) Threatened species and the potential loss of
 #' phylogenetic diversity: conservation scenarios based on estimated extinction
 #' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
-#' \strong{22}, 1461--1470.
+#' \strong{22}: 1461--1470.
 #'
-#' Joseph, L. N., Maloney, R. F., & Possingham, H. P. (2009). Optimal
+#' Joseph LN, Maloney RF, & Possingham HP (2009) Optimal
 #' allocation of resources among threatened species: a project prioritization
 #' protocol. \emph{Conservation biology}, \strong{23}, 328--338.
 #'
-#' Rodrigues, A. S., & Gaston, K. J. (2002). Optimisation in reserve selection
-#' procedures---why not?. \emph{Biological Conservation}, \strong{107}, 123-129.
+#' Rodrigues AS & Gaston KJ (2002) Optimisation in reserve selection
+#' procedures---why not? \emph{Biological Conservation}, \strong{107}: 123-129.
 #'
-#' Underhill, L. G. (1994). Optimal and suboptimal reserve selection
-#' algorithms. \emph{Biological Conservation}, \strong{70}, 85--87.
+#' Underhill LG (1994) Optimal and suboptimal reserve selection
+#' algorithms. \emph{Biological Conservation}, \strong{70}: 85--87.
 #'
 #' @examples
 #' # load built-in data

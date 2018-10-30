@@ -8,7 +8,7 @@ NULL
 #' phylogenetic branch is colored according to probability
 #' that it is expected to persist into the future. Additionally, species that
 #' benefit from at least a single funded project with a non-zero cost are
-#' denoted with large labels.
+#' denoted with a red asterisk symbol.
 #'
 #' @inheritParams help
 #'
@@ -17,9 +17,10 @@ NULL
 #'   to \code{1} such that the solution in the first row of the argument
 #'   to \code{solution} is plotted.
 #'
-#' @details This function requires the \pkg{ggtree} and \pkg{treeio} packages.
-#'   Since these packages are distributed exclusively through
-#'   \href{https://bioconductor.org}{Bioconductor}, and are not available on the
+#' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
+#'   \pkg{treeio} packages. Since these packages are distributed exclusively
+#'   through \href{https://bioconductor.org}{Bioconductor}, and are not
+#'   available on the
 #'   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
 #'   please execute the following commands to install them:
 #'   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
@@ -31,10 +32,10 @@ NULL
 #'   or \code{\link{ppp_random_solution}}.
 #'
 #' @references
-#' Yu, G., Smith, D. K., Zhu, H., Guan, Y., & Lam, T. T. Y. (2017). ggtree: An
+#' Yu G, Smith DK, Zhu H, Guan Y, & Lam TTY (2017) ggtree: an
 #' R package for visualization and annotation of phylogenetic trees with their
 #' covariates and other associated data. \emph{Methods in Ecology and
-#' Evolution}, \strong{8}, 28--36.
+#' Evolution}, \strong{8}: 28--36.
 #'
 #' @examples
 #' # load built-in data
@@ -137,7 +138,7 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
                           assertthat::noNA(x[[success_column_name]]),
                           assertthat::is.count(n),
                           is.finite(n),
-                          isTRUE(n <= nrow(x)))
+                          isTRUE(n <= nrow(solution)))
   ## coerce factor species names to character
   if (is.factor(x[[project_column_name]]))
     x[[project_column_name]] <- as.character(x[[project_column_name]])
@@ -186,26 +187,30 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
   ## format tree data for plotting
   tree2 <- tidytree::as_data_frame(tree)
   tree2$status <- tree2$label %in% funded_spp
-  tree2$status <- c("Not funded", "Funded")[tree2$status + 1]
+  tree2$status <- c("Not Funded", "Funded")[tree2$status + 1]
   tree2$prob <- c(branch_probs)[match(
     paste0(tree2$parent, "_", tree2$node),
     paste0(tree$edge[, 1], "_", tree$edge[, 2]))]
-  tree2$label <- paste0(" ", tree2$label)
+  tree2$label <- paste0("   ", tree2$label)
   tree2 <- tidytree::as.treedata(tree2)
+
+  ## calculate padding for points
+  point_padding <- max(rowSums(as.matrix(branch_matrix(tree)) *
+                               matrix(tree$edge.length, ncol = nrow(tree$edge),
+                                      nrow = length(tree$tip.label)))) * 0.01
 
   ## make plot
   p <- ggtree::ggtree(tree2, ggplot2::aes_string(color = "prob"), size = 1.1) +
-       ggtree::geom_tiplab(ggplot2::aes_string(size = "status"),
-                           color = "black") +
+       ggtree::geom_tippoint(ggplot2::aes(subset = status == "Funded",
+                                          x = x + point_padding),
+                             color = "black", pch = 8) +
+       ggtree::geom_tiplab(color = "black", size = 2.5) +
        ggplot2::scale_color_gradientn(name = "Probability of\npersistence",
                                       colors = viridisLite::inferno(
                                         150, begin = 0, end = 0.9,
                                         direction = -1),
                                       limits = c(0, 1)) +
-       ggplot2::scale_size_manual(name = "Species",
-                                  values = c("Funded" = 4.5,
-                                             "Not funded" = 2.5)) +
-        ggplot2::theme(legend.position = "right")
+       ggplot2::theme(legend.position = "right")
 
   # Exports
   # return plot

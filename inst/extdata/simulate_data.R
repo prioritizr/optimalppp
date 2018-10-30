@@ -1,10 +1,10 @@
 # Initialization
 ## set seed for reproducibility
 source("R/ppp_simulate_data.R")
-set.seed(500)
+set.seed(600)
 
 ## set simulation parameters
-number_species <- 5
+number_species <- 50
 cost_mean <- 100
 cost_sd <- 5
 success_min_probability <- 0.7
