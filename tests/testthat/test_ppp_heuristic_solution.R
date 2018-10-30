@@ -34,6 +34,39 @@ test_that("single solution, no constraints", {
   expect_equal(s$d, TRUE)
 })
 
+test_that("single solution, zero budget", {
+  project_data <- data.frame(name = letters[1:4],
+                             cost =     c(0.10, 0.10, 0.15, 0.00),
+                             success =  c(0.95, 0.96, 0.94, 1.00),
+                             S1 =       c(0.91, 0.00, 0.80, 0.10),
+                             S2 =       c(0.00, 0.92, 0.80, 0.10),
+                             S3 =       c(0.00, 0.00, 0.00, 0.10),
+                             stringsAsFactors = FALSE)
+  tree <- ape::read.tree(text = "((S1,S2),S3);")
+  tree$edge.length <- c(100, 5, 5, 5)
+  s <- ppp_heuristic_solution(project_data, tree, 0, "name",
+                              "cost", "success")
+  # tests
+  ## class
+  expect_is(s, "tbl_df")
+  expect_equal(ncol(s), 10)
+  expect_equal(nrow(s), 1)
+  ## statistic columns
+  expect_equal(s$solution, 1L)
+  expect_equal(s$budget, 0)
+  expect_equal(s$objective, ppp_objective_value(project_data, tree, "name",
+                                                "success",
+                                                s[, project_data$name]))
+  expect_equal(s$cost, 0)
+  expect_equal(s$optimal, NA)
+  expect_equal(s$method, "heuristic")
+  ## solution columns
+  expect_equal(s$a, FALSE)
+  expect_equal(s$b, FALSE)
+  expect_equal(s$c, FALSE)
+  expect_equal(s$d, TRUE)
+})
+
 test_that("single solution, locked in constraints", {
   project_data <- data.frame(name = letters[1:4],
                              cost =     c(0.10, 0.10, 0.15, 0.00),

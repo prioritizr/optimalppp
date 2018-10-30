@@ -63,7 +63,7 @@ Rcpp::LogicalMatrix rcpp_random_solution(arma::sp_mat spp,
     n_remaining_projects = curr_remaining_projects.n_nonzero;
 
     //// generate random solutions
-    while (curr_cost > budget) {
+    while ((curr_cost > budget) & (n_remaining_projects > 0)) {
       /// randomly select solution
       curr_project = std::floor(
         R::runif(0.0, static_cast<double>(n_remaining_projects) - 1.0e-15));

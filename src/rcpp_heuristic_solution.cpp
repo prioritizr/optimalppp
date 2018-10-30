@@ -26,7 +26,6 @@ Rcpp::LogicalMatrix rcpp_heuristic_solution(arma::sp_mat spp,
   double curr_cost = std::accumulate(costs.begin(), costs.end(), 0.0);
 
   /// initialize remaining solution matrix
-  std::size_t n_remaining_projects = n_projects;
   arma::sp_mat remaining_projects(1, n_projects);
   for (std::size_t i = 0; i < n_projects; ++i)
     remaining_projects(0, i) = 1.0;
@@ -44,8 +43,11 @@ Rcpp::LogicalMatrix rcpp_heuristic_solution(arma::sp_mat spp,
     curr_cost -= costs[(*itr) - 1];
   }
 
+  /// initialize n_remaining projects
+    std::size_t n_remaining_projects = remaining_projects.n_nonzero;
+
   // Main processing
-  while (curr_cost > budget) {
+  while ((curr_cost > budget) & (n_remaining_projects > 0)) {
     /// calculate total objective with all the remaining projects
     curr_objective = ppp_objective(spp, branch_matrix,
                                    branch_lengths, remaining_projects)[0];
@@ -86,6 +88,7 @@ Rcpp::LogicalMatrix rcpp_heuristic_solution(arma::sp_mat spp,
 
     // remove the selected project from the remaining projects
     remaining_projects.col(curr_project).zeros();
+    --n_remaining_projects;
     ++curr_iteration;
   }
 
