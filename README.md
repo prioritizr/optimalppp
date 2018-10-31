@@ -111,7 +111,7 @@ ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
-This has just been a taster of the *optimalppp R* package. For more information, see the \[package vignette\]( (<https://prioritizr.github.io/optimalppp/articles/optimalppp.html>).
+This has just been a taster of the *optimalppp R* package. For more information, see the [package vignette](https://prioritizr.github.io/optimalppp/articles/optimalppp.html).
 
 Citation
 --------
