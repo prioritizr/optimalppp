@@ -35,7 +35,7 @@ Suggests:
     treeio(>= 1.4.3)
 Depends:
     R(>= 3.4.0)
-LinkingTo: Rcpp(>= 0.12.18), RcppArmadillo(>= 0.9.100.5.0)
+LinkingTo: Rcpp(>= 0.12.19), RcppArmadillo(>= 0.9.100.5.0)
 License: GPL-3
 LazyData: true
 SystemRequirements: C++11
