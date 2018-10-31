@@ -112,7 +112,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <pre><code>## Found more than one class "phylo" in cache; using the first, from namespace 'tidytree'</code></pre>
 <pre><code>## Also defined by 'treeio'</code></pre>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Next, we will load the <code>sim_project_data</code> object. This object stores information about various conservation projects in a tabular format (i.e. <code>tibble</code>). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the <code>"name"</code> column contains the name of each project, the <code>"cost"</code> column contains the cost of each project, the <code>"success"</code> column denotes the probability of each project succeeding if it is funded, and the <code>"S1"</code>–<code>"SN"</code> columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns, but we will ignore them for now. Note that the last project—the <code>"baseline_project"</code>—has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.</p>
+<p>Next, we will load the <code>sim_project_data</code> object. This object stores information about various conservation projects in a tabular format (i.e. <code>tibble</code>). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the <code>"name"</code> column contains the name of each project, the <code>"cost"</code> column contains the cost of each project, the <code>"success"</code> column denotes the probability of each project succeeding if it is funded, and the <code>"S1"</code>–<code>"SN"</code> columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project—the <code>"baseline_project"</code>—has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load data</span>
 <span class="kw">data</span>(sim_project_data)
 
@@ -139,170 +139,20 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 ## #   S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;, S41 &lt;dbl&gt;, S42 &lt;dbl&gt;,
 ## #   S43 &lt;dbl&gt;, S44 &lt;dbl&gt;, S45 &lt;dbl&gt;, S46 &lt;dbl&gt;, S47 &lt;dbl&gt;, S48 &lt;dbl&gt;,
 ## #   S49 &lt;dbl&gt;, S5 &lt;dbl&gt;, S50 &lt;dbl&gt;, S6 &lt;dbl&gt;, S7 &lt;dbl&gt;, S8 &lt;dbl&gt;, S9 &lt;dbl&gt;</code></pre>
-<p>Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>500</code>), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using stingy heuristic algorithms (e.g. Bennett <em>et al.</em> 2014), so let’s generate our first prioritization using this method.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
-s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_heuristic_solution.html">ppp_heuristic_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
-                             <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-                             <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
-                             <span class="dt">success_column_name =</span> <span class="st">"success"</span>)
-
-<span class="co"># print output</span>
-<span class="kw">print</span>(s1)</code></pre></div>
-<pre><code>## # A tibble: 1 x 57
-##   objective budget  cost optimal method S1_project S2_project S3_project
-##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1      6.63    500  409. NA      heuri… FALSE      FALSE      FALSE     
-## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
-## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
-## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
-## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
-## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
-## #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;,
-## #   S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;,
-## #   S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
-## #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
-## #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;,
-## #   S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;,
-## #   S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
-## #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
-## #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;,
-## #   S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;,
-## #   baseline_project &lt;lgl&gt;, solution &lt;int&gt;</code></pre>
-<p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, <code>"S4_project"</code>, <code>"S5_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
-<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.629 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
+<p>Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>500</code>), So, let’s cut to the chase and find an optimal solution.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
+                         <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
+                         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
+                         <span class="dt">success_column_name =</span> <span class="st">"success"</span>)</code></pre></div>
+<p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, …, <code>"S50_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
+<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.696 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s1, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>)</code></pre></div>
 <pre><code>## Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</code></pre>
 <pre><code>## Also defined by 'treeio'</code></pre>
 <p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>In some cases, there may exist iconic species that are socially and economically important for conservation. To ensure that projects which benefit such species are funded, we can “lock in” certain projects into the solution (conversely, we can also “lock out” certain projects if desired). Let us imagine that it is absolutely critical that the project for species S1 (named <code>"S1_project"</code>) receive funding. We can then generate another solution using the stingy heuristic algorithm with this constraint.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set locked in column to only lock in species S3</span>
-sim_project_data<span class="op">$</span>locked_in &lt;-<span class="st"> </span>sim_project_data<span class="op">$</span>name <span class="op">==</span><span class="st"> "S1_project"</span>
-
-<span class="co"># prioritize funding using stingy heuristic algorithm</span>
-s2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_heuristic_solution.html">ppp_heuristic_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
-                             <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-                             <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
-                             <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
-                             <span class="dt">locked_in_column_name =</span> <span class="st">"locked_in"</span>)
-
-<span class="co"># print output</span>
-<span class="kw">print</span>(s2)</code></pre></div>
-<pre><code>## # A tibble: 1 x 57
-##   objective budget  cost optimal method S1_project S2_project S3_project
-##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1      6.57    500  403. NA      heuri… TRUE       FALSE      FALSE     
-## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
-## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
-## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
-## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
-## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
-## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
-## #   S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;,
-## #   S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;,
-## #   S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;,
-## #   S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;,
-## #   S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;,
-## #   S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;,
-## #   S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;,
-## #   S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;,
-## #   S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;,
-## #   S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;,
-## #   baseline_project &lt;lgl&gt;, solution &lt;int&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
-<span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s2, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>) <span class="op">+</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Next, we might want to evaluate how well this solution compares to selecting projects at random. To achieve this, we need to generate solutions that contain randomly selected projects that (i) always include the baseline scenario project, and (ii) meet the budget. Fortunately, the <code>ppp_random_solution</code> function does this for us. So, let’s generate 500 random solutions with a budget of $500.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
-s3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_random_solution.html">ppp_random_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
-                          <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-                          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
-                          <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
-                          <span class="dt">locked_in_column_name =</span> <span class="st">"locked_in"</span>,
-                          <span class="dt">number_solutions =</span> <span class="dv">500</span>)
-
-<span class="co"># print output</span>
-<span class="kw">print</span>(s3)</code></pre></div>
-<pre><code>## # A tibble: 500 x 57
-##    solution objective budget  cost optimal method S1_project S2_project
-##       &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-##  1        1      6.24    500  496. NA      random TRUE       FALSE     
-##  2        2      6.26    500  411. NA      random TRUE       FALSE     
-##  3        3      6.32    500  493. NA      random TRUE       FALSE     
-##  4        4      6.53    500  495. NA      random TRUE       FALSE     
-##  5        5      6.27    500  490. NA      random TRUE       FALSE     
-##  6        6      6.27    500  489. NA      random TRUE       FALSE     
-##  7        7      6.22    500  403. NA      random TRUE       FALSE     
-##  8        8      6.28    500  500. NA      random TRUE       FALSE     
-##  9        9      6.27    500  402. NA      random TRUE       FALSE     
-## 10       10      6.28    500  494. NA      random TRUE       FALSE     
-## # ... with 490 more rows, and 49 more variables: S3_project &lt;lgl&gt;,
-## #   S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;,
-## #   S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;,
-## #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
-## #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;,
-## #   S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;,
-## #   S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;,
-## #   S22_project &lt;lgl&gt;, S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;,
-## #   S25_project &lt;lgl&gt;, S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;,
-## #   S28_project &lt;lgl&gt;, S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;,
-## #   S31_project &lt;lgl&gt;, S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;,
-## #   S34_project &lt;lgl&gt;, S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;,
-## #   S37_project &lt;lgl&gt;, S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;,
-## #   S40_project &lt;lgl&gt;, S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;,
-## #   S43_project &lt;lgl&gt;, S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;,
-## #   S46_project &lt;lgl&gt;, S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;,
-## #   S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize second solution</span>
-<span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s3, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>, <span class="dt">n =</span> <span class="dv">2</span>) <span class="op">+</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>We can now calculate how much better the solution generated using the stingy heuristic algorithm performs than random.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate how much better solution performs than random</span>
-s2<span class="op">$</span>objective <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(s3<span class="op">$</span>objective)</code></pre></div>
-<pre><code>## [1] 0.2652586</code></pre>
-<p>Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is relative to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem (for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues &amp; Gaston 2002).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
-s4 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
-                         <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-                         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
-                         <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
-                         <span class="dt">locked_in_column_name =</span> <span class="st">"locked_in"</span>)
-
-<span class="co"># print output - note that the optimal column is TRUE</span>
-<span class="kw">print</span>(s4)</code></pre></div>
-<pre><code>## # A tibble: 1 x 57
-##   solution objective budget  cost optimal method S1_project S2_project
-##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-## 1        1      6.63    500  492. TRUE    exact  TRUE       FALSE     
-## # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
-## #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;,
-## #   S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
-## #   S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
-## #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
-## #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;,
-## #   S20_project &lt;lgl&gt;, S21_project &lt;lgl&gt;, S22_project &lt;lgl&gt;,
-## #   S23_project &lt;lgl&gt;, S24_project &lt;lgl&gt;, S25_project &lt;lgl&gt;,
-## #   S26_project &lt;lgl&gt;, S27_project &lt;lgl&gt;, S28_project &lt;lgl&gt;,
-## #   S29_project &lt;lgl&gt;, S30_project &lt;lgl&gt;, S31_project &lt;lgl&gt;,
-## #   S32_project &lt;lgl&gt;, S33_project &lt;lgl&gt;, S34_project &lt;lgl&gt;,
-## #   S35_project &lt;lgl&gt;, S36_project &lt;lgl&gt;, S37_project &lt;lgl&gt;,
-## #   S38_project &lt;lgl&gt;, S39_project &lt;lgl&gt;, S40_project &lt;lgl&gt;,
-## #   S41_project &lt;lgl&gt;, S42_project &lt;lgl&gt;, S43_project &lt;lgl&gt;,
-## #   S44_project &lt;lgl&gt;, S45_project &lt;lgl&gt;, S46_project &lt;lgl&gt;,
-## #   S47_project &lt;lgl&gt;, S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;,
-## #   S50_project &lt;lgl&gt;, baseline_project &lt;lgl&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
-<span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s4, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>) <span class="op">+</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Now that we have the optimal solution (objective value = 6.633 million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = 6.566 million years of expected evolutionary history) was indeed suboptimal. This has just been a taster of the <em>optimalppp R</em> package. For more information, please refer to the package’s vignette.</p>
+<p>This has just been a taster of the <em>optimalppp R</em> package. For more information, see the <a href="https://prioritizr.github.io/optimalppp/articles/optimalppp.html">package vignette</a>.</p>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">

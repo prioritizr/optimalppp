@@ -349,8 +349,7 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 #&gt; 
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot the simulated phylogeny</span>
-<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_heuristic_solution-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># find a solution that meets a budget of 300</span>
+<span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_heuristic_solution-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># find a solution that meets a budget of 300</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_heuristic_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
                              <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)
 
