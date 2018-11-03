@@ -2,7 +2,7 @@ context("ppp_plot")
 
 test_that("some projects funded", {
   skip_if_not(requireNamespace("ggtree", quietly = TRUE))
-  skip_if_not(requireNamespace("treeio", quietly = TRUE))
+  skip_if_not(requireNamespace("tidytree", quietly = TRUE))
   project_data <- data.frame(name = letters[1:4],
                              cost =     c(0.10, 0.10, 0.15, 0.00),
                              success =  c(0.95, 0.96, 0.94, 1.00),
@@ -20,7 +20,7 @@ test_that("some projects funded", {
 
 test_that("all projects funded", {
   skip_if_not(requireNamespace("ggtree", quietly = TRUE))
-  skip_if_not(requireNamespace("treeio", quietly = TRUE))
+  skip_if_not(requireNamespace("tidytree", quietly = TRUE))
   project_data <- data.frame(name = letters[1:4],
                              cost =     c(0.10, 0.10, 0.15, 0.00),
                              success =  c(0.95, 0.96, 0.94, 1.00),
@@ -37,7 +37,7 @@ test_that("all projects funded", {
 
 test_that("no projects funded", {
   skip_if_not(requireNamespace("ggtree", quietly = TRUE))
-  skip_if_not(requireNamespace("treeio", quietly = TRUE))
+  skip_if_not(requireNamespace("tidytree", quietly = TRUE))
   project_data <- data.frame(name = letters[1:4],
                              cost =     c(0.10, 0.10, 0.15, 0.00),
                              success =  c(0.95, 0.96, 0.94, 1.00),

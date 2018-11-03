@@ -58,13 +58,13 @@ denoted with a red asterisk symbol.
 }
 \details{
 This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
-  \pkg{treeio} packages. Since these packages are distributed exclusively
+  \pkg{tidytree} packages. Since these packages are distributed exclusively
   through \href{https://bioconductor.org}{Bioconductor}, and are not
   available on the
   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
   please execute the following commands to install them:
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
-  If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}} packages' online documentation.
+  If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}} packages' online documentation.
 }
 \examples{
 # set seed for reproducibility

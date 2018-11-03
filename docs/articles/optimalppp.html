@@ -88,8 +88,8 @@
 <div id="tutorial" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tutorial" class="anchor"></a>Tutorial</h2>
-<p>Here we will provide a short example showing how the <em>optimalppp R</em> package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the <em>R</em> session, load the <em>optimalppp R</em> package, and load the <em>ggtree R</em> package to plot phylogenetic trees. Please note that you will need install the <em>ggtree</em> and <em>treeio</em> package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the <code>ppp_plot</code> help file for <a href="https://prioritizr.github.io/optimalppp/reference/ppp_plot.html">installation instructions</a>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">600</span>)
+<p>Here we will provide a short example showing how the <em>optimalppp R</em> package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the <em>R</em> session, load the <em>optimalppp R</em> package, and load the <em>ggtree R</em> package to plot phylogenetic trees. Please note that you will need install the <em>ggtree</em> and <em>tidytree</em> package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the <code>ppp_plot</code> help file for <a href="https://prioritizr.github.io/optimalppp/reference/ppp_plot.html">installation instructions</a>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">700</span>)
 <span class="kw">options</span>(<span class="dt">getClass.msg =</span> <span class="ot">FALSE</span>)
 <span class="kw">library</span>(optimalppp)
 <span class="kw">library</span>(ggtree)</code></pre></div>
@@ -134,16 +134,16 @@ sim_tree &lt;-<span class="st"> </span>sim<span class="op">$</span>tree</code></
 <pre><code>## # A tibble: 51 x 55
 ##    name   cost success locked_in locked_out    S1   S10   S11   S12   S13
 ##    &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 S1_p…  94.4   0.807 TRUE      FALSE      0.840 0     0     0     0    
-##  2 S2_p… 101.    0.788 FALSE     FALSE      0     0.605 0     0     0    
-##  3 S3_p… 103.    0.832 FALSE     FALSE      0     0     0.785 0     0    
-##  4 S4_p…  99.2   0.945 FALSE     FALSE      0     0     0     0.730 0    
-##  5 S5_p…  99.9   0.829 FALSE     FALSE      0     0     0     0     0.739
-##  6 S6_p… 100.    0.970 FALSE     FALSE      0     0     0     0     0    
-##  7 S7_p…  93.9   0.723 TRUE      FALSE      0     0     0     0     0    
-##  8 S8_p…  91.7   0.981 FALSE     FALSE      0     0     0     0     0    
-##  9 S9_p… 100.    0.947 FALSE     FALSE      0     0     0     0     0    
-## 10 S10_…  93.1   0.787 FALSE     FALSE      0     0     0     0     0    
+##  1 S1_p…  99.6   0.981 FALSE     FALSE      0.860 0     0     0     0    
+##  2 S2_p…  98.9   0.744 FALSE     TRUE       0     0.680 0     0     0    
+##  3 S3_p…  99.6   0.722 FALSE     FALSE      0     0     0.855 0     0    
+##  4 S4_p…  91.3   0.969 FALSE     FALSE      0     0     0     0.664 0    
+##  5 S5_p… 105.    0.885 FALSE     FALSE      0     0     0     0     0.585
+##  6 S6_p…  98.9   0.793 FALSE     FALSE      0     0     0     0     0    
+##  7 S7_p… 108.    0.874 FALSE     FALSE      0     0     0     0     0    
+##  8 S8_p…  95.5   0.710 FALSE     FALSE      0     0     0     0     0    
+##  9 S9_p…  96.0   0.947 FALSE     FALSE      0     0     0     0     0    
+## 10 S10_…  95.5   0.781 FALSE     TRUE       0     0     0     0     0    
 ##      S14   S15   S16   S17   S18   S19    S2   S20   S21   S22   S23   S24
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ##  1 0     0     0     0     0         0     0     0     0     0     0     0
@@ -151,11 +151,11 @@ sim_tree &lt;-<span class="st"> </span>sim<span class="op">$</span>tree</code></
 ##  3 0     0     0     0     0         0     0     0     0     0     0     0
 ##  4 0     0     0     0     0         0     0     0     0     0     0     0
 ##  5 0     0     0     0     0         0     0     0     0     0     0     0
-##  6 0.721 0     0     0     0         0     0     0     0     0     0     0
-##  7 0     0.513 0     0     0         0     0     0     0     0     0     0
-##  8 0     0     0.864 0     0         0     0     0     0     0     0     0
-##  9 0     0     0     0.829 0         0     0     0     0     0     0     0
-## 10 0     0     0     0     0.562     0     0     0     0     0     0     0
+##  6 0.600 0     0     0     0         0     0     0     0     0     0     0
+##  7 0     0.668 0     0     0         0     0     0     0     0     0     0
+##  8 0     0     0.505 0     0         0     0     0     0     0     0     0
+##  9 0     0     0     0.725 0         0     0     0     0     0     0     0
+## 10 0     0     0     0     0.518     0     0     0     0     0     0     0
 ## # ... with 41 more rows, and 33 more variables: S25 &lt;dbl&gt;, S26 &lt;dbl&gt;,
 ## #   S27 &lt;dbl&gt;, S28 &lt;dbl&gt;, S29 &lt;dbl&gt;, S3 &lt;dbl&gt;, S30 &lt;dbl&gt;, S31 &lt;dbl&gt;,
 ## #   S32 &lt;dbl&gt;, S33 &lt;dbl&gt;, S34 &lt;dbl&gt;, S35 &lt;dbl&gt;, S36 &lt;dbl&gt;, S37 &lt;dbl&gt;,
@@ -174,10 +174,10 @@ s1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 <pre><code>## # A tibble: 1 x 57
 ##   objective budget  cost optimal method S1_project S2_project S3_project
 ##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1      6.84    500  490. NA      heuri… FALSE      FALSE      FALSE     
+## 1      7.53    500  487. NA      heuri… FALSE      FALSE      FALSE     
 ##   S4_project S5_project S6_project S7_project S8_project S9_project
 ##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      TRUE       FALSE     
+## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ## # ... with 43 more variables: S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
 ## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
 ## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
@@ -194,7 +194,7 @@ s1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 ## #   S48_project &lt;lgl&gt;, S49_project &lt;lgl&gt;, S50_project &lt;lgl&gt;,
 ## #   baseline_project &lt;lgl&gt;, solution &lt;int&gt;</code></pre>
 <p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, …, <code>"S50_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
-<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.842 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
+<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 7.527 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="../reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s1, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
@@ -216,10 +216,10 @@ s2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 <pre><code>## # A tibble: 1 x 57
 ##   objective budget  cost optimal method S1_project S2_project S3_project
 ##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1      6.78    500  484. NA      heuri… TRUE       FALSE      FALSE     
+## 1      7.41    500  489. NA      heuri… TRUE       FALSE      FALSE     
 ##   S4_project S5_project S6_project S7_project S8_project S9_project
 ##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      TRUE       FALSE     
+## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ## # ... with 43 more variables: S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
 ## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
 ## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
@@ -253,27 +253,27 @@ s3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_rand
 <pre><code>## # A tibble: 500 x 57
 ##    solution objective budget  cost optimal method S1_project S2_project
 ##       &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-##  1        1      6.09    500  403. NA      random TRUE       FALSE     
-##  2        2      6.20    500  478. NA      random TRUE       TRUE      
-##  3        3      6.18    500  497. NA      random TRUE       FALSE     
-##  4        4      6.49    500  490. NA      random TRUE       FALSE     
-##  5        5      6.32    500  493. NA      random TRUE       FALSE     
-##  6        6      6.14    500  400. NA      random TRUE       FALSE     
-##  7        7      6.42    500  492. NA      random TRUE       FALSE     
-##  8        8      6.19    500  488. NA      random TRUE       TRUE      
-##  9        9      6.04    500  484. NA      random TRUE       FALSE     
-## 10       10      6.18    500  406. NA      random TRUE       FALSE     
+##  1        1      6.84    500  495. NA      random TRUE       FALSE     
+##  2        2      6.87    500  498. NA      random TRUE       FALSE     
+##  3        3      6.69    500  403. NA      random TRUE       FALSE     
+##  4        4      6.72    500  401. NA      random TRUE       FALSE     
+##  5        5      6.86    500  403. NA      random TRUE       FALSE     
+##  6        6      6.61    500  407. NA      random TRUE       FALSE     
+##  7        7      6.45    500  395. NA      random TRUE       FALSE     
+##  8        8      6.61    500  416. NA      random TRUE       FALSE     
+##  9        9      6.64    500  497. NA      random TRUE       TRUE      
+## 10       10      6.79    500  496. NA      random TRUE       FALSE     
 ##    S3_project S4_project S5_project S6_project S7_project S8_project
 ##    &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
 ##  1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ##  2 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  3 FALSE      FALSE      TRUE       FALSE      FALSE      FALSE     
-##  4 FALSE      FALSE      FALSE      FALSE      FALSE      TRUE      
+##  3 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
+##  4 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ##  5 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ##  6 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ##  7 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  8 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  9 FALSE      FALSE      FALSE      FALSE      TRUE       FALSE     
+##  8 FALSE      FALSE      FALSE      TRUE       FALSE      FALSE     
+##  9 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ## 10 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ## # ... with 490 more rows, and 43 more variables: S9_project &lt;lgl&gt;,
 ## #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
@@ -298,7 +298,7 @@ s3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_rand
 <p>We can now calculate how much better the solution generated using the stingy heuristic algorithm performs than random.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate how much better solution performs than random</span>
 s2<span class="op">$</span>objective <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(s3<span class="op">$</span>objective)</code></pre></div>
-<pre><code>## [1] 0.5636855</code></pre>
+<pre><code>## [1] 0.7142387</code></pre>
 <p>Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is compared to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem (for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues &amp; Gaston 2002).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
 s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
@@ -312,10 +312,10 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
 <pre><code>## # A tibble: 1 x 57
 ##   solution objective budget  cost optimal method S1_project S2_project
 ##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
-## 1        1      6.78    500  484. TRUE    exact  TRUE       FALSE     
+## 1        1      7.42    500  494. TRUE    exact  TRUE       FALSE     
 ##   S3_project S4_project S5_project S6_project S7_project S8_project
 ##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      FALSE      TRUE      
+## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
 ## # ... with 43 more variables: S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
 ## #   S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
 ## #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
@@ -336,7 +336,7 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
          <span class="dt">asterisk_hjust =</span> <span class="fl">0.006</span>)</code></pre></div>
 <p><img src="optimalppp_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Now that we have the optimal solution (objective value = 6.783 million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = 6.783 million years of expected evolutionary history) was indeed suboptimal.</p>
+<p>Now that we have the optimal solution (objective value = 7.42 million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = 7.412 million years of expected evolutionary history) was indeed suboptimal.</p>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">

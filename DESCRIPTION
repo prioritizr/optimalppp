@@ -32,7 +32,7 @@ Suggests:
     rmarkdown(>= 1.10),
     gurobi(>= 8.0.0),
     ggtree(>= 1.8.2),
-    treeio(>= 1.4.3)
+    tidytree(>= 0.1.9)
 Depends:
     R(>= 3.4.0)
 LinkingTo: Rcpp(>= 0.12.19), RcppArmadillo(>= 0.9.100.5.0)

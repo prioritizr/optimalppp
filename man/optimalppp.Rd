@@ -16,9 +16,9 @@ provides the functionality to visualize how well solutions maintain
 biodiversity.
 
 To make the most of this package, the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}},
-\href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}}, and
+\href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}}, and
 \href{http://www.gurobi.com/documentation/8.1/refman/r_api_overview.html}{\pkg{gurobi}} R packages will need to be installed.
-Since the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{\pkg{treeio}} packages are exclusively available
+Since the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}} packages are exclusively available
 at \href{https://bioconductor.org}{Bioconductor}---and are not available on
 \href{https://cran.r-project.org/}{Comprehensive R Archive Network}---please
 execute the following commands to install them:
