@@ -192,7 +192,7 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
 
   # Main processing
   ## format tree data for plotting
-  tree2 <- tidytree::as_data_frame(tree)
+  tree2 <- suppressMessages(suppressWarnings(tidytree::as_data_frame(tree)))
   tree2$status <- tree2$label %in% funded_spp
   tree2$status <- c("Not Funded", "Funded")[tree2$status + 1]
   tree2$prob <- c(branch_probs)[match(
