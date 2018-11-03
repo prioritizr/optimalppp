@@ -114,7 +114,7 @@ The object `s1` contains the solution and also various statistics associated wit
 
 Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. `r round(s1$objective, 3)` million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
 
-```{r, fig.width = fw, fig.height = fh}
+```{r, message = FALSE, warning = FALSE, fig.width = fw, fig.height = fh}
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
          cost_column_name = "cost", success_column_name = "success",
