@@ -6,6 +6,8 @@ output:
     fig_caption: true
     self_contained: yes
 fontsize: 11pt
+bibliography: references.bib
+csl: reference-style.csl
 documentclass: article
 vignette: >
   %\VignetteIndexEntry{optimalppp}
@@ -32,7 +34,9 @@ The _optimalppp R_ package provides methods for prioritizing funding of conserva
 
 ## Tutorial
 
-Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ and _tidytree_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the `ppp_plot` help file for [installation instructions](https://prioritizr.github.io/optimalppp/reference/ppp_plot.html)).
+Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. With limited resources available for conservation [@r2], it is imperative that funds are prioritized for conservation projects which will the greatest outcome. This realization led to development of the 'Project Prioritization Protocol' [@r3]. This method involves evaluating conservation projects according to (i) the probability that they are expected to succeed, (ii) the probability that species' will persist if they are funded and succeed, and (iii) the amount of evolutionary history that is retained by the conserved species. Although several formulations exist for parameterizing evolutionary history [evaluated in @r4], one approach is the 'expected phylogenetic diversity' metric [@r9; @r8]. Here, the _optimalppp R_ package uses the expected phylogenetic diversity exclusively to assess how well different funding schemes preserve the evolutionary history in a given area. This package provides several methods for generating and evaluating solutions based on this metric. Notably, it can use exact algorithms (via [Gurobi](http://gurobi.com/)) to identify solutions that are guaranteed to be optimal.
+
+To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ and _tidytree_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the `ppp_plot` help file for [installation instructions](https://prioritizr.github.io/optimalppp/reference/ppp_plot.html)).
 
 ```{r, eval = FALSE}
 set.seed(700)
@@ -97,7 +101,7 @@ Next, we will load the `sim_project_data` object. This object stores information
 print(sim_project_data)
 ```
 
-Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`500`), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using heuristic algorithms (e.g. Bennett _et al._ 2014), so let's generate our first prioritization using this method.
+Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`500`), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using heuristic algorithms [e.g. @r4], so let's generate our first prioritization using this method.
 
 ```{r}
 # prioritize funding using stingy heuristic algorithm
@@ -118,7 +122,7 @@ Here, the objective value (in the `"objective"` column) denotes the amount of ev
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
          cost_column_name = "cost", success_column_name = "success",
-         asterisk_hjust = 0.006)
+         asterisk_hjust = 0.01)
 ```
 
 In some cases, we might have projects for iconic species that are socially and economically important for conservation. To ensure that for projects these species are funded--regardless of cost-efficiency or evolutionary benefit---we can "lock in" certain projects into the solution (conversely, we can also "lock out" certain projects if desired). Let us imagine that it is absolutely critical that the project for species S1 (named `"S1_project"`) receive funding. We can then generate another solution using the stingy heuristic algorithm with this constraint.
@@ -163,7 +167,7 @@ print(s3)
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s3, project_column_name = "name",
          cost_column_name = "cost", success_column_name = "success", n = 2,
-         asterisk_hjust = 0.006)
+         asterisk_hjust = 0.01)
 ```
 
 We can now calculate how much better the solution generated using the stingy heuristic algorithm performs than random.
@@ -173,7 +177,7 @@ We can now calculate how much better the solution generated using the stingy heu
 s2$objective - mean(s3$objective)
 ```
 
-Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is compared to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem (for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues & Gaston 2002).
+Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is compared to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem [for discussion on exact algorithms in conservation, see @r12; @r13].
 
 ```{r}
 # prioritize funding using stingy heuristic algorithm
@@ -191,7 +195,7 @@ print(s4)
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s4, project_column_name = "name",
          cost_column_name = "cost", success_column_name = "success",
-         asterisk_hjust = 0.006)
+         asterisk_hjust = 0.01)
 ```
 
 Now that we have the optimal solution (objective value = `r round(s4$objective,3)` million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = `r round(s2$objective,3)` million years of expected evolutionary history) was indeed suboptimal.
@@ -205,3 +209,5 @@ Please use the following citation to cite the _optimalppp R_ package in publicat
 ```{r, echo = FALSE, results = "asis", comment = ""}
 cat(paste0("Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (",format(Sys.time(), "%Y"),"). optimalppp: Optimal Project Prioritization Protocol. R package version ",packageDescription("optimalppp")$Version,". Available at https://github.com/prioritizr/optimalppp.\n"))
 ```
+
+## References

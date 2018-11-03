@@ -88,7 +88,8 @@
 <div id="tutorial" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tutorial" class="anchor"></a>Tutorial</h2>
-<p>Here we will provide a short example showing how the <em>optimalppp R</em> package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the <em>R</em> session, load the <em>optimalppp R</em> package, and load the <em>ggtree R</em> package to plot phylogenetic trees. Please note that you will need install the <em>ggtree</em> and <em>tidytree</em> package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the <code>ppp_plot</code> help file for <a href="https://prioritizr.github.io/optimalppp/reference/ppp_plot.html">installation instructions</a>).</p>
+<p>Here we will provide a short example showing how the <em>optimalppp R</em> package can be used to prioritize funding for conservation projects. With limited resources available for conservation <span class="citation">(Balmford <em>et al.</em> 2003)</span>, it is imperative that funds are prioritized for conservation projects which will the greatest outcome. This realization led to development of the ‘Project Prioritization Protocol’ <span class="citation">(Joseph <em>et al.</em> 2009)</span>. This method involves evaluating conservation projects according to (i) the probability that they are expected to succeed, (ii) the probability that species’ will persist if they are funded and succeed, and (iii) the amount of evolutionary history that is retained by the conserved species. Although several formulations exist for parameterizing evolutionary history <span class="citation">(evaluated in Bennett <em>et al.</em> 2014)</span>, one approach is the ‘expected phylogenetic diversity’ metric <span class="citation">(Faith 1992, 2008)</span>. Here, the <em>optimalppp R</em> package uses the expected phylogenetic diversity exclusively to assess how well different funding schemes preserve the evolutionary history in a given area. This package provides several methods for generating and evaluating solutions based on this metric. Notably, it can use exact algorithms (via <a href="http://gurobi.com/">Gurobi</a>) to identify solutions that are guaranteed to be optimal.</p>
+<p>To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the <em>R</em> session, load the <em>optimalppp R</em> package, and load the <em>ggtree R</em> package to plot phylogenetic trees. Please note that you will need install the <em>ggtree</em> and <em>tidytree</em> package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the <code>ppp_plot</code> help file for <a href="https://prioritizr.github.io/optimalppp/reference/ppp_plot.html">installation instructions</a>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">700</span>)
 <span class="kw">options</span>(<span class="dt">getClass.msg =</span> <span class="ot">FALSE</span>)
 <span class="kw">library</span>(optimalppp)
@@ -162,7 +163,7 @@ sim_tree &lt;-<span class="st"> </span>sim<span class="op">$</span>tree</code></
 ## #   S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;, S41 &lt;dbl&gt;, S42 &lt;dbl&gt;,
 ## #   S43 &lt;dbl&gt;, S44 &lt;dbl&gt;, S45 &lt;dbl&gt;, S46 &lt;dbl&gt;, S47 &lt;dbl&gt;, S48 &lt;dbl&gt;,
 ## #   S49 &lt;dbl&gt;, S5 &lt;dbl&gt;, S50 &lt;dbl&gt;, S6 &lt;dbl&gt;, S7 &lt;dbl&gt;, S8 &lt;dbl&gt;, S9 &lt;dbl&gt;</code></pre>
-<p>Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>500</code>), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using heuristic algorithms (e.g. Bennett <em>et al.</em> 2014), so let’s generate our first prioritization using this method.</p>
+<p>Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>500</code>), we can begin prioritizing funding for the conservation projects. Conventionally, conservation projects have been prioritized using heuristic algorithms <span class="citation">(e.g. Bennett <em>et al.</em> 2014)</span>, so let’s generate our first prioritization using this method.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
 s1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heuristic_solution.html">ppp_heuristic_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
                              <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
@@ -198,7 +199,7 @@ s1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="../reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s1, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
-         <span class="dt">asterisk_hjust =</span> <span class="fl">0.006</span>)</code></pre></div>
+         <span class="dt">asterisk_hjust =</span> <span class="fl">0.01</span>)</code></pre></div>
 <p><img src="optimalppp_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>In some cases, we might have projects for iconic species that are socially and economically important for conservation. To ensure that for projects these species are funded–regardless of cost-efficiency or evolutionary benefit—we can “lock in” certain projects into the solution (conversely, we can also “lock out” certain projects if desired). Let us imagine that it is absolutely critical that the project for species S1 (named <code>"S1_project"</code>) receive funding. We can then generate another solution using the stingy heuristic algorithm with this constraint.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set locked in column to only lock in species S3</span>
@@ -293,13 +294,13 @@ s3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_rand
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="../reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s3, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>, <span class="dt">n =</span> <span class="dv">2</span>,
-         <span class="dt">asterisk_hjust =</span> <span class="fl">0.006</span>)</code></pre></div>
+         <span class="dt">asterisk_hjust =</span> <span class="fl">0.01</span>)</code></pre></div>
 <p><img src="optimalppp_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>We can now calculate how much better the solution generated using the stingy heuristic algorithm performs than random.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate how much better solution performs than random</span>
 s2<span class="op">$</span>objective <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(s3<span class="op">$</span>objective)</code></pre></div>
 <pre><code>## [1] 0.7142387</code></pre>
-<p>Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is compared to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem (for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues &amp; Gaston 2002).</p>
+<p>Since the stingy heuristic algorithm performs much better than random, you might be thinking that the stingy heuristic algorithm is pretty good. But you would be wrong. This is because the heuristic algorithms provide no guarantees on solution quality relative to optimality. In other words, the objective value tells us how good the solution is, but it does not tell us how good the solution is compared to the best possible solution. Therefore we cannot possibly be confident that the solution is any good at all. Fortunately, we can use exact algorithms to find the optimal solution to this problem <span class="citation">(for discussion on exact algorithms in conservation, see Underhill 1994; Rodrigues &amp; Gaston 2002)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># prioritize funding using stingy heuristic algorithm</span>
 s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
                          <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
@@ -334,7 +335,7 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="../reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s4, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>,
-         <span class="dt">asterisk_hjust =</span> <span class="fl">0.006</span>)</code></pre></div>
+         <span class="dt">asterisk_hjust =</span> <span class="fl">0.01</span>)</code></pre></div>
 <p><img src="optimalppp_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Now that we have the optimal solution (objective value = 7.42 million years of expected evolutionary history), we can see that the solution generated by the stingy heuristic algorithm (objective value = 7.412 million years of expected evolutionary history) was indeed suboptimal.</p>
 </div>
@@ -344,6 +345,33 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
 <p><strong>This repository is still under active development. It is not yet ready for use.</strong></p>
 <p>Please use the following citation to cite the <em>optimalppp R</em> package in publications:</p>
 <p>Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (2018). optimalppp: Optimal Project Prioritization Protocol. R package version 0.0.0.1. Available at <a href="https://github.com/prioritizr/optimalppp" class="uri">https://github.com/prioritizr/optimalppp</a>.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<div id="refs" class="references">
+<div id="ref-r2">
+<p>Balmford, A., Gaston, K.J., Blyth, S., James, A. &amp; Kapos, V. (2003). Global variation in terrestrial conservation costs, conservation benefits, and unmet conservation needs. <em>Proceedings of the National Academy of Sciences</em>, <em>100</em>, 1046–1050.</p>
+</div>
+<div id="ref-r4">
+<p>Bennett, J.R., Elliott, G., Mellish, B., Joseph, L.N., Tulloch, A.I., Probert, W.J., Di Fonzo, M.M., Monks, J.M., Possingham, H.P. &amp; Maloney, R. (2014). Balancing phylogenetic diversity and species numbers in conservation prioritizat, using a case study of threatened species in New Zealand. <em>Biological Conservation</em>, <em>174</em>, 47–54.</p>
+</div>
+<div id="ref-r9">
+<p>Faith, D.P. (1992). Conservation evaluation and phylogenetic diversity. <em>Biological Conservation</em>, <em>61</em>, 1–10.</p>
+</div>
+<div id="ref-r8">
+<p>Faith, D.P. (2008). Threatened species and the potential loss of phylogenetic diversity: Conservation scenarios based on estimated extinction probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>, <em>22</em>, 1461–1470.</p>
+</div>
+<div id="ref-r3">
+<p>Joseph, L.N., Maloney, R.F. &amp; Possingham, H.P. (2009). Optimal allocation of resources among threatened species: A project prioritization protocol. <em>Conservation Biology</em>, <em>23</em>, 328–338.</p>
+</div>
+<div id="ref-r13">
+<p>Rodrigues, A.S. &amp; Gaston, K.J. (2002). Optimisation in reserve selection procedures—why not? <em>Biological Conservation</em>, <em>107</em>, 123–129.</p>
+</div>
+<div id="ref-r12">
+<p>Underhill, L. (1994). Optimal and suboptimal reserve selection algorithms. <em>Biological Conservation</em>, <em>70</em>, 85–87.</p>
+</div>
+</div>
 </div>
   </div>
 
@@ -355,6 +383,7 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
 <li><a href="#overview">Overview</a></li>
       <li><a href="#tutorial">Tutorial</a></li>
       <li><a href="#citation">Citation</a></li>
+      <li><a href="#references">References</a></li>
       </ul>
 </div>
       </div>
