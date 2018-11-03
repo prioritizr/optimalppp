@@ -5,7 +5,7 @@
 \title{Plot a 'Project Prioritization Protocol' solution}
 \usage{
 ppp_plot(x, tree, solution, project_column_name, cost_column_name,
-  success_column_name, n = 1L)
+  success_column_name, n = 1L, asterisk_hjust = 0.007)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -44,6 +44,9 @@ No missing values are permitted.}
 correspond to a row number in the argument to \code{solution}. Defaults
 to \code{1} such that the solution in the first row of the argument
 to \code{solution} is plotted.}
+
+\item{askterisk_hjust}{\code{numeric} horizontal adjustment parameter to
+manually align the asterisks in the plot. Defaults to 0.007.}
 }
 \description{
 Create a plot displaying a phylogenetic tree (phylogram) to visualize a

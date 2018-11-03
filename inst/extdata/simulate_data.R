@@ -4,7 +4,7 @@ source("R/ppp_simulate_data.R")
 set.seed(600)
 
 ## set simulation parameters
-number_species <- 50
+number_species <- 5
 cost_mean <- 100
 cost_sd <- 5
 success_min_probability <- 0.7

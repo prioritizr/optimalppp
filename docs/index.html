@@ -99,58 +99,46 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <span class="kw">options</span>(<span class="dt">getClass.msg =</span> <span class="ot">FALSE</span>)
 <span class="kw">library</span>(optimalppp)
 <span class="kw">library</span>(ggtree)</code></pre></div>
-<p>Now we will load some data sets that are distributed with the package. First, we will load the <code>sim_tree</code> object. This object describes the evolutionary relationships between 50 simulated species (named S1, S2, S3, …). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.</p>
+<p>Now we will load some data sets that are distributed with the package. First, we will load the <code>sim_tree</code> object. This object describes the evolutionary relationships between 5 simulated species (named S1, S2, S3, …, S5). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load data</span>
 <span class="kw">data</span>(sim_tree)
 
 <span class="co"># plot tree</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/ggtree">ggtree</a></span>(sim_tree) <span class="op">+</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_tiplab">geom_tiplab</a></span>(<span class="dt">size =</span> <span class="fl">2.5</span>) <span class="op">+</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="dv">1</span>)</code></pre></div>
-<pre><code>## Found more than one class "phylo" in cache; using the first, from namespace 'tidytree'</code></pre>
-<pre><code>## Also defined by 'treeio'</code></pre>
-<pre><code>## Found more than one class "phylo" in cache; using the first, from namespace 'tidytree'</code></pre>
-<pre><code>## Also defined by 'treeio'</code></pre>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="fl">0.1</span>)</code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Next, we will load the <code>sim_project_data</code> object. This object stores information about various conservation projects in a tabular format (i.e. <code>tibble</code>). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the <code>"name"</code> column contains the name of each project, the <code>"cost"</code> column contains the cost of each project, the <code>"success"</code> column denotes the probability of each project succeeding if it is funded, and the <code>"S1"</code>–<code>"SN"</code> columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project—the <code>"baseline_project"</code>—has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load data</span>
 <span class="kw">data</span>(sim_project_data)
 
 <span class="co"># print table</span>
-<span class="kw">print</span>(sim_project_data)</code></pre></div>
-<pre><code>## # A tibble: 51 x 55
-##    name   cost success locked_in locked_out    S1   S10   S11   S12   S13
-##    &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 S1_p…  94.4   0.807 FALSE     FALSE      0.743 0     0     0     0    
-##  2 S2_p… 101.    0.788 FALSE     FALSE      0     0.750 0     0     0    
-##  3 S3_p… 103.    0.832 FALSE     FALSE      0     0     0.561 0     0    
-##  4 S4_p…  99.2   0.945 FALSE     FALSE      0     0     0     0.590 0    
-##  5 S5_p…  99.9   0.829 FALSE     FALSE      0     0     0     0     0.789
-##  6 S6_p… 100.    0.970 FALSE     FALSE      0     0     0     0     0    
-##  7 S7_p…  93.9   0.723 FALSE     FALSE      0     0     0     0     0    
-##  8 S8_p…  91.7   0.981 FALSE     FALSE      0     0     0     0     0    
-##  9 S9_p… 100.    0.947 FALSE     FALSE      0     0     0     0     0    
-## 10 S10_…  93.1   0.787 FALSE     FALSE      0     0     0     0     0    
-## # ... with 41 more rows, and 45 more variables: S14 &lt;dbl&gt;, S15 &lt;dbl&gt;,
-## #   S16 &lt;dbl&gt;, S17 &lt;dbl&gt;, S18 &lt;dbl&gt;, S19 &lt;dbl&gt;, S2 &lt;dbl&gt;, S20 &lt;dbl&gt;,
-## #   S21 &lt;dbl&gt;, S22 &lt;dbl&gt;, S23 &lt;dbl&gt;, S24 &lt;dbl&gt;, S25 &lt;dbl&gt;, S26 &lt;dbl&gt;,
-## #   S27 &lt;dbl&gt;, S28 &lt;dbl&gt;, S29 &lt;dbl&gt;, S3 &lt;dbl&gt;, S30 &lt;dbl&gt;, S31 &lt;dbl&gt;,
-## #   S32 &lt;dbl&gt;, S33 &lt;dbl&gt;, S34 &lt;dbl&gt;, S35 &lt;dbl&gt;, S36 &lt;dbl&gt;, S37 &lt;dbl&gt;,
-## #   S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;, S41 &lt;dbl&gt;, S42 &lt;dbl&gt;,
-## #   S43 &lt;dbl&gt;, S44 &lt;dbl&gt;, S45 &lt;dbl&gt;, S46 &lt;dbl&gt;, S47 &lt;dbl&gt;, S48 &lt;dbl&gt;,
-## #   S49 &lt;dbl&gt;, S5 &lt;dbl&gt;, S50 &lt;dbl&gt;, S6 &lt;dbl&gt;, S7 &lt;dbl&gt;, S8 &lt;dbl&gt;, S9 &lt;dbl&gt;</code></pre>
-<p>Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>500</code>), So, let’s cut to the chase and find an optimal solution.</p>
+<span class="kw">head</span>(<span class="kw">as.data.frame</span>(sim_project_data))</code></pre></div>
+<pre><code>##               name      cost   success locked_in locked_out        S1
+## 1       S1_project  94.39929 0.8470486     FALSE      FALSE 0.8022048
+## 2       S2_project 100.99137 0.9694998     FALSE      FALSE 0.0000000
+## 3       S3_project 103.22583 0.7323494     FALSE       TRUE 0.0000000
+## 4       S4_project  99.24274 0.9792034     FALSE      FALSE 0.0000000
+## 5       S5_project  99.90791 0.7142838      TRUE      FALSE 0.0000000
+## 6 baseline_project   0.00000 1.0000000     FALSE      FALSE 0.2933155
+##          S2         S3        S4        S5
+## 1 0.0000000 0.00000000 0.0000000 0.0000000
+## 2 0.8079388 0.00000000 0.0000000 0.0000000
+## 3 0.0000000 0.67841372 0.0000000 0.0000000
+## 4 0.0000000 0.00000000 0.7034556 0.0000000
+## 5 0.0000000 0.00000000 0.0000000 0.6569473
+## 6 0.3883986 0.01203652 0.1952440 0.1237303</code></pre>
+<p>Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>200</code>), So, let’s cut to the chase and find an optimal solution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
-                         <span class="dt">budget =</span> <span class="dv">500</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
+                         <span class="dt">budget =</span> <span class="dv">200</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
                          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
                          <span class="dt">success_column_name =</span> <span class="st">"success"</span>)</code></pre></div>
 <p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, …, <code>"S50_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
-<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.696 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
+<p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 3.046 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>
 <span class="kw"><a href="reference/ppp_plot.html">ppp_plot</a></span>(sim_project_data, sim_tree, s1, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
-         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>)</code></pre></div>
-<pre><code>## Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'</code></pre>
-<pre><code>## Also defined by 'treeio'</code></pre>
+         <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>, <span class="dt">success_column_name =</span> <span class="st">"success"</span>) <span class="op">+</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggtree/topics/geom_treescale">geom_treescale</a></span>(<span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">offset =</span> <span class="fl">0.1</span>)</code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>This has just been a taster of the <em>optimalppp R</em> package. For more information, see the <a href="https://prioritizr.github.io/optimalppp/articles/optimalppp.html">package vignette</a>.</p>
 </div>

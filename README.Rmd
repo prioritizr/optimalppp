@@ -57,16 +57,16 @@ library(ggtree)
 options(getClass.msg = FALSE)
 ```
 
-Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between `r length(sim_tree$tip.label)` simulated species (named S1, S2, S3, ...). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.
+Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between `r length(sim_tree$tip.label)` simulated species (named S1, S2, S3, ..., `r max(sim_tree$tip.label)`). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # load data
 data(sim_tree)
 
 # plot tree
 ggtree(sim_tree) +
 geom_tiplab(size = 2.5) +
-geom_treescale(width = 2, x = 0, offset = 1)
+geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
 
 Next, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the `"name"` column contains the name of each project, the `"cost"` column contains the cost of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, and the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project---the `"baseline_project"`---has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
@@ -76,14 +76,14 @@ Next, we will load the `sim_project_data` object. This object stores information
 data(sim_project_data)
 
 # print table
-print(sim_project_data)
+head(as.data.frame(sim_project_data))
 ```
 
-Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`500`), So, let's cut to the chase and find an optimal solution.
+Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`200`), So, let's cut to the chase and find an optimal solution.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 s1 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
-                         budget = 500, project_column_name = "name",
+                         budget = 200, project_column_name = "name",
                          cost_column_name = "cost",
                          success_column_name = "success")
 ```
@@ -95,7 +95,8 @@ Here, the objective value (in the `"objective"` column) denotes the amount of ev
 ```{r}
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
-         cost_column_name = "cost", success_column_name = "success")
+         cost_column_name = "cost", success_column_name = "success") +
+geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
 
 This has just been a taster of the _optimalppp R_ package. For more information, see the [package vignette](https://prioritizr.github.io/optimalppp/articles/optimalppp.html).

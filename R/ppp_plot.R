@@ -17,6 +17,9 @@ NULL
 #'   to \code{1} such that the solution in the first row of the argument
 #'   to \code{solution} is plotted.
 #'
+#' @param askterisk_hjust \code{numeric} horizontal adjustment parameter to
+#'   manually align the asterisks in the plot. Defaults to 0.007.
+#'
 #' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
 #'   \pkg{treeio} packages. Since these packages are distributed exclusively
 #'   through \href{https://bioconductor.org}{Bioconductor}, and are not
@@ -108,7 +111,7 @@ NULL
 #' ggtitle("solution")
 #' @export
 ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
-                     success_column_name, n = 1L) {
+                     success_column_name, n = 1L, asterisk_hjust = 0.007) {
   # assertions
   ## assert that ggtree R package is installed
   assertthat::assert_that(requireNamespace("ggtree", quietly = TRUE),
@@ -140,7 +143,8 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
                           assertthat::noNA(x[[success_column_name]]),
                           assertthat::is.count(n),
                           is.finite(n),
-                          isTRUE(n <= nrow(solution)))
+                          isTRUE(n <= nrow(solution)),
+                          assertthat::is.number(asterisk_hjust))
   ## coerce factor species names to character
   if (is.factor(x[[project_column_name]]))
     x[[project_column_name]] <- as.character(x[[project_column_name]])
@@ -180,6 +184,7 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
   spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
+
   ## pre-compute probabilities that each branch will persist
   branch_probs <- rcpp_branch_probabilities(spp_probs, branch_matrix(tree),
                                             methods::as(as.matrix(solution),
@@ -194,13 +199,13 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
     paste0(tree2$parent, "_", tree2$node),
     paste0(tree$edge[, 1], "_", tree$edge[, 2]))]
   tree2$label <- paste0("   ", tree2$label)
-  tree2 <- tidytree::as.treedata(tree2)
+  tree2 <- suppressMessages(suppressWarnings(tidytree::as.treedata(tree2)))
 
   ## calculate padding for points
   point_padding <- max(rowSums(as.matrix(branch_matrix(tree)) *
                                matrix(tree$edge.length, ncol = nrow(tree$edge),
-                                      nrow = length(tree$tip.label)))) * 0.01
-
+                                      nrow = length(tree$tip.label)))) *
+                   asterisk_hjust
   ## make plot
   p <- ggtree::ggtree(tree2, ggplot2::aes_string(color = "prob"), size = 1.1) +
        ggtree::geom_tippoint(

@@ -32,7 +32,7 @@ library(optimalppp)
 library(ggtree)
 ```
 
-Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between 50 simulated species (named S1, S2, S3, ...). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.
+Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between 5 simulated species (named S1, S2, S3, ..., S5). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.
 
 ``` r
 # load data
@@ -41,16 +41,8 @@ data(sim_tree)
 # plot tree
 ggtree(sim_tree) +
 geom_tiplab(size = 2.5) +
-geom_treescale(width = 2, x = 0, offset = 1)
+geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
-
-    ## Found more than one class "phylo" in cache; using the first, from namespace 'tidytree'
-
-    ## Also defined by 'treeio'
-
-    ## Found more than one class "phylo" in cache; using the first, from namespace 'tidytree'
-
-    ## Also defined by 'treeio'
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
@@ -61,53 +53,43 @@ Next, we will load the `sim_project_data` object. This object stores information
 data(sim_project_data)
 
 # print table
-print(sim_project_data)
+head(as.data.frame(sim_project_data))
 ```
 
-    ## # A tibble: 51 x 55
-    ##    name   cost success locked_in locked_out    S1   S10   S11   S12   S13
-    ##    <chr> <dbl>   <dbl> <lgl>     <lgl>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    NA
-    NA
-    NA
-    NA
-    NA
-    NA
-    NA
-    NA
-    NA
-    NA
-    ## # ... with 41 more rows, and 45 more variables: S14 <dbl>, S15 <dbl>,
-    ## #   S16 <dbl>, S17 <dbl>, S18 <dbl>, S19 <dbl>, S2 <dbl>, S20 <dbl>,
-    ## #   S21 <dbl>, S22 <dbl>, S23 <dbl>, S24 <dbl>, S25 <dbl>, S26 <dbl>,
-    ## #   S27 <dbl>, S28 <dbl>, S29 <dbl>, S3 <dbl>, S30 <dbl>, S31 <dbl>,
-    ## #   S32 <dbl>, S33 <dbl>, S34 <dbl>, S35 <dbl>, S36 <dbl>, S37 <dbl>,
-    ## #   S38 <dbl>, S39 <dbl>, S4 <dbl>, S40 <dbl>, S41 <dbl>, S42 <dbl>,
-    ## #   S43 <dbl>, S44 <dbl>, S45 <dbl>, S46 <dbl>, S47 <dbl>, S48 <dbl>,
-    ## #   S49 <dbl>, S5 <dbl>, S50 <dbl>, S6 <dbl>, S7 <dbl>, S8 <dbl>, S9 <dbl>
+    ##               name      cost   success locked_in locked_out        S1
+    ## 1       S1_project  94.39929 0.8470486     FALSE      FALSE 0.8022048
+    ## 2       S2_project 100.99137 0.9694998     FALSE      FALSE 0.0000000
+    ## 3       S3_project 103.22583 0.7323494     FALSE       TRUE 0.0000000
+    ## 4       S4_project  99.24274 0.9792034     FALSE      FALSE 0.0000000
+    ## 5       S5_project  99.90791 0.7142838      TRUE      FALSE 0.0000000
+    ## 6 baseline_project   0.00000 1.0000000     FALSE      FALSE 0.2933155
+    ##          S2         S3        S4        S5
+    ## 1 0.0000000 0.00000000 0.0000000 0.0000000
+    ## 2 0.8079388 0.00000000 0.0000000 0.0000000
+    ## 3 0.0000000 0.67841372 0.0000000 0.0000000
+    ## 4 0.0000000 0.00000000 0.7034556 0.0000000
+    ## 5 0.0000000 0.00000000 0.0000000 0.6569473
+    ## 6 0.3883986 0.01203652 0.1952440 0.1237303
 
-Let us assume that our resources are limited such that we can only spend, at most, $500 on funding conservation projects. In other words, our budget is capped at $500. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`500`), So, let's cut to the chase and find an optimal solution.
+Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`200`), So, let's cut to the chase and find an optimal solution.
 
 ``` r
 s1 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
-                         budget = 500, project_column_name = "name",
+                         budget = 200, project_column_name = "name",
                          cost_column_name = "cost",
                          success_column_name = "success")
 ```
 
 The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"S50_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
 
-Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. 6.696 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
+Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. 3.046 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
 
 ``` r
 # visualize solution
 ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
-         cost_column_name = "cost", success_column_name = "success")
+         cost_column_name = "cost", success_column_name = "success") +
+geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
-
-    ## Found more than one class "treedata" in cache; using the first, from namespace 'tidytree'
-
-    ## Also defined by 'treeio'
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 

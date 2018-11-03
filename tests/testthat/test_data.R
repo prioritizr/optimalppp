@@ -4,8 +4,8 @@ test_that("sim_project_data", {
   # data.frame properties
   data(sim_project_data)
   expect_is(sim_project_data, c("data.frame", "tbl_df"))
-  expect_equal(ncol(sim_project_data), 55)
-  expect_equal(nrow(sim_project_data), 51)
+  expect_equal(ncol(sim_project_data), 10)
+  expect_equal(nrow(sim_project_data), 6)
   # cost column
   expect_is(sim_project_data$cost, "numeric")
   expect_true(all(sim_project_data$cost >= 0))
@@ -37,5 +37,5 @@ test_that("sim_tree", {
   data(sim_tree)
   expect_is(sim_tree, "phylo")
   expect_is(suppressMessages(ape::checkValidPhylo(sim_tree)), "NULL")
-  expect_equal(sort(sim_tree$tip.label), sort(paste0("S", seq_len(50))))
+  expect_equal(sort(sim_tree$tip.label), sort(paste0("S", seq_len(5))))
 })

@@ -34,7 +34,7 @@ test_that("rcpp_mip_formulation", {
   expect_equal(length(f1$pwl), length(f2$pwl))
   for (i in seq_along(f1$pwl)) {
     expect_equal(f1$pwl[[1]]$var, f2$pwl[[1]]$var)
-    expect_true(max(abs(f1$pwl[[1]]$x - f2$pwl[[1]]$x)) < 1e-5)
+    expect_true(max(abs(f1$pwl[[1]]$x - f2$pwl[[1]]$x)) < 1e-4)
     expect_true(max(abs(f1$pwl[[1]]$y - f2$pwl[[1]]$y)) < 1e-5)
   }
 })
