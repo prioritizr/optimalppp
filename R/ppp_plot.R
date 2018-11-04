@@ -4,11 +4,12 @@ NULL
 #' Plot a 'Project Prioritization Protocol' solution
 #'
 #' Create a plot displaying a phylogenetic tree (phylogram) to visualize a
-#' solution to the 'Project Prioritization Protocol' problem. In this plot, each
+#' solution to the 'Project Prioritization Protocol' problem
+#' (Joseph, Maloney & Possingham 2009). In this plot, each
 #' phylogenetic branch is colored according to probability
-#' that it is expected to persist into the future. Additionally, species that
-#' benefit from at least a single funded project with a non-zero cost are
-#' denoted with a red asterisk symbol.
+#' that it is expected to persist into the future (based on Faith 2008).
+#' Additionally, species that benefit from at least a single funded project
+#' with a non-zero cost are denoted with a red asterisk symbol.
 #'
 #' @inheritParams help
 #'

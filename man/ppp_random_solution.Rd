@@ -11,8 +11,22 @@ ppp_random_solution(x, tree, budget, project_column_name, cost_column_name,
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 table containing project data. Here, each row should correspond to
-a different project and columns should contain that correspond to
-each project. See the Details section below for more information.}
+a different project and columns should contain data that correspond to
+each project. This object should contain data that denote (i)
+the name of each project (specified in the argument to
+\code{project_column_name}), (ii) the cost of each project
+(specified in the argument to \code{cost_column_name}), (iii) the
+probability that each project will succeed if it is funded
+(specified in the argument to \code{success}),
+and (iv) the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to \code{tree}).
+To account for the combined benefits of multiple actions (e.g. baiting
+and trapping different invasive species in the same area), additional
+projects should be created that indicate the combined cost and
+corresponding species' persistence probabilities. Furthermore, this object
+must have a baseline project, with a zero cost, that represents the
+probability that each species will persist if no other conservation
+project is funded.}
 
 \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
 evolutionary history of the species affected by the conservation
@@ -61,23 +75,24 @@ set number of solutions that are closest to optimality. No missing values
 are permitted. Defaults to \code{1}.}
 }
 \description{
-Generate random solutions for the 'Project Prioritization Protocol' problem.
+Generate random solutions for the 'Project Prioritization Protocol'
+problem (Joseph, Maloney & Possingham 2009).
 Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
-random decision in order to evaluate their effectiveness.
+random decisions in order to evaluate their effectiveness.
 \strong{When informing conservation actions, it is strongly recommended to
 use the \code{\link{ppp_exact_solution}} method because it can identify
 optimal funding schemes with a guarantee.}
 }
 \details{
 The random solutions are generated using the following algorithm.
- All projects are initially selected for funding. Next,
- a project is randomly deselected for funding (removed), and this step
- is repeated until the cost of the remaining projects is within the
- budget. Note that projects that have zero cost are never deselected for
- funding, and are always included in the solutions. The different solutions
- are then evaluated according to the 'expected phylogenetic diversity'
- metric (Faith 2008).
+ Firstly, all projects are initially selected for funding (excepting projects
+ which are locked out). Secondly, a project is randomly selected and
+ defunded. Thirdly, the second step is
+ repeated until the total cost of the remaining projects that are selected
+ for funding is within the budget. Note that projects that have zero cost
+ are never deselected for funding, and are always included in the solutions.
+ Additionally, projects that are locked in are never deselected for funding.
 }
 \examples{
 # load built-in data
@@ -114,6 +129,10 @@ Faith DP (2008) Threatened species and the potential loss of
 phylogenetic diversity: conservation scenarios based on estimated extinction
 probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
 \strong{22}: 1461--1470.
+
+Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+resources among threatened species: A project prioritization protocol.
+\emph{Conservation Biology}, \strong{23}, 328--338.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

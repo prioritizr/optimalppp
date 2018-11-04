@@ -9,8 +9,22 @@ NULL
 #'
 #' @param x \code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 #'   table containing project data. Here, each row should correspond to
-#'   a different project and columns should contain that correspond to
-#'   each project. See the Details section below for more information.
+#'   a different project and columns should contain data that correspond to
+#'   each project. This object should contain data that denote (i)
+#'   the name of each project (specified in the argument to
+#'   \code{project_column_name}), (ii) the cost of each project
+#'   (specified in the argument to \code{cost_column_name}), (iii) the
+#'   probability that each project will succeed if it is funded
+#'   (specified in the argument to \code{success}),
+#'   and (iv) the enhanced probability that each species will persist if it
+#'   is funded (specified as the tip labels in the argument to \code{tree}).
+#'   To account for the combined benefits of multiple actions (e.g. baiting
+#'   and trapping different invasive species in the same area), additional
+#'   projects should be created that indicate the combined cost and
+#'   corresponding species' persistence probabilities. Furthermore, this object
+#'   must have a baseline project, with a zero cost, that represents the
+#'   probability that each species will persist if no other conservation
+#'   project is funded.
 #'
 #' @param tree \code{\link[ape]{phylo}} phylogenetic tree describing the
 #'   evolutionary history of the species affected by the conservation

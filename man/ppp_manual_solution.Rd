@@ -11,8 +11,22 @@ ppp_manual_solution(x, tree, solution, project_column_name,
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
 table containing project data. Here, each row should correspond to
-a different project and columns should contain that correspond to
-each project. See the Details section below for more information.}
+a different project and columns should contain data that correspond to
+each project. This object should contain data that denote (i)
+the name of each project (specified in the argument to
+\code{project_column_name}), (ii) the cost of each project
+(specified in the argument to \code{cost_column_name}), (iii) the
+probability that each project will succeed if it is funded
+(specified in the argument to \code{success}),
+and (iv) the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to \code{tree}).
+To account for the combined benefits of multiple actions (e.g. baiting
+and trapping different invasive species in the same area), additional
+projects should be created that indicate the combined cost and
+corresponding species' persistence probabilities. Furthermore, this object
+must have a baseline project, with a zero cost, that represents the
+probability that each species will persist if no other conservation
+project is funded.}
 
 \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
 evolutionary history of the species affected by the conservation
@@ -75,12 +89,9 @@ A \code{\link[tibble]{tibble}} object containing the
  }
 }
 \description{
-Manually specify funding schemes for conservation projects and calculate
-their effectiveness.
-}
-\details{
-The effectiveness of different funding schemes is calculated
-  following the "expected phylogenetic diversity" metric (Faith 2008).
+Manually specify funding schemes for conservation projects under the
+'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and
+evaluate their effectiveness (Faith 2008).
 }
 \examples{
 # set seed for reproducibility
@@ -138,6 +149,10 @@ Faith DP (2008) Threatened species and the potential loss of
 phylogenetic diversity: conservation scenarios based on estimated extinction
 probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
 \strong{22}: 1461--1470.
+
+Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+resources among threatened species: A project prioritization protocol.
+\emph{Conservation Biology}, \strong{23}, 328--338.
 }
 \seealso{
 For other methods for generating solutions for the 'Project

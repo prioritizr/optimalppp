@@ -91,7 +91,6 @@
 <p>Here we will provide a short example showing how the <em>optimalppp R</em> package can be used to prioritize funding for conservation projects. With limited resources available for conservation <span class="citation">(Balmford <em>et al.</em> 2003)</span>, it is imperative that funds are prioritized for conservation projects which will the greatest outcome. This realization led to development of the ‘Project Prioritization Protocol’ <span class="citation">(Joseph <em>et al.</em> 2009)</span>. This method involves evaluating conservation projects according to (i) the probability that they are expected to succeed, (ii) the probability that species’ will persist if they are funded and succeed, and (iii) the amount of evolutionary history that is retained by the conserved species. Although several formulations exist for parameterizing evolutionary history <span class="citation">(evaluated in Bennett <em>et al.</em> 2014)</span>, one approach is the ‘expected phylogenetic diversity’ metric <span class="citation">(Faith 1992, 2008)</span>. Here, the <em>optimalppp R</em> package uses the expected phylogenetic diversity exclusively to assess how well different funding schemes preserve the evolutionary history in a given area. This package provides several methods for generating and evaluating solutions based on this metric. Notably, it can use exact algorithms (via <a href="http://gurobi.com/">Gurobi</a>) to identify solutions that are guaranteed to be optimal.</p>
 <p>To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the <em>R</em> session, load the <em>optimalppp R</em> package, and load the <em>ggtree R</em> package to plot phylogenetic trees. Please note that you will need install the <em>ggtree</em> separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN). This can be achieved with the following command <code>source("https://bioconductor.org/biocLite.R");biocLite("ggtree")</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">700</span>)
-<span class="kw">options</span>(<span class="dt">getClass.msg =</span> <span class="ot">FALSE</span>)
 <span class="kw">library</span>(optimalppp)
 <span class="kw">library</span>(ggtree)</code></pre></div>
 <p>Now we will simulate a data set. This data set will contain conservations projects for 50 species and also phylogenetic data that describe the evolutionary relationships between them. To learn more about what these parameters mean, check out the help page for the <code>ppp_simulate_data</code> function.</p>
@@ -145,19 +144,9 @@ sim_tree &lt;-<span class="st"> </span>sim<span class="op">$</span>tree</code></
 ##  8 S8_p…  95.5   0.710 FALSE     FALSE      0     0     0     0     0    
 ##  9 S9_p…  96.0   0.947 FALSE     FALSE      0     0     0     0     0    
 ## 10 S10_…  95.5   0.781 FALSE     TRUE       0     0     0     0     0    
-##      S14   S15   S16   S17   S18   S19    S2   S20   S21   S22   S23   S24
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 0     0     0     0     0         0     0     0     0     0     0     0
-##  2 0     0     0     0     0         0     0     0     0     0     0     0
-##  3 0     0     0     0     0         0     0     0     0     0     0     0
-##  4 0     0     0     0     0         0     0     0     0     0     0     0
-##  5 0     0     0     0     0         0     0     0     0     0     0     0
-##  6 0.600 0     0     0     0         0     0     0     0     0     0     0
-##  7 0     0.668 0     0     0         0     0     0     0     0     0     0
-##  8 0     0     0.505 0     0         0     0     0     0     0     0     0
-##  9 0     0     0     0.725 0         0     0     0     0     0     0     0
-## 10 0     0     0     0     0.518     0     0     0     0     0     0     0
-## # ... with 41 more rows, and 33 more variables: S25 &lt;dbl&gt;, S26 &lt;dbl&gt;,
+## # ... with 41 more rows, and 45 more variables: S14 &lt;dbl&gt;, S15 &lt;dbl&gt;,
+## #   S16 &lt;dbl&gt;, S17 &lt;dbl&gt;, S18 &lt;dbl&gt;, S19 &lt;dbl&gt;, S2 &lt;dbl&gt;, S20 &lt;dbl&gt;,
+## #   S21 &lt;dbl&gt;, S22 &lt;dbl&gt;, S23 &lt;dbl&gt;, S24 &lt;dbl&gt;, S25 &lt;dbl&gt;, S26 &lt;dbl&gt;,
 ## #   S27 &lt;dbl&gt;, S28 &lt;dbl&gt;, S29 &lt;dbl&gt;, S3 &lt;dbl&gt;, S30 &lt;dbl&gt;, S31 &lt;dbl&gt;,
 ## #   S32 &lt;dbl&gt;, S33 &lt;dbl&gt;, S34 &lt;dbl&gt;, S35 &lt;dbl&gt;, S36 &lt;dbl&gt;, S37 &lt;dbl&gt;,
 ## #   S38 &lt;dbl&gt;, S39 &lt;dbl&gt;, S4 &lt;dbl&gt;, S40 &lt;dbl&gt;, S41 &lt;dbl&gt;, S42 &lt;dbl&gt;,
@@ -176,10 +165,9 @@ s1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 ##   objective budget  cost optimal method S1_project S2_project S3_project
 ##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
 ## 1      7.53    500  487. NA      heuri… FALSE      FALSE      FALSE     
-##   S4_project S5_project S6_project S7_project S8_project S9_project
-##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-## # ... with 43 more variables: S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
+## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
+## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
 ## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
 ## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
 ## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
@@ -218,10 +206,9 @@ s2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_heur
 ##   objective budget  cost optimal method S1_project S2_project S3_project
 ##       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
 ## 1      7.41    500  489. NA      heuri… TRUE       FALSE      FALSE     
-##   S4_project S5_project S6_project S7_project S8_project S9_project
-##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-## # ... with 43 more variables: S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
+## # ... with 49 more variables: S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;,
+## #   S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;,
+## #   S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;,
 ## #   S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;,
 ## #   S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;,
 ## #   S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;, S20_project &lt;lgl&gt;,
@@ -264,19 +251,9 @@ s3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_rand
 ##  8        8      6.61    500  416. NA      random TRUE       FALSE     
 ##  9        9      6.64    500  497. NA      random TRUE       TRUE      
 ## 10       10      6.79    500  496. NA      random TRUE       FALSE     
-##    S3_project S4_project S5_project S6_project S7_project S8_project
-##    &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-##  1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  2 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  3 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  4 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  5 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  6 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  7 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-##  8 FALSE      FALSE      FALSE      TRUE       FALSE      FALSE     
-##  9 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-## 10 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-## # ... with 490 more rows, and 43 more variables: S9_project &lt;lgl&gt;,
+## # ... with 490 more rows, and 49 more variables: S3_project &lt;lgl&gt;,
+## #   S4_project &lt;lgl&gt;, S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;,
+## #   S7_project &lt;lgl&gt;, S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;,
 ## #   S10_project &lt;lgl&gt;, S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;,
 ## #   S13_project &lt;lgl&gt;, S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;,
 ## #   S16_project &lt;lgl&gt;, S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;,
@@ -314,10 +291,9 @@ s4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ppp_exac
 ##   solution objective budget  cost optimal method S1_project S2_project
 ##      &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;  &lt;lgl&gt;      &lt;lgl&gt;     
 ## 1        1      7.42    500  494. TRUE    exact  TRUE       FALSE     
-##   S3_project S4_project S5_project S6_project S7_project S8_project
-##   &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;      &lt;lgl&gt;     
-## 1 FALSE      FALSE      FALSE      FALSE      FALSE      FALSE     
-## # ... with 43 more variables: S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
+## # ... with 49 more variables: S3_project &lt;lgl&gt;, S4_project &lt;lgl&gt;,
+## #   S5_project &lt;lgl&gt;, S6_project &lt;lgl&gt;, S7_project &lt;lgl&gt;,
+## #   S8_project &lt;lgl&gt;, S9_project &lt;lgl&gt;, S10_project &lt;lgl&gt;,
 ## #   S11_project &lt;lgl&gt;, S12_project &lt;lgl&gt;, S13_project &lt;lgl&gt;,
 ## #   S14_project &lt;lgl&gt;, S15_project &lt;lgl&gt;, S16_project &lt;lgl&gt;,
 ## #   S17_project &lt;lgl&gt;, S18_project &lt;lgl&gt;, S19_project &lt;lgl&gt;,

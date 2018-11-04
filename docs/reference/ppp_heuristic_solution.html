@@ -34,8 +34,9 @@ algorithms — ppp_heuristic_solution • optimalppp</title>
 <meta property="og:title" content="Solve the 'Project Prioritization Protocol' problem using heuristic
 algorithms — ppp_heuristic_solution" />
 
-<meta property="og:description" content="Prioritize funding for conservation projects using a stingy heuristic
-algorithm (Joseph et al. 2009; Bennett et al. 2014).
+<meta property="og:description" content="Prioritize funding for conservation projects under the 'Project
+Prioritization Protocol' (Joseph, Maloney &amp;amp; Possingham 2009) using a stingy
+heuristic algorithm (Bennett et al. 2014).
 Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
 are optimal (Underhill 1994; Rodrigues &amp;amp; Gaston 2002)." />
@@ -117,8 +118,9 @@ algorithms</h1>
 
     <div class="ref-description">
     
-    <p>Prioritize funding for conservation projects using a stingy heuristic
-algorithm (Joseph <em>et al.</em> 2009; Bennett <em>et al</em>. 2014).
+    <p>Prioritize funding for conservation projects under the 'Project
+Prioritization Protocol' (Joseph, Maloney &amp; Possingham 2009) using a stingy
+heuristic algorithm (Bennett <em>et al</em>. 2014).
 <strong>Although this algorithm can deliver solutions that perform
 better than random, it is extremely unlikely to identify solutions that
 are optimal (Underhill 1994; Rodrigues &amp; Gaston 2002).</strong></p>
@@ -136,8 +138,22 @@ are optimal (Underhill 1994; Rodrigues &amp; Gaston 2002).</strong></p>
       <th>x</th>
       <td><p><code><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></code> or <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code>
 table containing project data. Here, each row should correspond to
-a different project and columns should contain that correspond to
-each project. See the Details section below for more information.</p></td>
+a different project and columns should contain data that correspond to
+each project. This object should contain data that denote (i)
+the name of each project (specified in the argument to
+<code>project_column_name</code>), (ii) the cost of each project
+(specified in the argument to <code>cost_column_name</code>), (iii) the
+probability that each project will succeed if it is funded
+(specified in the argument to <code>success</code>),
+and (iv) the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to <code>tree</code>).
+To account for the combined benefits of multiple actions (e.g. baiting
+and trapping different invasive species in the same area), additional
+projects should be created that indicate the combined cost and
+corresponding species' persistence probabilities. Furthermore, this object
+must have a baseline project, with a zero cost, that represents the
+probability that each species will persist if no other conservation
+project is funded.</p></td>
     </tr>
     <tr>
       <th>tree</th>
@@ -241,8 +257,9 @@ are permitted. Defaults to <code>1</code>.</p></td>
 
     <p>Briefly, this algorithm works by starting off with all
 conservation projects selected for funding and then begins iteratively
-defunding (removing) projects until the budget is met (Joseph <em>et al.</em>
-2009; Bennett <em>et al</em>. 2014). In a given iteration,
+defunding (removing) projects until the budget is met
+(Joseph, Maloney &amp; Possingham 2009; Bennett <em>et al</em>. 2014). In a given
+iteration,
 each project is evaluated in terms of the amount of evolutionary
 history that is expected to be lost per unit cost when the project is not
 funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),

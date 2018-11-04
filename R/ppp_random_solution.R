@@ -3,10 +3,11 @@ NULL
 
 #' Random solutions for the 'Project Prioritization Protocol' problem
 #'
-#' Generate random solutions for the 'Project Prioritization Protocol' problem.
+#' Generate random solutions for the 'Project Prioritization Protocol'
+#' problem (Joseph, Maloney & Possingham 2009).
 #' Although conservation projects should, ideally, not be funded based on random
 #' allocations, it can be useful to compare the effectiveness of solutions to
-#' random decision in order to evaluate their effectiveness.
+#' random decisions in order to evaluate their effectiveness.
 #' \strong{When informing conservation actions, it is strongly recommended to
 #' use the \code{\link{ppp_exact_solution}} method because it can identify
 #' optimal funding schemes with a guarantee.}
@@ -14,13 +15,13 @@ NULL
 #' @inheritParams help
 #'
 #' @details The random solutions are generated using the following algorithm.
-#'  All projects are initially selected for funding. Next,
-#'  a project is randomly deselected for funding (removed), and this step
-#'  is repeated until the cost of the remaining projects is within the
-#'  budget. Note that projects that have zero cost are never deselected for
-#'  funding, and are always included in the solutions. The different solutions
-#'  are then evaluated according to the 'expected phylogenetic diversity'
-#'  metric (Faith 2008).
+#'  Firstly, all projects are initially selected for funding (excepting projects
+#'  which are locked out). Secondly, a project is randomly selected and
+#'  defunded. Thirdly, the second step is
+#'  repeated until the total cost of the remaining projects that are selected
+#'  for funding is within the budget. Note that projects that have zero cost
+#'  are never deselected for funding, and are always included in the solutions.
+#'  Additionally, projects that are locked in are never deselected for funding.
 #'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
@@ -33,6 +34,10 @@ NULL
 #' phylogenetic diversity: conservation scenarios based on estimated extinction
 #' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
 #' \strong{22}: 1461--1470.
+#'
+#' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+#' resources among threatened species: A project prioritization protocol.
+#' \emph{Conservation Biology}, \strong{23}, 328--338.
 #'
 #' @examples
 #' # load built-in data

@@ -33,7 +33,8 @@
 <meta property="og:title" content="Solve the 'Project Prioritization Protocol' problem using exact algorithms — ppp_exact_solution" />
 
 <meta property="og:description" content="Prioritize funding for conservation projects using exact algorithms. Unlike
-other methods for generating prioritizations, this method can identify
+other methods for solving the under the 'Project Prioritization Protocol'
+(Joseph, Maloney &amp;amp; Possingham 2009), this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
 optimality gap; see Underhill 1994; Rodrigues &amp;amp; Gaston 2002).
 As a consequence, it is strongly recommended to use
@@ -116,7 +117,8 @@ this method for developing project prioritizations." />
     <div class="ref-description">
     
     <p>Prioritize funding for conservation projects using exact algorithms. Unlike
-other methods for generating prioritizations, this method can identify
+other methods for solving the under the 'Project Prioritization Protocol'
+(Joseph, Maloney &amp; Possingham 2009), this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
 optimality gap; see Underhill 1994; Rodrigues &amp; Gaston 2002).
 <strong>As a consequence, it is strongly recommended to use
@@ -137,8 +139,22 @@ this method for developing project prioritizations.</strong></p>
       <th>x</th>
       <td><p><code><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></code> or <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code>
 table containing project data. Here, each row should correspond to
-a different project and columns should contain that correspond to
-each project. See the Details section below for more information.</p></td>
+a different project and columns should contain data that correspond to
+each project. This object should contain data that denote (i)
+the name of each project (specified in the argument to
+<code>project_column_name</code>), (ii) the cost of each project
+(specified in the argument to <code>cost_column_name</code>), (iii) the
+probability that each project will succeed if it is funded
+(specified in the argument to <code>success</code>),
+and (iv) the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to <code>tree</code>).
+To account for the combined benefits of multiple actions (e.g. baiting
+and trapping different invasive species in the same area), additional
+projects should be created that indicate the combined cost and
+corresponding species' persistence probabilities. Furthermore, this object
+must have a baseline project, with a zero cost, that represents the
+probability that each species will persist if no other conservation
+project is funded.</p></td>
     </tr>
     <tr>
       <th>tree</th>
@@ -276,13 +292,7 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
   Protocol' as a mixed integer programming problem (MIP) and solving it
   using the
   <a href='https://www.gurobi.com'>Gurobi optimization software suite</a>.
-  Specifically, the problem aims to maximize
-  the amount of evolutionary history that is expected to
-  persist (i.e. the 'expected phylogenetic diversity' metric; Faith 2008).
-  This is achieved by funding different conservation projects, with
-  known costs, that have a known effect on species' survival. Please refer
-  to the package vignette for the complete formulation of this problem.</p>
-<p>Although <a href='https://www.gurobi.com'>Gurobi</a> is a commercial software,
+  Although <a href='https://www.gurobi.com'>Gurobi</a> is a commercial software,
   academics can obtain a <a href='https://user.gurobi.com/download/licenses/free-academic'>special license for no cost</a>.
    After downloading and installing the
   hrefhttps://www.gurobi.comGurobi software suite, the
@@ -295,6 +305,97 @@ instructions for
  <a href='http://www.gurobi.com/documentation/8.1/quickstart_linux/r_installing_the_r_package.html'>Linux</a>,
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html'>Mac OSX</a>, and
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html'>Windows</a> operating systems).</p>
+<p>The objective of this problem is to maximize the amount of evolutionary
+history
+that is expected to remain within a specified period of time (e.g. 100
+years; i.e. 'expected phylogenetic diversity'; Faith 2008). Let \(I\)
+represent each project (indexed by \(i\)). Let \(P_i\) represent the
+probability of project \(i\) being successful if it is funded. Let
+\(C_i\) denote the cost for funding project \(i\), and let \(m\)
+define the maximum
+expenditure (budget) for funding the projects. Also, let \(S\) represent
+each species (e.g. species; indexed by \(s\)). Note that \(S\) should,
+ideally, contain all species in the study area to account for the complete
+phylogenetic diversity present in the study area. To represent the benefits
+for funding a project, let \(B_{is}\) denote the probability of
+persistence for the species \(s\) if project \(i\) is funded and project
+\(i\) is used to conserve that species (see below for why funded projects
+may not necessarily be used to conserve a given species). To account for the
+phylogenetic contributions for protecting each species, consider a
+phylogenetic tree that contains species \(s \in S\) and contains
+branches with  known lengths. To describe the tree using mathematical
+notation, let \(B\) represent the branches (indexed by \(b\)) with
+lengths
+\(L_b\) and let \(T_{bs}\) indicate which species \(s \in S\)
+are associated with which phylogenetic branches \(b \in B\) using
+zeros and ones.</p>
+<p>The binary control variables \(X_i\) in this problem indicate whether each
+project \(i \in I\) is funded (variable equal to one) or not
+(variable equal to zero). The decision variables in this problem represent
+which projects are the \(Y_{is}\), \(E_s\), and \(R_b\) variables.
+Specifically, the binary \(Y_{is}\) variables indicate if project \(i\)
+is used to conserve species \(s\) (variable equal to one) or not (variable
+equal to zero); the semi-continuous \(E_s\) variables denote if species
+\(s\) will go extinct; and the semi-continuous \(R_b\) variables denote
+the probability that phylogenetic branch \(b\) will remain.</p>
+<p>Now that we have defined all the data and variables, we can formulate
+the problem. For convenience, let the symbol used to denote each set also
+represent its cardinality (e.g. if there are ten species, let \(S\)
+represent the set of ten species and also the number ten).</p>
+<p>$$
+  \mathrm{Maximize} \space \sum_{b = 0}^{B} L_b R_b \space
+  \mathrm{(eqn \space 1a)} \\
+  \mathrm{Subject \space to} \space R_b = 1 - \prod_{s = 0}^{S}
+  ifelse(T_{bs} == 1, \space E_s, \space
+  1) \space \forall \space b \in B \space \mathrm{(eqn \space 1b)} \\
+  E_s = 1 - \sum_{i = 0}^{I} Y_{is} P_i B_{is} \space \forall \space s \in S
+  \space \mathrm{(eqn \space 1c)} \\
+  \sum_{i = 0}^{I} C_i \leq m \space
+  \mathrm{(eqn \space 1d)} \\
+  Y_{is} \leq X_{i} \space \forall \space i \in I, \space s \in S \space
+  \mathrm{(eqn \space 1e)} \\
+  \sum_{i = 0}^{I} Y_{is} = 1 \space \forall \space s \in S \space
+  \mathrm{(eqn \space 1f)} \\
+  R_{b} \geq 0 \space \forall \space b \in B \space
+  \mathrm{(eqn \space 1g)} \\
+  R_{b} \leq 1 \space \forall \space b \in B \space
+  \mathrm{(eqn \space 1h)} \\
+  Y_{is} \in [0, 1] \space \forall \space i \in I, \space s \in S \space
+  \mathrm{(eqn \space 1i)} \\
+  X_{i} \in [0, 1] \space \forall \space i \in I \space
+  \mathrm{(eqn \space 1j)}$$</p>
+<p>The objective (eqn 1a) is to maximize the amount of expected phylogenetic
+history that will remain in the future. This is expressed as the sum of
+branch lengths (\(L_b\)) weighted by the probability that at least one of
+the species connected to this branch will not go extinct (\(R_b\)).
+Constraints (eqn 1b) state that the probability that a branch will remain
+(\(R_b\)) is equal to one minus the probability that at least one of the
+species associated will not go extinct. Constraints (eqn 1c) calculate the
+probability that each species will go extinct given their allocated
+projects. Since each species is only allocated to a single project (per eqn
+1e), we can just calculate this as one minus the sum of the probabilities
+that the species would persist under each project if it were successful and
+each project being successful. Constraint (eqn 1d) ensures that the
+calculation for  that the total cost of the funded projects does not exceed
+the budget \(m\). Constraints (eqn 1e) ensure that each species can be
+assigned to a project if the project has been allocated funding. Constraints
+(eqn 1f) ensure that each species only be assigned to a single project.
+Constraints (eqns 1g and 1h) ensure that the probability that each
+phylogenetic branch will remain (\(R_b\)) is between zero and one.
+Constraints (eqns 1i and 1j) ensure that the project funding (\(X_i\)) and
+species' project allocation (\(Y_{is}\)) variables are binary.</p>
+<p>Although this formulation is a mixed integer quadratically constrained
+programming problem (due to eqn 1b), it can be linearized and then solved
+using commercial mixed integer programming solvers (e.g. Gurobi). This can
+be achieved by substituting the product of the species' extinction
+probabilities (eqn 1b) with the sum of the log species' extinction
+probabilities and using piecewise linear approximations (described in
+Hillier &amp; Price 2005 pp. 390--392) to approximate the exponent of this term.
+Although this means the problem can only be solved to a pre-specified level
+of precision (controlled via the argument to <code>number_approx_points</code>),
+advances in exact algorithm solvers mean that the problem can be solved to a
+sufficient degree of precision (e.g. \(1 \times 10^{-5}\)) in a
+trivial period of time.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -302,6 +403,11 @@ instructions for
 phylogenetic diversity: conservation scenarios based on estimated extinction
 probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
 <strong>22</strong>: 1461--1470.</p>
+<p>Hillier FS &amp; Price CC (2005) <em>International series in operations
+research &amp; management science</em>. Springer.</p>
+<p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
+resources among threatened species: A project prioritization protocol.
+<em>Conservation Biology</em>, <strong>23</strong>, 328--338.</p>
 <p>Rodrigues AS &amp; Gaston KJ (2002) Optimisation in reserve selection
 procedures---why not? <em>Biological Conservation</em>, <strong>107</strong>: 123-129.</p>
 <p>Underhill LG (1994) Optimal and suboptimal reserve selection

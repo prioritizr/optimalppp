@@ -4,15 +4,13 @@ NULL
 #' Solve the 'Project Prioritization Protocol' problem by manually specifying
 #' a solution
 #'
-#' Manually specify funding schemes for conservation projects and calculate
-#' their effectiveness.
+#' Manually specify funding schemes for conservation projects under the
+#' 'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and
+#' evaluate their effectiveness (Faith 2008).
 #'
 #' @inheritParams help
 #'
 #' @inherit help return
-#'
-#' @details The effectiveness of different funding schemes is calculated
-#'   following the "expected phylogenetic diversity" metric (Faith 2008).
 #'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_exact_solution}},
@@ -25,6 +23,10 @@ NULL
 #' phylogenetic diversity: conservation scenarios based on estimated extinction
 #' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
 #' \strong{22}: 1461--1470.
+#'
+#' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+#' resources among threatened species: A project prioritization protocol.
+#' \emph{Conservation Biology}, \strong{23}, 328--338.
 #'
 #' @examples
 #' # set seed for reproducibility

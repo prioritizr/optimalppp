@@ -4,7 +4,8 @@ NULL
 #' Solve the 'Project Prioritization Protocol' problem using exact algorithms
 #'
 #' Prioritize funding for conservation projects using exact algorithms. Unlike
-#' other methods for generating prioritizations, this method can identify
+#' other methods for solving the under the 'Project Prioritization Protocol'
+#' (Joseph, Maloney & Possingham 2009), this method can identify
 #' solutions that are guaranteed to be optimal (or within a pre-specified
 #' optimality gap; see Underhill 1994; Rodrigues & Gaston 2002).
 #' \strong{As a consequence, it is strongly recommended to use
@@ -18,13 +19,6 @@ NULL
 #'   Protocol' as a mixed integer programming problem (MIP) and solving it
 #'   using the
 #'   \href{https://www.gurobi.com}{Gurobi optimization software suite}.
-#'   Specifically, the problem aims to maximize
-#'   the amount of evolutionary history that is expected to
-#'   persist (i.e. the 'expected phylogenetic diversity' metric; Faith 2008).
-#'   This is achieved by funding different conservation projects, with
-#'   known costs, that have a known effect on species' survival. Please refer
-#'   to the package vignette for the complete formulation of this problem.
-#'
 #'   Although \href{https://www.gurobi.com}{Gurobi} is a commercial software,
 #'   academics can obtain a \href{https://user.gurobi.com/download/licenses/free-academic}{special license for no cost}.
 #'    After downloading and installing the
@@ -39,6 +33,113 @@ NULL
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html}{Mac OSX}, and
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems).
 #'
+#' The objective of this problem is to maximize the amount of evolutionary
+#' history
+#' that is expected to remain within a specified period of time (e.g. 100
+#' years; i.e. 'expected phylogenetic diversity'; Faith 2008). Let \eqn{I}
+#' represent each project (indexed by \eqn{i}). Let \eqn{P_i} represent the
+#' probability of project \eqn{i} being successful if it is funded. Let
+#' \eqn{C_i} denote the cost for funding project \eqn{i}, and let \eqn{m}
+#' define the maximum
+#' expenditure (budget) for funding the projects. Also, let \eqn{S} represent
+#' each species (e.g. species; indexed by \eqn{s}). Note that \eqn{S} should,
+#' ideally, contain all species in the study area to account for the complete
+#' phylogenetic diversity present in the study area. To represent the benefits
+#' for funding a project, let \eqn{B_{is}} denote the probability of
+#' persistence for the species \eqn{s} if project \eqn{i} is funded and project
+#' \eqn{i} is used to conserve that species (see below for why funded projects
+#' may not necessarily be used to conserve a given species). To account for the
+#' phylogenetic contributions for protecting each species, consider a
+#' phylogenetic tree that contains species \eqn{s \in S}{s in S} and contains
+#' branches with  known lengths. To describe the tree using mathematical
+#' notation, let \eqn{B} represent the branches (indexed by \eqn{b}) with
+#' lengths
+#' \eqn{L_b} and let \eqn{T_{bs}} indicate which species \eqn{s \in S}{s in S}
+#' are associated with which phylogenetic branches \eqn{b \in B}{b in B} using
+#' zeros and ones.
+#'
+#' The binary control variables \eqn{X_i} in this problem indicate whether each
+#' project \eqn{i \in I}{i in I} is funded (variable equal to one) or not
+#' (variable equal to zero). The decision variables in this problem represent
+#' which projects are the \eqn{Y_{is}}, \eqn{E_s}, and \eqn{R_b} variables.
+#' Specifically, the binary \eqn{Y_{is}} variables indicate if project \eqn{i}
+#' is used to conserve species \eqn{s} (variable equal to one) or not (variable
+#' equal to zero); the semi-continuous \eqn{E_s} variables denote if species
+#' \eqn{s} will go extinct; and the semi-continuous \eqn{R_b} variables denote
+#' the probability that phylogenetic branch \eqn{b} will remain.
+#'
+#' Now that we have defined all the data and variables, we can formulate
+#' the problem. For convenience, let the symbol used to denote each set also
+#' represent its cardinality (e.g. if there are ten species, let \eqn{S}
+#' represent the set of ten species and also the number ten).
+#'
+#' \deqn{
+#'   \mathrm{Maximize} \space \sum_{b = 0}^{B} L_b R_b \space
+#'   \mathrm{(eqn \space 1a)} \\
+#'   \mathrm{Subject \space to} \space R_b = 1 - \prod_{s = 0}^{S}
+#'   ifelse(T_{bs} == 1, \space E_s, \space
+#'   1) \space \forall \space b \in B \space \mathrm{(eqn \space 1b)} \\
+#'   E_s = 1 - \sum_{i = 0}^{I} Y_{is} P_i B_{is} \space \forall \space s \in S
+#'   \space \mathrm{(eqn \space 1c)} \\
+#'   \sum_{i = 0}^{I} C_i \leq m \space
+#'   \mathrm{(eqn \space 1d)} \\
+#'   Y_{is} \leq X_{i} \space \forall \space i \in I, \space s \in S \space
+#'   \mathrm{(eqn \space 1e)} \\
+#'   \sum_{i = 0}^{I} Y_{is} = 1 \space \forall \space s \in S \space
+#'   \mathrm{(eqn \space 1f)} \\
+#'   R_{b} \geq 0 \space \forall \space b \in B \space
+#'   \mathrm{(eqn \space 1g)} \\
+#'   R_{b} \leq 1 \space \forall \space b \in B \space
+#'   \mathrm{(eqn \space 1h)} \\
+#'   Y_{is} \in [0, 1] \space \forall \space i \in I, \space s \in S \space
+#'   \mathrm{(eqn \space 1i)} \\
+#'   X_{i} \in [0, 1] \space \forall \space i \in I \space
+#'   \mathrm{(eqn \space 1j)}}{
+#'   Maximize sum_b^B L_b R_b (eqn 1a); Subject to:
+#'   R_b = 1 - prod_s^S ifelse(T_{bs} == 1, E_s, 1) for all b in B (eqn 1b),
+#'   E_s = 1 - sum_i^I Y_{is} P_i B_{is} for all s in S (eqn 1c),
+#'   sum_i^I C_i <= m (eqn 1d),
+#'   Y_{is} <= X_i for all i in I, s in S (eqn 1e),
+#'   sum_i^I Y_{is} = 1 for all s in S (eqn 1f),
+#'   R_b >= 0 for all b in B (eqn 1g),
+#'   R_b <= 1 for all b in B (eqn 1h),
+#'   Y_{is} in [0, 1] for all i in I, s in S (eqn 1i),
+#'   X_i in [0, 1] for all i in I (eqn 1j)}
+#'
+#' The objective (eqn 1a) is to maximize the amount of expected phylogenetic
+#' history that will remain in the future. This is expressed as the sum of
+#' branch lengths (\eqn{L_b}) weighted by the probability that at least one of
+#' the species connected to this branch will not go extinct (\eqn{R_b}).
+#' Constraints (eqn 1b) state that the probability that a branch will remain
+#' (\eqn{R_b}) is equal to one minus the probability that at least one of the
+#' species associated will not go extinct. Constraints (eqn 1c) calculate the
+#' probability that each species will go extinct given their allocated
+#' projects. Since each species is only allocated to a single project (per eqn
+#' 1e), we can just calculate this as one minus the sum of the probabilities
+#' that the species would persist under each project if it were successful and
+#' each project being successful. Constraint (eqn 1d) ensures that the
+#' calculation for  that the total cost of the funded projects does not exceed
+#' the budget \eqn{m}. Constraints (eqn 1e) ensure that each species can be
+#' assigned to a project if the project has been allocated funding. Constraints
+#' (eqn 1f) ensure that each species only be assigned to a single project.
+#' Constraints (eqns 1g and 1h) ensure that the probability that each
+#' phylogenetic branch will remain (\eqn{R_b}) is between zero and one.
+#' Constraints (eqns 1i and 1j) ensure that the project funding (\eqn{X_i}) and
+#' species' project allocation (\eqn{Y_{is}}) variables are binary.
+#'
+#' Although this formulation is a mixed integer quadratically constrained
+#' programming problem (due to eqn 1b), it can be linearized and then solved
+#' using commercial mixed integer programming solvers (e.g. Gurobi). This can
+#' be achieved by substituting the product of the species' extinction
+#' probabilities (eqn 1b) with the sum of the log species' extinction
+#' probabilities and using piecewise linear approximations (described in
+#' Hillier & Price 2005 pp. 390--392) to approximate the exponent of this term.
+#' Although this means the problem can only be solved to a pre-specified level
+#' of precision (controlled via the argument to \code{number_approx_points}),
+#' advances in exact algorithm solvers mean that the problem can be solved to a
+#' sufficient degree of precision (e.g. \eqn{1 \times 10^{-5}}{1e-5}) in a
+#' trivial period of time.
+#'
 #' @seealso For other methods for solving the 'Project Prioritization Protocol'
 #'   problem, see \code{\link{ppp_heuristic_solution}},
 #'   \code{\link{ppp_manual_solution}}, and \code{\link{ppp_random_solution}}.
@@ -50,6 +151,13 @@ NULL
 #' phylogenetic diversity: conservation scenarios based on estimated extinction
 #' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
 #' \strong{22}: 1461--1470.
+#'
+#' Hillier FS & Price CC (2005) \emph{International series in operations
+#' research & management science}. Springer.
+#'
+#' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+#' resources among threatened species: A project prioritization protocol.
+#' \emph{Conservation Biology}, \strong{23}, 328--338.
 #'
 #' Rodrigues AS & Gaston KJ (2002) Optimisation in reserve selection
 #' procedures---why not? \emph{Biological Conservation}, \strong{107}: 123-129.
