@@ -57,7 +57,8 @@ NULL
 #' The probability that each species will go extinct (\eqn{E_s}) when a given
 #' set of projects are funded (\eqn{I}) can then be  expressed as as:
 #'
-#' \deqn{E_s = 1 - \text{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})}{E_s = 1 - max(P_1 B_{1s}, ..., P_I B_{Is})}
+#' \deqn{E_s = 1 - \text{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})}{E_s = 1 - max(P_1 B_{1s}, ..., P_I B_{Is})}{
+#' E_s = 1 - max(P_1 B_{1s}, ..., P_I B_{Is})}
 #'
 #' To account for the phylogenetic contributions of funding a project,
 #' consider a phylogenetic tree that contains species \eqn{s \in S}{s in S} and
@@ -70,7 +71,10 @@ NULL
 #' The amount of evolutionary history that is expected to persist when a
 #' given set of projects are funded can then be expressed as:
 #'
-#' \deqn{P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1)\big)}{P(I) = sum_{b = 0}^{B} L_b (1 - prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
+#' \deqn{P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S}
+#'   ifelse(T_{bs} == 1, E_s, 1)\big)}{P(I) = sum_{b = 0}^{B} L_b (1 -
+#'   prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}{
+#'   P(I) = sum_b^B L_b (1 - prod_s^S ifelse(T_{bs} == 1, E_s, 1))}
 #'
 #' @seealso For other methods for generating solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}

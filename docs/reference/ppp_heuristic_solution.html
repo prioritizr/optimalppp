@@ -291,7 +291,8 @@ species \(s\) if project \(i\) is funded and project \(i\) is used to
 conserve that species.</p>
 <p>The probability that each species will go extinct (\(E_s\)) when a given
 set of projects are funded (\(I\)) can then be  expressed as as:</p>
-<p>$$E_s = 1 - \text{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})$$</p>
+<p>$$E_s = 1 - \text{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})$$
+E_s = 1 - max(P_1 B_1s, ..., P_I B_Is)</p>
 <p>To account for the phylogenetic contributions of funding a project,
 consider a phylogenetic tree that contains species \(s \in S\) and
 contains branches with known lengths. To describe the tree using mathematical
@@ -301,7 +302,9 @@ lengths \(L_b\) and let \(T_{bs}\) indicate which species
 phylogenetic branches \(b \in B\) (using zeros and ones).</p>
 <p>The amount of evolutionary history that is expected to persist when a
 given set of projects are funded can then be expressed as:</p>
-<p>$$P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1)\big)$$</p>
+<p>$$P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S}
+  ifelse(T_{bs} == 1, E_s, 1)\big)$$
+  P(I) = sum_b^B L_b (1 - prod_s^S ifelse(T_bs == 1, E_s, 1))</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
