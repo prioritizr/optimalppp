@@ -17,17 +17,17 @@ NULL
 #'   to \code{1} such that the solution in the first row of the argument
 #'   to \code{solution} is plotted.
 #'
-#' @param askterisk_hjust \code{numeric} horizontal adjustment parameter to
+#' @param asterisk_hjust \code{numeric} horizontal adjustment parameter to
 #'   manually align the asterisks in the plot. Defaults to 0.007.
 #'
-#' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
-#'   \pkg{tidytree} packages. Since these packages are distributed exclusively
-#'   through \href{https://bioconductor.org}{Bioconductor}, and are not
+#' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
+#'   Since this package is distributed exclusively
+#'   through \href{https://bioconductor.org}{Bioconductor}, and is not
 #'   available on the
 #'   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
 #'   please execute the following commands to install them:
 #'   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
-#'   If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}} packages' online documentation.
+#'   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
 #'
 #' @seealso To generate solutions for the 'Project
 #'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
@@ -116,9 +116,6 @@ ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
   ## assert that ggtree R package is installed
   assertthat::assert_that(requireNamespace("ggtree", quietly = TRUE),
                           msg = "ggtree R package not installed.")
-  ## assert that tidytree R package is installed
-  assertthat::assert_that(requireNamespace("tidytree", quietly = TRUE),
-                          msg = "tidytree R package not installed.")
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))
     x <- tibble::as_tibble(x)

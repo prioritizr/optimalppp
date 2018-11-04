@@ -250,7 +250,7 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
 
    <dt><code>"objective"</code></dt><dd><p><code>numeric</code> objective value associated with
      each of the solution(s). This corresponds to the expected amount of
-     evolutionary history that is retained by each solution.</p></dd>
+     evolutionary history that is retained by each solution (Faith 2008).</p></dd>
 
    <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
      the of the solution(s).</p></dd>
@@ -341,7 +341,8 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 <span class='co'># plot the simulated phylogeny</span>
 <span class='fu'>plot</span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_exact_solution-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># verify if guorbi package is installed</span>
 <span class='kw'>if</span> (!<span class='fu'>require</span>(<span class='no'>gurobi</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
- <span class='fu'>stop</span>(<span class='st'>"the gurobi R package is not installed."</span>)</div><div class='output co'>#&gt; <span class='warning'>NA</span></div><div class='input'>
+ <span class='fu'>stop</span>(<span class='st'>"the gurobi R package is not installed."</span>)
+
 <span class='co'># find a solution that meets a budget of 300</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_tree</span>, <span class='fl'>300</span>,
                          <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"success"</span>)

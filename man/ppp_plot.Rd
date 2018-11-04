@@ -45,7 +45,7 @@ correspond to a row number in the argument to \code{solution}. Defaults
 to \code{1} such that the solution in the first row of the argument
 to \code{solution} is plotted.}
 
-\item{askterisk_hjust}{\code{numeric} horizontal adjustment parameter to
+\item{asterisk_hjust}{\code{numeric} horizontal adjustment parameter to
 manually align the asterisks in the plot. Defaults to 0.007.}
 }
 \description{
@@ -57,14 +57,14 @@ benefit from at least a single funded project with a non-zero cost are
 denoted with a red asterisk symbol.
 }
 \details{
-This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017) and
-  \pkg{tidytree} packages. Since these packages are distributed exclusively
-  through \href{https://bioconductor.org}{Bioconductor}, and are not
+This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
+  Since this package is distributed exclusively
+  through \href{https://bioconductor.org}{Bioconductor}, and is not
   available on the
   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
   please execute the following commands to install them:
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
-  If the installation process fails, please consult the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}} packages' online documentation.
+  If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
 }
 \examples{
 # set seed for reproducibility

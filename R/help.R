@@ -102,7 +102,7 @@ NULL
 #'
 #'    \item{\code{"objective"}}{\code{numeric} objective value associated with
 #'      each of the solution(s). This corresponds to the expected amount of
-#'      evolutionary history that is retained by each solution.}
+#'      evolutionary history that is retained by each solution (Faith 2008).}
 #'
 #'    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
 #'      the of the solution(s).}

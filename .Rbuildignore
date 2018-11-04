@@ -1,3 +1,5 @@
+^doc$
+^Meta$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
@@ -20,5 +22,3 @@ inst/extdata/dictionary.txt
 ^_pkgdown\.yml$
 ^CONTRIBUTING\.md$
 ^CONTRIBUTING\.Rmd$
-vignettes/analysis.R
-vignettes/results.rda

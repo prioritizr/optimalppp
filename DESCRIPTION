@@ -31,8 +31,7 @@ Suggests:
     roxygen2(>= 6.1.0),
     rmarkdown(>= 1.10),
     gurobi(>= 8.0.0),
-    ggtree(>= 1.8.2),
-    tidytree(>= 0.1.9)
+    ggtree(>= 1.8.2)
 Depends:
     R(>= 3.4.0)
 LinkingTo: Rcpp(>= 0.12.19), RcppArmadillo(>= 0.9.100.5.0)

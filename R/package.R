@@ -20,16 +20,15 @@ NULL
 #' provides the functionality to visualize how well solutions maintain
 #' biodiversity.
 #'
-#' To make the most of this package, the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}},
-#' \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}}, and
+#' To make the most of this package, the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}},, and
 #' \href{http://www.gurobi.com/documentation/8.1/refman/r_api_overview.html}{\pkg{gurobi}} R packages will need to be installed.
-#' Since the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} and \href{https://bioconductor.org/packages/release/bioc/html/tidytree.html}{\pkg{tidytree}} packages are exclusively available
+#' Since the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} package is exclusively available
 #' at \href{https://bioconductor.org}{Bioconductor}---and are not available on
 #' \href{https://cran.r-project.org/}{Comprehensive R Archive Network}---please
-#' execute the following commands to install them:
+#' execute the following command to install it:
 #' \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
 #' If the installation process fails, please consult the
-#' packages' online documentation. To install the \pkg{gurobi} package, the
+#' \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{package's online documentation}. To install the \pkg{gurobi} package, the
 #' \href{https://www.gurobi.com}{Gurobi} optimization suite will first need to
 #' be installed (see instructions for \href{http://www.gurobi.com/documentation/8.1/quickstart_linux/software_installation_guid.html}{Linux},
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html}{Mac OSX}, and

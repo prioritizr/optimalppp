@@ -37,11 +37,13 @@ The latest development version can be installed using the following code.
 if (!require(devtools))
   install.packages("devtools")
 devtools::install_github("prioritizr/optimalppp")
+if (!require(ggtree))
+  devtools::install_bioc("ggtree")
 ```
 
 ## Usage
 
-Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ and _tidytree_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (CRAN; see the `ppp_plot` help file for [installation instructions](https://prioritizr.github.io/optimalppp/reference/ppp_plot.html)).
+Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (see installation instructions above).
 
 ```{r, eval = FALSE}
 set.seed(500)
