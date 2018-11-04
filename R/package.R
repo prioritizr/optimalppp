@@ -23,8 +23,8 @@ NULL
 #' To make the most of this package, the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}},, and
 #' \href{http://www.gurobi.com/documentation/8.1/refman/r_api_overview.html}{\pkg{gurobi}} R packages will need to be installed.
 #' Since the \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{\pkg{ggtree}} package is exclusively available
-#' at \href{https://bioconductor.org}{Bioconductor}---and are not available on
-#' \href{https://cran.r-project.org/}{Comprehensive R Archive Network}---please
+#' at \href{https://bioconductor.org}{Bioconductor}---and is not available on
+#' \href{https://cran.r-project.org/}{The Comprehensive R Archive Network}---please
 #' execute the following command to install it:
 #' \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
 #' If the installation process fails, please consult the

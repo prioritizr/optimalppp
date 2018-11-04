@@ -31,7 +31,7 @@ The _optimalppp R_ package provides methods for prioritizing funding of conserva
 
 ## Installation
 
-The latest development version can be installed using the following code.
+The latest development version can be installed using the following code. Please note that you will need install the _ggtree_ package from Bioconductor since it is not available on [The Comprehensive R Archive Network](https://cran.r-project.org/).
 
 ```{r, eval = FALSE}
 if (!require(devtools))
@@ -43,7 +43,7 @@ if (!require(ggtree))
 
 ## Usage
 
-Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ package separately from Bioconductor since it is not available on the Comprehensive R Archive Network (see installation instructions above).
+Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees.
 
 ```{r, eval = FALSE}
 set.seed(500)

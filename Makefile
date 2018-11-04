@@ -21,11 +21,7 @@ man:
 readme:
 	R --slave -e "rmarkdown::render('README.Rmd')"
 
-quickvigns:
-	R --slave -e "devtools::build_vignettes()"
-	mv doc inst/
-
-vigns: install
+vigns:
 	R --slave -e "devtools::build_vignettes()"
 	mv doc inst/
 
