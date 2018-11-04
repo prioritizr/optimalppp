@@ -129,10 +129,18 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 ## 5 0.0000000 0.00000000 0.0000000 0.6569473
 ## 6 0.3883986 0.01203652 0.1952440 0.1237303</code></pre>
 <p>Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (<code>sim_project_data</code>), the species’ evolutionary relationships (<code>sim_tree</code>), and this budget (<code>200</code>), So, let’s cut to the chase and find an optimal solution.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># solve problem</span>
+s1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ppp_exact_solution.html">ppp_exact_solution</a></span>(<span class="dt">x =</span> sim_project_data, <span class="dt">tree =</span> sim_tree,
                          <span class="dt">budget =</span> <span class="dv">200</span>, <span class="dt">project_column_name =</span> <span class="st">"name"</span>,
                          <span class="dt">cost_column_name =</span> <span class="st">"cost"</span>,
-                         <span class="dt">success_column_name =</span> <span class="st">"success"</span>)</code></pre></div>
+                         <span class="dt">success_column_name =</span> <span class="st">"success"</span>)
+
+<span class="co"># print solution</span>
+<span class="kw">head</span>(<span class="kw">as.data.frame</span>(s1))</code></pre></div>
+<pre><code>##   solution objective budget    cost optimal method S1_project S2_project
+## 1        1  3.045741    200 193.642    TRUE  exact       TRUE      FALSE
+##   S3_project S4_project S5_project baseline_project
+## 1      FALSE       TRUE      FALSE             TRUE</code></pre>
 <p>The object <code>s1</code> contains the solution and also various statistics associated with the solution in a tabular format (i.e. <code>tibble</code>). Here, each row corresponds to a different solution. Specifically, the <code>"solution"</code> column contains an identifier for the solution (this is useful for methods that output multiple solutions), the <code>"objective"</code> column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the <code>"budget"</code> column stores the budget used for generating the solution, the <code>"cost"</code> column stores the cost of the solution, the <code>"optimal"</code> column indicates if the solution is known to be optimal (<code>NA</code> values mean the optimality is unknown), and the <code>"method"</code> column contains the name of the method used to generate the solution. The remaining columns (<code>"S1_project"</code>, <code>"S2_project"</code>, <code>"S3_project"</code>, …, <code>"S50_project"</code>, and <code>"baseline_project"</code>) indicate if a given project was prioritized for funding in the solution or not.</p>
 <p>Here, the objective value (in the <code>"objective"</code> column) denotes the amount of evolutionary history that is expected to persist (i.e. 3.046 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let’s visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize solution</span>

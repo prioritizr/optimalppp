@@ -7,12 +7,12 @@ Optimal Project Prioritization Protocol
 
 **This repository is still under active development. It is not yet ready for use.**
 
-The *optimalppp R* package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify suboptimal solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
+The *optimalppp R* package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
 
 Installation
 ------------
 
-The latest development version can be installed using the following code.
+The latest development version can be installed using the following code. Please note that you will need install the *ggtree* package from Bioconductor since it is not available on [The Comprehensive R Archive Network](https://cran.r-project.org/).
 
 ``` r
 if (!require(devtools))
@@ -25,11 +25,10 @@ if (!require(ggtree))
 Usage
 -----
 
-Here we will provide a short example showing how the *optimalppp R* package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the *R* session, load the *optimalppp R* package, and load the *ggtree R* package to plot phylogenetic trees. Please note that you will need install the *ggtree* package separately from Bioconductor since they are not on the Comprehensive R Archive Network (see installation instructions above).
+Here we will provide a short example showing how the *optimalppp R* package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the *R* session, load the *optimalppp R* package, and load the *ggtree R* package to plot phylogenetic trees.
 
 ``` r
 set.seed(500)
-options(getClass.msg = FALSE)
 library(optimalppp)
 library(ggtree)
 ```
@@ -76,11 +75,20 @@ head(as.data.frame(sim_project_data))
 Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`200`), So, let's cut to the chase and find an optimal solution.
 
 ``` r
+# solve problem
 s1 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
                          budget = 200, project_column_name = "name",
                          cost_column_name = "cost",
                          success_column_name = "success")
+
+# print solution
+head(as.data.frame(s1))
 ```
+
+    ##   solution objective budget    cost optimal method S1_project S2_project
+    ## 1        1  3.045741    200 193.642    TRUE  exact       TRUE      FALSE
+    ##   S3_project S4_project S5_project baseline_project
+    ## 1      FALSE       TRUE      FALSE             TRUE
 
 The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"S50_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
 
