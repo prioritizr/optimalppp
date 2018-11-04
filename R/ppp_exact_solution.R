@@ -330,7 +330,7 @@ ppp_exact_solution <- function(x, tree, budget,
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
-  spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
+  spp_probs <- Matrix::drop0(methods::as(spp_probs, "dgCMatrix"))
 
   # formulate the problem
   f <- rcpp_mip_formulation(spp = spp_probs,
