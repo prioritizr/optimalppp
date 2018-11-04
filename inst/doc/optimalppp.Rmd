@@ -19,13 +19,16 @@ vignette: >
 fw <- 7.0
 fh <- 4.5
 
-# set default printing options
-options(tibble.width = 120)
-
 # disable running vignette code during R CMD check
 is_check <- ("CheckExEnv" %in% search()) || any(c("_R_CHECK_TIMINGS_",
              "_R_CHECK_LICENSE_") %in% names(Sys.getenv()))
 knitr::opts_chunk$set(fig.align = "center", eval = !is_check)
+
+# create default objects
+s1 <- data.frame(objective = 1)
+s2 <- data.frame(objective = 1)
+s3 <- data.frame(objective = 1)
+s4 <- data.frame(objective = 1)
 ```
 
 ## Overview
@@ -40,14 +43,12 @@ To start off, we will set the seed for the random number generator to ensure you
 
 ```{r, eval = FALSE}
 set.seed(700)
-options(getClass.msg = FALSE)
 library(optimalppp)
 library(ggtree)
 ```
 
 ```{r, include = FALSE}
 set.seed(700)
-options(getClass.msg = FALSE)
 library(optimalppp)
 library(ggtree)
 ```
