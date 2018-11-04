@@ -16,7 +16,7 @@ NULL
 #' Protocol'. A range of methods are provided for identifying priority projects
 #' for funding. These include exact algorithm solvers which can identify
 #' optimal solutions, and also stingy heuristic algorithms that have
-#' conventionally been used to identify suboptimal solutions. This package also
+#' conventionally been used to identify solutions. This package also
 #' provides the functionality to visualize how well solutions maintain
 #' biodiversity.
 #'

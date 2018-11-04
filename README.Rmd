@@ -27,7 +27,7 @@ ow = "400"
 
 **This repository is still under active development. It is not yet ready for use.**
 
-The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify suboptimal solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
+The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
 
 ## Installation
 
@@ -43,20 +43,17 @@ if (!require(ggtree))
 
 ## Usage
 
-Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ package separately from Bioconductor since they are not on the Comprehensive R Archive Network (see installation instructions above).
+Here we will provide a short example showing how the _optimalppp R_ package can be used to prioritize funding for conservation projects. To start off, we will set the seed for the random number generator to ensure you get the same results as shown here, set some default behavior for the _R_ session, load the _optimalppp R_ package, and load the _ggtree R_ package to plot phylogenetic trees. Please note that you will need install the _ggtree_ package separately from Bioconductor since it is not available on the Comprehensive R Archive Network (see installation instructions above).
 
 ```{r, eval = FALSE}
 set.seed(500)
-options(getClass.msg = FALSE)
 library(optimalppp)
 library(ggtree)
 ```
 
 ```{r, include= FALSE}
 set.seed(500)
-options(getClass.msg = FALSE)
 library(ggtree)
-options(getClass.msg = FALSE)
 ```
 
 Now we will load some data sets that are distributed with the package. First, we will load the `sim_tree` object. This object describes the evolutionary relationships between `r length(sim_tree$tip.label)` simulated species (named S1, S2, S3, ..., `r max(sim_tree$tip.label)`). The length of each phylogenetic branch corresponds to millions of years of evolutionary history, and the last common ancestor for all these species occurred approximately 2 million years ago.

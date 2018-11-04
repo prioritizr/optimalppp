@@ -38,7 +38,7 @@ solution to the 'Project Prioritization Protocol' problem
 phylogenetic branch is colored according to probability
 that it is expected to persist into the future (based on Faith 2008).
 Additionally, species that benefit from at least a single funded project
-with a non-zero cost are denoted with a red asterisk symbol." />
+with a non-zero cost are denoted with an asterisk symbol." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,7 +122,7 @@ solution to the 'Project Prioritization Protocol' problem
 phylogenetic branch is colored according to probability
 that it is expected to persist into the future (based on Faith 2008).
 Additionally, species that benefit from at least a single funded project
-with a non-zero cost are denoted with a red asterisk symbol.</p>
+with a non-zero cost are denoted with an asterisk symbol.</p>
     
     </div>
 
@@ -200,7 +200,9 @@ to <code>solution</code> is plotted.</p></td>
     <tr>
       <th>asterisk_hjust</th>
       <td><p><code>numeric</code> horizontal adjustment parameter to
-manually align the asterisks in the plot. Defaults to 0.007.</p></td>
+manually align the asterisks in the plot. Defaults to <code>0.007</code>.
+Increasing this parameter will shift the asterisks further left towards
+the species labels.</p></td>
     </tr>
     </table>
     
@@ -211,13 +213,20 @@ manually align the asterisks in the plot. Defaults to 0.007.</p></td>
   through <a href='https://bioconductor.org'>Bioconductor</a>, and is not
   available on the
   <a href='https://cran.r-project.org/'>Comprehensive R Archive Network</a>,
-  please execute the following commands to install them:
+  please execute the following command to install it:
   <code>source("https://bioconductor.org/biocLite.R");biocLite("ggtree")</code>.
   If the installation process fails, please consult the package's <a href='https://bioconductor.org/packages/release/bioc/html/ggtree.html'>online documentation</a>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Yu G, Smith DK, Zhu H, Guan Y, &amp; Lam TTY (2017) ggtree: an
+    <p>Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>: 1461--1470.</p>
+<p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
+resources among threatened species: A project prioritization protocol.
+<em>Conservation Biology</em>, <strong>23</strong>, 328--338.</p>
+<p>Yu G, Smith DK, Zhu H, Guan Y, &amp; Lam TTY (2017) ggtree: an
 R package for visualization and annotation of phylogenetic trees with their
 covariates and other associated data. <em>Methods in Ecology and
 Evolution</em>, <strong>8</strong>: 28--36.</p>

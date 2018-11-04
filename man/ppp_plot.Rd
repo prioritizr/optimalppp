@@ -60,7 +60,9 @@ to \code{1} such that the solution in the first row of the argument
 to \code{solution} is plotted.}
 
 \item{asterisk_hjust}{\code{numeric} horizontal adjustment parameter to
-manually align the asterisks in the plot. Defaults to 0.007.}
+manually align the asterisks in the plot. Defaults to \code{0.007}.
+Increasing this parameter will shift the asterisks further left towards
+the species labels.}
 }
 \description{
 Create a plot displaying a phylogenetic tree (phylogram) to visualize a
@@ -69,7 +71,7 @@ solution to the 'Project Prioritization Protocol' problem
 phylogenetic branch is colored according to probability
 that it is expected to persist into the future (based on Faith 2008).
 Additionally, species that benefit from at least a single funded project
-with a non-zero cost are denoted with a red asterisk symbol.
+with a non-zero cost are denoted with an asterisk symbol.
 }
 \details{
 This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
@@ -77,7 +79,7 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
   through \href{https://bioconductor.org}{Bioconductor}, and is not
   available on the
   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
-  please execute the following commands to install them:
+  please execute the following command to install it:
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
 }
@@ -152,6 +154,15 @@ theme(legend.position = "hide") +
 ggtitle("solution")
 }
 \references{
+Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+\strong{22}: 1461--1470.
+
+Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+resources among threatened species: A project prioritization protocol.
+\emph{Conservation Biology}, \strong{23}, 328--338.
+
 Yu G, Smith DK, Zhu H, Guan Y, & Lam TTY (2017) ggtree: an
 R package for visualization and annotation of phylogenetic trees with their
 covariates and other associated data. \emph{Methods in Ecology and

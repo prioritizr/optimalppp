@@ -3,9 +3,8 @@ Type: Package
 Version: 0.0.0.1
 Title: Optimal Project Prioritization Protocol
 Description: Prioritize conservation projects for funding under limited
-    budgets. Although solutions can be identified using heuristic algorithms,
-    to identify optimal solutions the 'Gurobi' optimizer will need to be
-    installed (available from <https://www.gurobi.com>).
+    budgets. To identify optimal solutions, the 'Gurobi' optimizer will need to
+    be installed (available from <https://www.gurobi.com>).
 Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
                email='jeffrey.hanson@uqconnect.edu.au', role = c('aut')),
              person(c('Richard'), 'Schuster',
