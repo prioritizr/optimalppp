@@ -203,8 +203,6 @@ Now that we have the optimal solution (objective value = `r round(s4$objective,3
 
 ## Citation
 
-**This repository is still under active development. It is not yet ready for use.**
-
 Please use the following citation to cite the _optimalppp R_ package in publications:
 
 ```{r, echo = FALSE, results = "asis", comment = ""}

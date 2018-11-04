@@ -25,8 +25,6 @@ w = 3.5
 ow = "400"
 ```
 
-**This repository is still under active development. It is not yet ready for use.**
-
 The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
 
 ## Installation
@@ -105,8 +103,6 @@ geom_treescale(width = 2, x = 0, offset = 0.1)
 This has just been a taster of the _optimalppp R_ package. For more information, see the [package vignette](https://prioritizr.github.io/optimalppp/articles/optimalppp.html).
 
 ## Citation
-
-**This repository is still under active development. It is not yet ready for use.**
 
 Please use the following citation to cite the _optimalppp R_ package in publications:
 
