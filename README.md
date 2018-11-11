@@ -3,7 +3,9 @@
 Optimal Project Prioritization Protocol
 =======================================
 
-[![lifecycle](https://img.shields.io/badge/Lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Travis Build Status](https://img.shields.io/travis/prioritizr/optimalppp/master.svg?label=Linux%20%26%20Mac%20OSX)](https://travis-ci.org/prioritizr/optimalppp) [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/jeffreyhanson/optimalppp/master.svg?label=Windows)](https://ci.appveyor.com/project/jeffreyhanson/optimalppp) [![Coverage Status](https://codecov.io/github/prioritizr/optimalppp/coverage.svg?branch=master)](https://codecov.io/github/prioritizr/optimalppp?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/optimalppp)](https://CRAN.R-project.org/package=optimalppp)
+[![lifecycle](https://img.shields.io/badge/Lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis Build Status](https://img.shields.io/travis/prioritizr/optimalppp/master.svg?label=Linux%20%26%20Mac%20OSX)](https://travis-ci.org/prioritizr/optimalppp) [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/jeffreyhanson/optimalppp/master.svg?label=Windows)](https://ci.appveyor.com/project/jeffreyhanson/optimalppp) [![Coverage Status](https://codecov.io/github/prioritizr/optimalppp/coverage.svg?branch=master)](https://codecov.io/github/prioritizr/optimalppp?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/optimalppp)](https://CRAN.R-project.org/package=optimalppp)
+
+**This package is still under development and not ready for use. Please do not use this package yet.**
 
 The *optimalppp R* package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
 
@@ -108,4 +110,6 @@ Citation
 
 Please use the following citation to cite the *optimalppp R* package in publications:
 
-Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (2018). optimalppp: Optimal Project Prioritization Protocol. R package version 0.0.0.2. Available at <https://github.com/prioritizr/optimalppp>.
+**This package is still under development and not ready for use. Please do not use this package yet.**
+
+Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (2018). optimalppp: Optimal Project Prioritization Protocol. R package version 0.0.0.3. Available at <https://github.com/prioritizr/optimalppp>.

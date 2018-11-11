@@ -1,6 +1,6 @@
 Package: optimalppp
 Type: Package
-Version: 0.0.0.2
+Version: 0.0.0.3
 Title: Optimal Project Prioritization Protocol
 Description: Prioritize conservation projects for funding under limited
     budgets. To identify optimal solutions, the 'Gurobi' optimizer will need to
