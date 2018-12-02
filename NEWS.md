@@ -1,3 +1,7 @@
+# optimalppp 0.0.0.4
+
+- Progress on solving the "right" problem.
+
 # optimalppp 0.0.0.3
 
 - This package currently solves the wrong problem, reverting the package
