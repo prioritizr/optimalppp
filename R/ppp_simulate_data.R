@@ -3,7 +3,7 @@ NULL
 
 #' Simulate conservation project data
 #'
-#' Simulate data to prioritize project funding schemes for species conservation.
+#' Simulate conservation project data to develop simulated prioritizations.
 #'
 #' @param number_species \code{numeric} number of species.
 #'
@@ -42,28 +42,31 @@ NULL
 #'   into the solution. Defaults to \code{0}.
 #'
 #' @details The simulated data set will contain one conservation project for
-#'   each species and a baseline "do nothing" project to reflect species'
-#'   persistence when their conservation projects are not funded. The
-#'   data are simulated as follows:
+#'   each species and a "baseline" (do nothing) project to reflect species'
+#'   persistence when none of their conservation projects are not funded. Each
+#'   conservation project is associated with a single action, and no
+#'   conservation projects share any actions. Specifically, the data are
+#'   simulated as follows:
 #'
 #'   \enumerate{
 #'
-#'     \item A conservation project is created for each species.
+#'     \item A conservation project is created for each species, and each
+#'       project is associated with its own single action.
 #'
-#'     \item Cost data for each project are simulated using a normal
+#'     \item Cost data for each action are simulated using a normal
 #'       distribution and the \code{cost_mean} and \code{cost_sd} arguments.
 #'
-#'     \item The probability of each project succeeding is simulated by
+#'     \item The probability of each action succeeding is simulated by
 #'       drawing probabilities from a uniform distribution with the upper
 #'       and lower bounds set as the \code{success_min_probability} and
 #'       \code{success_max_probability} arguments.
 #'
-#'     \item The probability of each project succeeding is simulated by
+#'     \item The probability of each action succeeding is simulated by
 #'       drawing probabilities from a uniform distribution with the upper
 #'       and lower bounds set as the \code{success_min_probability} and
 #'       \code{success_max_probability} arguments.
 #'
-#'     \item A set proportion of the projects are randomly set to be locked
+#'     \item A set proportion of the actions are randomly set to be locked
 #'       in and out of the solutions using the \code{locked_in_proportion} and
 #'       \code{locked_out_proportion} arguments.
 
@@ -72,8 +75,8 @@ NULL
 #'       and lower bounds set as the \code{funded_min_persistence_probability}
 #'       and \code{funded_max_persistence_probability} arguments.
 #'
-#'     \item An additional project is created which represents the baseline
-#'       "do nothing" scenario. The probability of each species persisting
+#'     \item An additional project is created which represents the "baseline"
+#'       (do nothing) scenario. The probability of each species persisting
 #'       when managed under this project is simulated by drawing probabilities
 #'       from a uniform distribution with the upper and lower bounds
 #'       set as the \code{not_funded_min_persistence_probability}
@@ -96,27 +99,71 @@ NULL
 #'
 #  '       \item{\code{"name"}}{\code{character} name for each project.}
 #'
-#'         \item{\code{"cost"}}{\code{numeric} cost for each project.}
+#'         \item{\code{"S1"} ... \code{"SN"}}{\code{numeric} columns for each
+#'           species, ranging from \code{"S1"} to \code{"SN"} where \code{N}
+#'           is the number of species, indicating the enhanced probability that
+#'           each species will persist if it funded.}
 #'
-#'         \item{\code{"success"}}{\code{numeric} probability of each project
+#'     }}
+#'
+#'     \item{\code{"action_data"}}{A \code{\link[tibble]{tibble}} containing
+#'       the data for the conservation actions. It contains the following
+#'       columns:
+#'
+#'       \describe{
+#'
+#  '       \item{\code{"name"}}{\code{character} name for each action.}
+#'
+#'         \item{\code{"cost"}}{\code{numeric} cost for each action.}
+#'
+#'         \item{\code{"success"}}{\code{numeric} probability of each action
 #'           succeeding if it is funded.}
 #'
 #'         \item{\code{"locked_in"}}{\code{logical} indicating if certain
-#'           projects should be locked into the solution.}
+#'           actions should be locked into the solution.}
 #'
 #'         \item{\code{"locked_out"}}{\code{logical} indicating if certain
-#'           projects should be locked out of the solution.}
+#'           actions should be locked out of the solution.}
 #'
-#'         \item{\code{"S1"} ... \code{"SN"}}{\code{numeric} columns for each
-#'           species, ranging from \code{"S1"} to \code{"SN"} where N is the
-#'           number of species, indicating the enhanced probability that each
-#'           species will survive if it funded.}
+#'     }}
+#'
+#'     \item{\code{"organization_data"}}{A \code{\link[tibble]{tibble}}
+#'       indicating which conservation actions fall under which conservation
+#'       projects. It contains the following columns:
+#'
+#'       \describe{
+#'
+#'         \item{\code{"name"}}{\code{character} name for each project.}
+#'
+#'         \item{\code{"S1_action"} ... \code{"SN_action"}}{\code{logical}
+#'           columns for each action, ranging from \code{"S1_action"} to
+#'           \code{"SN_action"} where \code{N} is
+#'           the number of actions (equal to the number of species in this
+#'           simulated data), indicating if an action is associated with a
+#'           project (\code{TRUE}) or not (\code{FALSE}).}
 #'
 #'     }}
 #'
 #'    \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
 #'
 #'  }
+#'
+#' @examples
+#' # create a simulated data set
+#' s <- ppp_simulate_data(number_species = 5,
+#'                          cost_mean = 100,
+#'                          cost_sd = 5,
+#'                          success_min_probability = 0.7,
+#'                          success_max_probability = 0.99,
+#'                          funded_min_persistence_probability = 0.5,
+#'                          funded_max_persistence_probability = 0.9,
+#'                          not_funded_min_persistence_probability = 0.01,
+#'                          not_funded_max_persistence_probability = 0.4,
+#'                          locked_in_proportion = 0.01,
+#'                          locked_out_proportion = 0.01)
+#'
+#' # print data set
+#' print(s)
 #'
 #' @export
 ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
@@ -174,37 +221,42 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
       msg = paste("combined number of locked in and locked out projects",
                   "exceeds the total number of projects."))
 
-  # create project data
-  project_data <- data.frame(
-    name = c(paste0("S", seq_len(number_species), "_project"),
-                    "baseline_project"),
+  # create action data
+  action_data <- tibble::tibble(
+    name = c(paste0("S", seq_len(number_species), "_action"),
+             "baseline_action"),
     cost = c(stats::rnorm(number_species, cost_mean, cost_sd), 0),
     success = c(stats::runif(number_species, success_min_probability,
-                             success_max_probability), 1),
-    stringsAsFactors = FALSE)
-  assertthat::assert_that(all(project_data$cost >= 0),
+                           success_max_probability), 1),
+    locked_in = FALSE,
+    locked_out = FALSE)
+  assertthat::assert_that(all(action_data$cost >= 0),
   msg = paste("some projects have subzero costs, increase the argument to",
               "cost_mean and try again"))
 
-  # assign locked in projects
-  project_data$locked_in <- FALSE
+  # assign locked in actions
   if (locked_in_proportion > 1e-10) {
     l <- sample.int(number_species, ceiling(number_species *
                                             locked_in_proportion))
-    project_data$locked_in[l] <- TRUE
+    action_data$locked_in[l] <- TRUE
   }
 
-  # assign locked out projects
-  project_data$locked_out <- FALSE
+  # assign locked out actions
   if (locked_out_proportion > 1e-10) {
-    l <- sample(which(!project_data$locked_in),
+    l <- sample(which(!action_data$locked_in &
+                      seq_len(nrow(action_data)) != nrow(action_data)),
                 ceiling(number_species * locked_out_proportion))
-    project_data$locked_out[l] <- TRUE
+    action_data$locked_out[l] <- TRUE
   }
 
   # phylogenetic tree
   tree <- ape::rcoal(n = number_species,
                      tip.label = paste0("S", seq_len(number_species)))
+
+  # create project data
+  project_data <- tibble::tibble(
+    name = c(paste0("S", seq_len(number_species), "_project"),
+                    "baseline_project"))
 
   ## species persistence probabilities
   spp_prob_matrix <- matrix(0, ncol = number_species,
@@ -218,6 +270,17 @@ ppp_simulate_data <- function(number_species, cost_mean = 100, cost_sd = 5,
                  not_funded_max_persistence_probability)
   project_data <- cbind(project_data, as.data.frame(spp_prob_matrix))
 
+  ## organization data
+  organization_data <- matrix(FALSE, ncol = number_species + 1,
+                              nrow = number_species + 1,
+                              dimnames = list(NULL, action_data$name))
+  diag(organization_data) <- TRUE
+  organization_data <- cbind(project_data[, "name", drop = FALSE],
+                             as.data.frame(organization_data))
+
   ## return result
-  list(project_data = tibble::as_tibble(project_data), tree = tree)
+  list(project_data = tibble::as_tibble(project_data),
+       action_data = action_data,
+       organization_data = tibble::as_tibble(organization_data),
+       tree = tree)
 }

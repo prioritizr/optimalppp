@@ -61,21 +61,47 @@ A \code{list} object containing the elements:
       \describe{
 
 
-        \item{\code{"cost"}}{\code{numeric} cost for each project.}
+        \item{\code{"S1"} ... \code{"SN"}}{\code{numeric} columns for each
+          species, ranging from \code{"S1"} to \code{"SN"} where \code{N}
+          is the number of species, indicating the enhanced probability that
+          each species will persist if it funded.}
 
-        \item{\code{"success"}}{\code{numeric} probability of each project
+    }}
+
+    \item{\code{"action_data"}}{A \code{\link[tibble]{tibble}} containing
+      the data for the conservation actions. It contains the following
+      columns:
+
+      \describe{
+
+
+        \item{\code{"cost"}}{\code{numeric} cost for each action.}
+
+        \item{\code{"success"}}{\code{numeric} probability of each action
           succeeding if it is funded.}
 
         \item{\code{"locked_in"}}{\code{logical} indicating if certain
-          projects should be locked into the solution.}
+          actions should be locked into the solution.}
 
         \item{\code{"locked_out"}}{\code{logical} indicating if certain
-          projects should be locked out of the solution.}
+          actions should be locked out of the solution.}
 
-        \item{\code{"S1"} ... \code{"SN"}}{\code{numeric} columns for each
-          species, ranging from \code{"S1"} to \code{"SN"} where N is the
-          number of species, indicating the enhanced probability that each
-          species will survive if it funded.}
+    }}
+
+    \item{\code{"organization_data"}}{A \code{\link[tibble]{tibble}}
+      indicating which conservation actions fall under which conservation
+      projects. It contains the following columns:
+
+      \describe{
+
+        \item{\code{"name"}}{\code{character} name for each project.}
+
+        \item{\code{"S1_action"} ... \code{"SN_action"}}{\code{logical}
+          columns for each action, ranging from \code{"S1_action"} to
+          \code{"SN_action"} where \code{N} is
+          the number of actions (equal to the number of species in this
+          simulated data), indicating if an action is associated with a
+          project (\code{TRUE}) or not (\code{FALSE}).}
 
     }}
 
@@ -84,32 +110,35 @@ A \code{list} object containing the elements:
  }
 }
 \description{
-Simulate data to prioritize project funding schemes for species conservation.
+Simulate conservation project data to develop simulated prioritizations.
 }
 \details{
 The simulated data set will contain one conservation project for
-  each species and a baseline "do nothing" project to reflect species'
-  persistence when their conservation projects are not funded. The
-  data are simulated as follows:
+  each species and a "baseline" (do nothing) project to reflect species'
+  persistence when none of their conservation projects are not funded. Each
+  conservation project is associated with a single action, and no
+  conservation projects share any actions. Specifically, the data are
+  simulated as follows:
 
   \enumerate{
 
-    \item A conservation project is created for each species.
+    \item A conservation project is created for each species, and each
+      project is associated with its own single action.
 
-    \item Cost data for each project are simulated using a normal
+    \item Cost data for each action are simulated using a normal
       distribution and the \code{cost_mean} and \code{cost_sd} arguments.
 
-    \item The probability of each project succeeding is simulated by
+    \item The probability of each action succeeding is simulated by
       drawing probabilities from a uniform distribution with the upper
       and lower bounds set as the \code{success_min_probability} and
       \code{success_max_probability} arguments.
 
-    \item The probability of each project succeeding is simulated by
+    \item The probability of each action succeeding is simulated by
       drawing probabilities from a uniform distribution with the upper
       and lower bounds set as the \code{success_min_probability} and
       \code{success_max_probability} arguments.
 
-    \item A set proportion of the projects are randomly set to be locked
+    \item A set proportion of the actions are randomly set to be locked
       in and out of the solutions using the \code{locked_in_proportion} and
       \code{locked_out_proportion} arguments.
     \item The probability of each species persisting is simulated by
@@ -117,8 +146,8 @@ The simulated data set will contain one conservation project for
       and lower bounds set as the \code{funded_min_persistence_probability}
       and \code{funded_max_persistence_probability} arguments.
 
-    \item An additional project is created which represents the baseline
-      "do nothing" scenario. The probability of each species persisting
+    \item An additional project is created which represents the "baseline"
+      (do nothing) scenario. The probability of each species persisting
       when managed under this project is simulated by drawing probabilities
       from a uniform distribution with the upper and lower bounds
       set as the \code{not_funded_min_persistence_probability}
@@ -128,4 +157,22 @@ The simulated data set will contain one conservation project for
       \code{\link[ape]{rcoal}}.
 
  }
+}
+\examples{
+# create a simulated data set
+s <- ppp_simulate_data(number_species = 5,
+                         cost_mean = 100,
+                         cost_sd = 5,
+                         success_min_probability = 0.7,
+                         success_max_probability = 0.99,
+                         funded_min_persistence_probability = 0.5,
+                         funded_max_persistence_probability = 0.9,
+                         not_funded_min_persistence_probability = 0.01,
+                         not_funded_max_persistence_probability = 0.4,
+                         locked_in_proportion = 0.01,
+                         locked_out_proportion = 0.01)
+
+# print data set
+print(s)
+
 }
