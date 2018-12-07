@@ -7,41 +7,53 @@ test_that("valid arguments", {
   expect_is(s, "list")
   expect_is(s$project_data, "tbl_df")
   expect_is(s$action_data, "tbl_df")
-  expect_is(s$organization_data, "tbl_df")
   expect_is(s$tree, "phylo")
   # project data
   ## dimensions
   expect_equal(nrow(s$project_data), 6)
-  expect_equal(ncol(s$project_data), 6)
+  expect_equal(ncol(s$project_data), 13)
   ## name column
   expect_is(s$project_data$name, "character")
   expect_equal(anyDuplicated(s$project_data$name), 0)
   expect_equal(s$project_data$name[nrow(s$project_data)], "baseline_project")
   expect_equal(s$project_data$name[-nrow(s$project_data)],
                paste0("S", seq_len(5), "_project"))
+  ## success column
+  expect_is(s$project_data$success, "numeric")
+  expect_true(all(s$project_data$success >= 0.7))
+  expect_true(all(s$project_data$success[-nrow(s$action_data)] <= 0.99))
+  expect_equal(s$project_data$success[nrow(s$action_data)], 1)
+  expect_true(all(is.finite(s$project_data$success)))
   ## species persistence columns
-  expect_equal(unique(vapply(s$project_data[, grepl("S", names(s$project_data)),
+  expect_equal(unique(vapply(s$project_data[, paste0("S", seq_len(5)),
                                             drop = FALSE], class,
                                             character(1))), "numeric")
-  expect_equal(rowSums(as.matrix(s$project_data[, grepl("S",
-                                                        names(s$project_data)),
+  expect_equal(rowSums(as.matrix(s$project_data[, paste0("S", seq_len(5)),
                                                 drop = FALSE]) > 0),
                c(rep(1, 5), 5))
   expect_gte(min(as(as.matrix(s$project_data[-6,
-                                          grepl("S", names(s$project_data)),
-                                          drop = FALSE]), "dgCMatrix")@x), 0.5)
+                                             paste0("S", seq_len(5)),
+                                             drop = FALSE]), "dgCMatrix")@x),
+                                             0.5)
   expect_lte(max(as.matrix(s$project_data[-6,
-                                          grepl("S", names(s$project_data)),
+                                          paste0("S", seq_len(5)),
                                           drop = FALSE])), 0.9)
   expect_gte(min(as.matrix(s$project_data[6,
-                                          grepl("S", names(s$project_data)),
+                                          paste0("S", seq_len(5)),
                                           drop = FALSE])), 0.01)
   expect_lte(max(as.matrix(s$project_data[6,
-                                          grepl("S", names(s$project_data)),
+                                          paste0("S", seq_len(5)),
                                           drop = FALSE])), 0.4)
+  ## organization data
+  expect_true(all(vapply(
+    s$project_data[, grepl("action", names(s$project_data))], inherits,
+    logical(1), "logical")))
+  expect_true(all(vapply(
+    s$project_data[, grepl("action", names(s$project_data))], sum,
+    numeric(1)) == 1))
   # action data
   ## dimensions
-  expect_equal(ncol(s$action_data), 5)
+  expect_equal(ncol(s$action_data), 4)
   expect_equal(nrow(s$action_data), 6)
   ## name column
   expect_is(s$action_data$name, "character")
@@ -60,27 +72,6 @@ test_that("valid arguments", {
   expect_is(s$action_data$cost, "numeric")
   expect_true(all(s$action_data$cost >= 0))
   expect_true(all(is.finite(s$action_data$cost)))
-  ## success column
-  expect_is(s$action_data$success, "numeric")
-  expect_true(all(s$action_data$success >= 0.7))
-  expect_true(all(s$action_data$success[-nrow(s$action_data)] <= 0.99))
-  expect_equal(s$action_data$success[nrow(s$action_data)], 1)
-  expect_true(all(is.finite(s$action_data$success)))
-  # organization data
-  ## dimensions
-  expect_equal(ncol(s$organization_data), 7)
-  expect_equal(nrow(s$organization_data), 6)
-  ## name column
-  expect_is(s$organization_data$name, "character")
-  expect_equal(anyDuplicated(s$organization_data$name), 0)
-  expect_equal(s$organization_data$name[nrow(s$organization_data)],
-               "baseline_project")
-  expect_equal(s$organization_data$name[-nrow(s$organization_data)],
-               paste0("S", seq_len(5), "_project"))
-  ## project/action association data
-  expect_true(all(vapply(s$organization_data[, -1], inherits, logical(1),
-              "logical")))
-  expect_true(all(vapply(s$organization_data[, -1], sum, numeric(1)) == 1))
 })
 
 test_that("invalid arguments", {

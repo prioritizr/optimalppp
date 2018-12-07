@@ -61,10 +61,20 @@ A \code{list} object containing the elements:
       \describe{
 
 
+        \item{\code{"success"}}{\code{numeric} probability of each project
+          succeeding if it is funded.}
+
         \item{\code{"S1"} ... \code{"SN"}}{\code{numeric} columns for each
           species, ranging from \code{"S1"} to \code{"SN"} where \code{N}
           is the number of species, indicating the enhanced probability that
           each species will persist if it funded.}
+
+        \item{\code{"S1_action"} ... \code{"SN_action"}}{\code{logical}
+          columns for each action, ranging from \code{"S1_action"} to
+          \code{"SN_action"} where \code{N} is
+          the number of actions (equal to the number of species in this
+          simulated data), indicating if an action is associated with a
+          project (\code{TRUE}) or not (\code{FALSE}).}
 
     }}
 
@@ -77,31 +87,11 @@ A \code{list} object containing the elements:
 
         \item{\code{"cost"}}{\code{numeric} cost for each action.}
 
-        \item{\code{"success"}}{\code{numeric} probability of each action
-          succeeding if it is funded.}
-
         \item{\code{"locked_in"}}{\code{logical} indicating if certain
           actions should be locked into the solution.}
 
         \item{\code{"locked_out"}}{\code{logical} indicating if certain
           actions should be locked out of the solution.}
-
-    }}
-
-    \item{\code{"organization_data"}}{A \code{\link[tibble]{tibble}}
-      indicating which conservation actions fall under which conservation
-      projects. It contains the following columns:
-
-      \describe{
-
-        \item{\code{"name"}}{\code{character} name for each project.}
-
-        \item{\code{"S1_action"} ... \code{"SN_action"}}{\code{logical}
-          columns for each action, ranging from \code{"S1_action"} to
-          \code{"SN_action"} where \code{N} is
-          the number of actions (equal to the number of species in this
-          simulated data), indicating if an action is associated with a
-          project (\code{TRUE}) or not (\code{FALSE}).}
 
     }}
 
@@ -128,23 +118,20 @@ The simulated data set will contain one conservation project for
     \item Cost data for each action are simulated using a normal
       distribution and the \code{cost_mean} and \code{cost_sd} arguments.
 
-    \item The probability of each action succeeding is simulated by
-      drawing probabilities from a uniform distribution with the upper
-      and lower bounds set as the \code{success_min_probability} and
-      \code{success_max_probability} arguments.
-
-    \item The probability of each action succeeding is simulated by
-      drawing probabilities from a uniform distribution with the upper
-      and lower bounds set as the \code{success_min_probability} and
-      \code{success_max_probability} arguments.
-
     \item A set proportion of the actions are randomly set to be locked
       in and out of the solutions using the \code{locked_in_proportion} and
       \code{locked_out_proportion} arguments.
-    \item The probability of each species persisting is simulated by
-      drawing probabilities from a uniform distribution with the upper
-      and lower bounds set as the \code{funded_min_persistence_probability}
-      and \code{funded_max_persistence_probability} arguments.
+
+    \item The probability of each project succeeding if its action is funded
+      is simulated by drawing probabilities from a uniform distribution with
+      the upper and lower bounds set as the \code{success_min_probability}
+      and \code{success_max_probability} arguments.
+
+    \item The probability of each species persisting if its project is funded
+      and is successful is simulated by drawing probabilities from a uniform
+      distribution with the upper and lower bounds set as the
+      \code{funded_min_persistence_probability} and
+      \code{funded_max_persistence_probability} arguments.
 
     \item An additional project is created which represents the "baseline"
       (do nothing) scenario. The probability of each species persisting
