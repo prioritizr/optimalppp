@@ -32,10 +32,7 @@ sim <- ppp_simulate_data(number_species,
 # Exports
 sim_project_data <- sim$project_data
 sim_action_data <- sim$action_data
-sim_organization_data <- sim$organization_data
 sim_tree <- sim$tree
 save(sim_project_data, file = "data/sim_project_data.rda", compress = "xz")
 save(sim_action_data, file = "data/sim_action_data.rda", compress = "xz")
-save(sim_organization_data, file = "data/sim_organization_data.rda",
-     compress = "xz")
 save(sim_tree, file = "data/sim_tree.rda", compress = "xz")
