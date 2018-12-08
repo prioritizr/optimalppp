@@ -1,12 +1,12 @@
 #' @include internal.R
 NULL
 
-#' Solve the phylogenetic 'Project Prioritization Protocol' problem
-#' by manually specifying a solution
+#' Manually prioritize conservation projects with phylogenetic data
 #'
-#' Manually specify funding schemes for conservation projects under the
+#' Manually specify funding schemes for conservation projects using the
 #' 'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and
-#' evaluate their effectiveness (Faith 2008).
+#' evaluate their effectiveness using 'expected phylogenetic diversity'
+#' (Faith 2008).
 #'
 #' @inheritParams help
 #'

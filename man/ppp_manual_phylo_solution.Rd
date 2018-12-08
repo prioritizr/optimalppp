@@ -2,8 +2,7 @@
 % Please edit documentation in R/ppp_manual_phylo_solution.R
 \name{ppp_manual_phylo_solution}
 \alias{ppp_manual_phylo_solution}
-\title{Solve the phylogenetic 'Project Prioritization Protocol' problem
-by manually specifying a solution}
+\title{Manually prioritize conservation projects with phylogenetic data}
 \usage{
 ppp_manual_phylo_solution(x, y, tree, solution, project_column_name,
   success_column_name, action_column_name, cost_column_name)
@@ -109,9 +108,10 @@ A \code{\link[tibble]{tibble}} object containing the
  }
 }
 \description{
-Manually specify funding schemes for conservation projects under the
+Manually specify funding schemes for conservation projects using the
 'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and
-evaluate their effectiveness (Faith 2008).
+evaluate their effectiveness using 'expected phylogenetic diversity'
+(Faith 2008).
 }
 \examples{
 # set seed for reproducibility
