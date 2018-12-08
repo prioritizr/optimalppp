@@ -9,11 +9,15 @@
 #'  in the argument to \code{solutions}.
 #'
 #' @keywords internal
-ppp_objective_value <- function(x, tree, project_column_name,
-                                success_column_name, solution) {
+ppp_epd <- function(x, y, tree, solution, project_column_name,
+                    success_column_name, action_column_name) {
   # assert that parameters are valid
   assertthat::assert_that(inherits(x, c("data.frame", "tbl_df")),
                           ncol(x) > 0, nrow(x) > 0,
+                          inherits(y, c("data.frame", "tbl_df")),
+                          ncol(y) > 0, nrow(y) > 0,
+                          inherits(solution, c("data.frame", "tbl_df")),
+                          ncol(solution) > 0, nrow(solution) > 0,
                           inherits(tree, "phylo"),
                           assertthat::is.string(project_column_name),
                           assertthat::has_name(x, project_column_name),
@@ -21,13 +25,16 @@ ppp_objective_value <- function(x, tree, project_column_name,
                           assertthat::has_name(x, success_column_name),
                           is.numeric(x[[success_column_name]]),
                           assertthat::noNA(x[[success_column_name]]),
-                          inherits(solution, c("data.frame", "tbl_df")),
-                          all(as.character(x[[project_column_name]]) %in%
+                          assertthat::is.string(action_column_name),
+                          assertthat::has_name(y, action_column_name),
+                          all(as.character(y[[action_column_name]]) %in%
                               names(solution)),
-                          all(vapply(solution[, x[[project_column_name]],
+                          all(as.character(y[[action_column_name]]) %in%
+                              names(x)),
+                          all(vapply(solution[, y[[action_column_name]],
                                               drop = FALSE],
-                                     class, character(1)) ==
-                                     "logical"))
+                                     inherits, logical(1), "logical"))
+                                   )
   assertthat::assert_that(
     all(tree$tip.label %in% names(x)),
     msg = paste("argument to tree contains species that do not appear as",
@@ -54,6 +61,10 @@ ppp_objective_value <- function(x, tree, project_column_name,
   spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
 
   # Exports
-  rcpp_ppp_objective(spp_probs, branch_matrix(tree), tree$edge.length,
-                     methods::as(as.matrix(solution[, x$name]), "dgCMatrix"))
+  rcpp_ppp_epd(spp_probs,
+               as(as.matrix(x[, y[[action_column_name]], drop = FALSE]),
+                  "dgCMatrix"),
+               branch_matrix(tree), tree$edge.length,
+               as(as.matrix(solution[, y[[action_column_name]],
+                                     drop = FALSE]), "dgCMatrix"))
 }

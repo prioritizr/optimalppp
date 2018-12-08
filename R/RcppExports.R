@@ -9,19 +9,7 @@ rcpp_branch_probabilities <- function(spp, branch_matrix, solutions) {
     .Call(`_optimalppp_rcpp_branch_probabilities`, spp, branch_matrix, solutions)
 }
 
-rcpp_heuristic_solution <- function(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out) {
-    .Call(`_optimalppp_rcpp_heuristic_solution`, spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out)
-}
-
-rcpp_mip_formulation <- function(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_approx_points) {
-    .Call(`_optimalppp_rcpp_mip_formulation`, spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_approx_points)
-}
-
-rcpp_ppp_objective <- function(spp, branch_matrix, branch_lengths, solutions) {
-    .Call(`_optimalppp_rcpp_ppp_objective`, spp, branch_matrix, branch_lengths, solutions)
-}
-
-rcpp_random_solution <- function(spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_solutions) {
-    .Call(`_optimalppp_rcpp_random_solution`, spp, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_solutions)
+rcpp_ppp_epd <- function(spp, actions, branch_matrix, branch_lengths, solutions) {
+    .Call(`_optimalppp_rcpp_ppp_epd`, spp, actions, branch_matrix, branch_lengths, solutions)
 }
 

@@ -9,12 +9,13 @@ table containing project data. Here, each row should correspond to
 a different project and columns should contain data that correspond to
 each project. This object should contain data that denote (i)
 the name of each project (specified in the argument to
-\code{project_column_name}), (ii) the cost of each project
-(specified in the argument to \code{cost_column_name}), (iii) the
-probability that each project will succeed if it is funded
-(specified in the argument to \code{success}),
-and (iv) the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}).
+\code{project_column_name}), (ii) the
+probability that each project will succeed if all of its actions are funded
+(specified in the argument to \code{success_column_name}), (iii)
+the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to \code{tree}),
+and (iv) and which actions are associated with which projects
+(specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
 and trapping different invasive species in the same area), additional
 projects should be created that indicate the combined cost and
@@ -23,11 +24,26 @@ must have a baseline project, with a zero cost, that represents the
 probability that each species will persist if no other conservation
 project is funded.}
 
+\item{y}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing the action data. Here, each row should correspond to a
+different action and columns should contain data that correspond to
+each action. This object should contain data that denote (i)
+the name of each action (specified in the argument to
+\code{action_column_name}), (ii) the cost of each action (specified in the
+argument to \code{cost_column_name}). If certain actions should be locked
+in or out of the solution, then this object should also contain data
+that denote (iii) which actions should be locked in (specified using
+the argument to \code{locked_in_column_name} if relevant) and (iv) which
+actions should be locked out (specified using the argument to
+\code{locked_out_column_name} if relevant).}
+
 \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
 evolutionary history of the species affected by the conservation
 projects that could potentially be funded. Note that every single
 species that is affected by the various conservation projects should
 be represented in this tree.}
+
+\item{species_name}{\code{character} \code{vector} species names.}
 
 \item{budget}{\code{numeric} value that represents the total budget available
 for funding conservation projects.}
@@ -93,9 +109,9 @@ the problem? No missing values are permitted. Defaults to \code{FALSE}.}
 
 \item{solution}{\code{\link[tibble]{tibble}} object containing the solution
 data. Here, each row corresponds to a different solution. This object
-should contain a column for each project---with the column name matching
-the project name---and the column should contain \code{logical} values
-that indicate if the project is funded (\code{TRUE}) or not (\code{FALSE}).
+should contain a column for each action---with the column names matching
+the project names---and the column should contain \code{logical} values
+that indicate if the action is funded (\code{TRUE}) or not (\code{FALSE}).
 Although additional columns can also be included, they will be ignored.}
 }
 \value{
@@ -110,12 +126,21 @@ A \code{\link[tibble]{tibble}} object containing the
 
  \describe{
 
-   \item{\code{"objective"}}{\code{numeric} objective value associated with
-     each of the solution(s). This corresponds to the expected amount of
-     evolutionary history that is retained by each solution (Faith 2008).}
+   \item{\code{"method"}}{\code{character} name of method used to produce the
+     solution(s).)}
 
    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
      the of the solution(s).}
+
+   \item{\code{"epd"}}{\code{numeric} expected phylogenetic diversity
+     associated with each of the solutions. This
+     corresponds to the expected amount of evolutionary history that is
+     retained by each solution (Faith 2008). If no phylogenetic tree
+     was specified, then this column will contain missing values
+     (i.e. \code{NA_real_})}.
+
+   \item{\code{"er"}}{\code{numeric} expected species richness. This is
+     the sum of the species' persistence probabilities.}
 
    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
@@ -125,9 +150,6 @@ A \code{\link[tibble]{tibble}} object containing the
      Missing values (\code{NA}) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).}
-
-   \item{\code{"method"}}{\code{character} name of method used to produce the
-     solution(s).)}
 
  }
 }

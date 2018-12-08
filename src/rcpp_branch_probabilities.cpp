@@ -7,7 +7,6 @@ Rcpp::NumericMatrix rcpp_branch_probabilities(arma::sp_mat spp,
                                               arma::sp_mat solutions) {
   // Initialization
   std::size_t n_spp = spp.n_cols;
-  std::size_t n_projects = spp.n_rows;
   std::size_t n_branches = branch_matrix.n_cols;
   std::size_t n_solutions = solutions.n_rows;
   Rcpp::NumericMatrix out(n_solutions, n_branches);

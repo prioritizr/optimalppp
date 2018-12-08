@@ -16,12 +16,13 @@ table containing project data. Here, each row should correspond to
 a different project and columns should contain data that correspond to
 each project. This object should contain data that denote (i)
 the name of each project (specified in the argument to
-\code{project_column_name}), (ii) the cost of each project
-(specified in the argument to \code{cost_column_name}), (iii) the
-probability that each project will succeed if it is funded
-(specified in the argument to \code{success}),
-and (iv) the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}).
+\code{project_column_name}), (ii) the
+probability that each project will succeed if all of its actions are funded
+(specified in the argument to \code{success_column_name}), (iii)
+the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to \code{tree}),
+and (iv) and which actions are associated with which projects
+(specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
 and trapping different invasive species in the same area), additional
 projects should be created that indicate the combined cost and
@@ -110,12 +111,21 @@ A \code{\link[tibble]{tibble}} object containing the
 
  \describe{
 
-   \item{\code{"objective"}}{\code{numeric} objective value associated with
-     each of the solution(s). This corresponds to the expected amount of
-     evolutionary history that is retained by each solution (Faith 2008).}
+   \item{\code{"method"}}{\code{character} name of method used to produce the
+     solution(s).)}
 
    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
      the of the solution(s).}
+
+   \item{\code{"epd"}}{\code{numeric} expected phylogenetic diversity
+     associated with each of the solutions. This
+     corresponds to the expected amount of evolutionary history that is
+     retained by each solution (Faith 2008). If no phylogenetic tree
+     was specified, then this column will contain missing values
+     (i.e. \code{NA_real_})}.
+
+   \item{\code{"er"}}{\code{numeric} expected species richness. This is
+     the sum of the species' persistence probabilities.}
 
    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
@@ -125,9 +135,6 @@ A \code{\link[tibble]{tibble}} object containing the
      Missing values (\code{NA}) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).}
-
-   \item{\code{"method"}}{\code{character} name of method used to produce the
-     solution(s).)}
 
  }
 }

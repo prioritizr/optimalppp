@@ -14,12 +14,13 @@ table containing project data. Here, each row should correspond to
 a different project and columns should contain data that correspond to
 each project. This object should contain data that denote (i)
 the name of each project (specified in the argument to
-\code{project_column_name}), (ii) the cost of each project
-(specified in the argument to \code{cost_column_name}), (iii) the
-probability that each project will succeed if it is funded
-(specified in the argument to \code{success}),
-and (iv) the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}).
+\code{project_column_name}), (ii) the
+probability that each project will succeed if all of its actions are funded
+(specified in the argument to \code{success_column_name}), (iii)
+the enhanced probability that each species will persist if it
+is funded (specified as the tip labels in the argument to \code{tree}),
+and (iv) and which actions are associated with which projects
+(specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
 and trapping different invasive species in the same area), additional
 projects should be created that indicate the combined cost and
