@@ -33,9 +33,11 @@ NULL
 #'   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
 #'
 #' @seealso To generate solutions for the 'Project
-#'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-#'   \code{\link{ppp_exact_solution}}, \code{\link{ppp_manual_solution}},
-#'   or \code{\link{ppp_random_solution}}.
+#'   Prioritization Protocol' problem, see
+#'   \code{\link{ppp_heuristic_phylo_solution}}
+#'   \code{\link{ppp_exact_phylo_solution}},
+#'   \code{\link{ppp_manual_phylo_solution}},
+#'   or \code{\link{ppp_random_phylo_solution}}.
 #'
 #' @references
 #' Faith DP (2008) Threatened species and the potential loss of
@@ -122,8 +124,9 @@ NULL
 #' theme(legend.position = "hide") +
 #' ggtitle("solution")
 #' @export
-ppp_plot <- function(x, tree, solution, project_column_name, cost_column_name,
-                     success_column_name, n = 1L, asterisk_hjust = 0.007) {
+ppp_phylo_plot <- function(x, tree, solution, project_column_name,
+                           cost_column_name, success_column_name, n = 1L,
+                           asterisk_hjust = 0.007) {
   # assertions
   ## assert that ggtree R package is installed
   assertthat::assert_that(requireNamespace("ggtree", quietly = TRUE),

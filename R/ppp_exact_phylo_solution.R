@@ -141,10 +141,11 @@ NULL
 #' trivial period of time.
 #'
 #' @seealso For other methods for solving the 'Project Prioritization Protocol'
-#'   problem, see \code{\link{ppp_heuristic_solution}},
-#'   \code{\link{ppp_manual_solution}}, and \code{\link{ppp_random_solution}}.
+#'   problem, see \code{\link{ppp_heuristic_phylo_solution}},
+#'   \code{\link{ppp_manual_phylo_solution}}, and
+#'   \code{\link{ppp_random_phylo_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
-#'   \code{\link{ppp_plot}}.
+#'   \code{\link{ppp_phylo_plot}}.
 #'
 #' @references
 #' Faith DP (2008) Threatened species and the potential loss of
@@ -228,7 +229,7 @@ NULL
 #' ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
 #' }
 #' @export
-ppp_exact_solution <- function(x, tree, budget,
+ppp_exact_phylo_solution <- function(x, tree, budget,
                                project_column_name,
                                cost_column_name,
                                success_column_name,

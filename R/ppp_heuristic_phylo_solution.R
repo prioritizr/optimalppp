@@ -1,63 +1,72 @@
 #' @include internal.R
 NULL
 
-#' Solve the 'Project Prioritization Protocol' problem using heuristic
+#' Prioritize conservation projects with phylogenetic data using heuristic
 #' algorithms
 #'
-#' Prioritize funding for conservation projects under the 'Project
-#' Prioritization Protocol' (Joseph, Maloney & Possingham 2009) using a stingy
-#' heuristic algorithm (Bennett \emph{et al}. 2014).
-#' \strong{Although this algorithm can deliver solutions that perform
-#' better than random, it is extremely unlikely to identify solutions that
-#' are optimal (Underhill 1994; Rodrigues & Gaston 2002).}
+#' Prioritize funding for conservation projects using the 'Project
+#' Prioritization Protocol' (Joseph, Maloney & Possingham 2009) with
+#' phylogenetic data and using a stingy heuristic algorithm (Bennett
+#' \emph{et al}. 2014). \strong{Although this algorithm can deliver solutions
+#' that perform better than random, it is extremely unlikely to identify
+#' solutions that are optimal (Underhill 1994; Rodrigues & Gaston 2002).}
 #'
 #' @inheritParams help
 #'
 #' @inherit help return
 #'
-#' @details Briefly, this algorithm works by starting off with all
-#' conservation projects selected for funding and then begins iteratively
-#' defunding (removing) projects until the budget is met
+#' @details This algorithm aims to identify a set of conservation projects,
+#' each associated with a set of conservation actions, that should be
+#' funded to maximize the amount of evolutionary history that is expected
+#' to persist into the future. Briefly, this algorithm works by starting off
+#' with all conservation actions selected for funding and then begins
+#' iteratively defunding (removing) actions until the budget is met
 #' (Joseph, Maloney & Possingham 2009; Bennett \emph{et al}. 2014). In a given
-#' iteration,
-#' each project is evaluated in terms of the amount of evolutionary
-#' history that is expected to be lost per unit cost when the project is not
+#' iteration, each action is evaluated in terms of the amount of evolutionary
+#' history that is expected to be lost per unit cost when the action is not
 #' funded (based on the 'expected phylogenetic diversity' metric; Faith 2008),
-#' and the project associated with the lowest utility is defunded.
-#' Although this algorithm may identify funding schemes that perform
-#' better than random, it is worth noting that this algorithm is extremely
-#' unlikely to identify optimal solutions. These calculations can be expressed
-#' mathematically with the following definitions.
+#' and the action associated with the lowest utility is defunded. Since
+#' projects are only considered funded when all of their associated actions are
+#' also funded---and species only receive benefits from projects that are
+#' funded, and not individual conservation actions---by iteratively removing
+#' actions according to their expected utility, this algorithm may identify
+#' cost-effective funding schemes Note, however, that this algorithm is
+#' extremely unlikely to identify optimal solutions.
 #'
-#' To calculate the utility for funding a given project (\eqn{j})
-#' among a set of projects (\eqn{J}), let the expected amount of evolutionary
-#' history that will persist into the future when all the projects are funded
-#' be expressed as \eqn{P(J)}. Also, let the expected amount of evolutionary
-#' history that will persist into the future when all the remaining projects
-#' are funded except for project \eqn{j} be expressed as \eqn{P(J - j)}.
-#' Furthermore, allow the cost for funding project \eqn{j} to be \eqn{C_j}.
-#' Given this, the relative benefit (or utility) for funding project \eqn{j}
-#' (\eqn{U_j}) in a given iteration can be expressed as:
+#' The calculations that underpin this algorithm can be expressed
+#' mathematically. To calculate the utility for funding a given action (\eqn{L})
+#' among a set of actions (\eqn{L}), let the expected amount of evolutionary
+#' history that will persist into the future when all the actions are funded
+#' be expressed as \eqn{A(L)}. Also, let the expected amount of evolutionary
+#' history that will persist into the future when all the remaining actions
+#' are funded except for action \eqn{l} be expressed as \eqn{A(L - l)}.
+#' Furthermore, allow the cost for funding action \eqn{l} to be \eqn{C_l}.
+#' Given this, the relative benefit (or utility) for funding action \eqn{l}
+#' (\eqn{U_l}) in a given iteration can be expressed as:
 #'
-#' \deqn{U_j = \frac{P(J) - P(J - j)}{C_j}}{U_j = (P(J) - P(J - j)) / C_j}
+#' \deqn{U_l = \frac{A(L) - A(L - l)}{C_l}}{A_l = (A(L) - A(L - l)) / C_l}
 #'
 #' To calculate the expected amount of evolutionary history that will persist
-#' into the future for a given set of funded projects, we will adopt a new set
+#' into the future for a given set of funded actions, we will adopt a new set
 #' of definitions to avoid confusion. Let \eqn{I} represent a given set of
-#' funded projects (indexed by \eqn{i}). For example, \eqn{I} could denote all
-#' of the projects in a given iteration (\eqn{P(J)}) or all of the project in a
-#' given iteration except for a specific project (\eqn{P(J - j)}). Next, let
-#' \eqn{P_i} represent the probability of project \eqn{i} being successful if
-#' it is funded. Also, let \eqn{S} represent each species (e.g. species;
-#  indexed by \eqn{s}). To represent the conservation outcome for funding each
-#' project, let \eqn{B_{is}} denote the probability of persistence for the
-#' species \eqn{s} if project \eqn{i} is funded and project \eqn{i} is used to
-#' conserve that species.
+#' funded actions (indexed by \eqn{i}). For example, \eqn{I} could denote all
+#' of the actions in a given iteration (\eqn{A(L)}) or all of the actions in a
+#' given iteration except for a specific action (\eqn{A(L - l)}).
+#' Next, let \eqn{S} represent each species (e.g. species;
+#  indexed by \eqn{s}). Additionally, let \eqn{J} denote the set of funded
+#' conservation projects (indexed by
+#' \eqn{j}) given the set of funded actions \eqn{I}. Let \eqn{P_j} represent
+#' the probability of project \eqn{j} being successful if
+#' it is funded. To represent the conservation outcome for
+#' funding the projects \eqn{J}, let \eqn{B_{js}} denote the probability of
+#' persistence for the species \eqn{s} if project \eqn{j} is funded and project
+#' \eqn{j} is used to conserve that species (i.e. it is the best funded
+#' funded project for that species).
 #'
 #' The probability that each species will go extinct (\eqn{E_s}) when a given
-#' set of projects are funded (\eqn{I}) can then be  expressed as as:
+#' set of projects are funded (\eqn{J}) can then be  expressed as as:
 #'
-#' \deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{1s}, \ldots, P_I \times B_{Is})}{E_s = 1 - max(P_1 B_{1s}, ..., P_I B_{Is})}
+#' \deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{1s}, \ldots, P_J \times B_{Js})}{E_s = 1 - max(P_1 B_{1s}, ..., P_J B_{Js})}
 #'
 #' To account for the phylogenetic contributions of funding a project,
 #' consider a phylogenetic tree that contains species \eqn{s \in S}{s in S} and
@@ -75,10 +84,12 @@ NULL
 #'   prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
 #'
 #' @seealso For other methods for generating solutions for the 'Project
-#'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-#'   \code{\link{ppp_exact_solution}}, and \code{\link{ppp_random_solution}}.
+#'   Prioritization Protocol' problem using phylogenetic data, see
+#'   \code{\link{ppp_exact_phylo_solution}}
+#'   \code{\link{ppp_manual_phylo_solution}}, and
+#'   \code{\link{ppp_random_phylo_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
-#'   \code{\link{ppp_plot}}.
+#'   \code{\link{ppp_phylo_plot}}.
 #
 #' @references
 #' Bennett JR, Elliott G, Mellish B, Joseph LN, Tulloch AI,
@@ -178,7 +189,7 @@ NULL
 #'      ylab = "Expected phylogenetic diversity")
 #' }
 #' @export
-ppp_heuristic_solution <- function(x, tree, budget,
+ppp_heuristic_phylo_solution <- function(x, tree, budget,
                                    project_column_name,
                                    cost_column_name,
                                    success_column_name,

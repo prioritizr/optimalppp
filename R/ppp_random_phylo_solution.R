@@ -9,7 +9,7 @@ NULL
 #' allocations, it can be useful to compare the effectiveness of solutions to
 #' random decisions in order to evaluate their effectiveness.
 #' \strong{When informing conservation actions, it is strongly recommended to
-#' use the \code{\link{ppp_exact_solution}} method because it can identify
+#' use the \code{\link{ppp_exact_phylo_solution}} method because it can identify
 #' optimal funding schemes with a guarantee.}
 #'
 #' @inheritParams help
@@ -24,10 +24,12 @@ NULL
 #'  Additionally, projects that are locked in are never deselected for funding.
 #'
 #' @seealso For other methods for generating solutions for the 'Project
-#'   Prioritization Protocol' problem, see \code{\link{ppp_heuristic_solution}}
-#'   \code{\link{ppp_exact_solution}}, and \code{\link{ppp_manual_solution}}.
+#'   Prioritization Protocol' problem, see
+#'   \code{\link{ppp_heuristic_phylo_solution}}
+#'   \code{\link{ppp_exact_phylo_solution}}, and
+#'   \code{\link{ppp_manual_phylo_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
-#'   \code{\link{ppp_plot}}.
+#'   \code{\link{ppp_phylo_plot}}.
 #'
 #' @references
 #' Faith DP (2008) Threatened species and the potential loss of
@@ -69,13 +71,13 @@ NULL
 #' hist(s1$cost, xlab = "solution cost")
 #'
 #' @export
-ppp_random_solution <- function(x, tree, budget,
-                                project_column_name,
-                                cost_column_name,
-                                success_column_name,
-                                locked_in_column_name = NULL,
-                                locked_out_column_name = NULL,
-                                number_solutions = 1L) {
+ppp_random_phylo_solution <- function(x, tree, budget,
+                                      project_column_name,
+                                      cost_column_name,
+                                      success_column_name,
+                                      locked_in_column_name = NULL,
+                                      locked_out_column_name = NULL,
+                                      number_solutions = 1L) {
   # assertions
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))

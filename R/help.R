@@ -52,21 +52,29 @@ NULL
 #'   for funding conservation projects.
 #'
 #' @param project_column_name \code{character} name of column that contains
-#'   the name for each conservation project. Note that the project names
-#'   must not contain any duplicates or missing values.
+#'   the name for each conservation project. This argument corresponds to the
+#'   argument to \code{x}. Note that the project names must not contain any
+#'   duplicates or missing values.
+#'
+#' @param action_column_name \code{character} name of column that contains
+#'   the name for each conservation action. This argument corresponds to the
+#'   argument to \code{y}. Note that the project names must not contain any
+#'   duplicates or missing values.
 #'
 #' @param cost_column_name \code{character} name of column that
-#'   indicates the cost for funding each project. This column must have
-#'   \code{numeric} values which are equal to or greater than zero. No missing
-#'   values are permitted.
+#'   indicates the cost for funding each action. This argument corresponds
+#'   to the argument to \code{y}. This column must have \code{numeric} values
+#'   which are equal to or greater than zero. No missing values are permitted.
 #'
 #' @param success_column_name \code{character} name of column that
-#'   denotes the probability that each project will succeed if it is funded.
-#'   This column must have \code{numeric} values which lay between zero and one.
-#'   No missing values are permitted.
+#'   denotes the probability that each project will succeed. This argument
+#'   corresponds to the argument to \code{x}. This column must have
+#'   \code{numeric} values which lay between zero and one. No missing values
+#'   are permitted.
 #'
 #' @param locked_in_column_name \code{character} name of column that
-#'   indicates which projects should be locked into the funding scheme. For
+#'   indicates which actions should be locked into the funding scheme.
+#'   This argument corresponds to the argument to \code{y}. For
 #'   example, it may be desirable to mandate that projects for
 #'   iconic species are funded in the prioritization. This column should
 #'   contain \code{logical} values, and projects associated with \code{TRUE}
@@ -75,7 +83,8 @@ NULL
 #'   solution.
 #'
 #' @param locked_out_column_name \code{character} name of column that
-#'   indicates which projects should be locked out of the funding scheme. For
+#'   indicates which actions should be locked out of the funding scheme.
+#'   This argument corresponds to the argument to \code{y}. For
 #'   example, it may be desirable to lock out projects for certain species
 #'   that are expected to have little support from the public. This column
 #'   should contain \code{logical} values, and projects associated with

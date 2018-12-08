@@ -55,13 +55,20 @@ that indicate if the action is funded (\code{TRUE}) or not (\code{FALSE}).
 Although additional columns can also be included, they will be ignored.}
 
 \item{project_column_name}{\code{character} name of column that contains
-the name for each conservation project. Note that the project names
-must not contain any duplicates or missing values.}
+the name for each conservation project. This argument corresponds to the
+argument to \code{x}. Note that the project names must not contain any
+duplicates or missing values.}
 
 \item{success_column_name}{\code{character} name of column that
-denotes the probability that each project will succeed if it is funded.
-This column must have \code{numeric} values which lay between zero and one.
-No missing values are permitted.}
+denotes the probability that each project will succeed. This argument
+corresponds to the argument to \code{x}. This column must have
+\code{numeric} values which lay between zero and one. No missing values
+are permitted.}
+
+\item{action_column_name}{\code{character} name of column that contains
+the name for each conservation action. This argument corresponds to the
+argument to \code{y}. Note that the project names must not contain any
+duplicates or missing values.}
 }
 \value{
 \code{numeric} vector with an objective value for each solution

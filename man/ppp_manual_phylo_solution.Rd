@@ -55,18 +55,25 @@ that indicate if the action is funded (\code{TRUE}) or not (\code{FALSE}).
 Although additional columns can also be included, they will be ignored.}
 
 \item{project_column_name}{\code{character} name of column that contains
-the name for each conservation project. Note that the project names
-must not contain any duplicates or missing values.}
+the name for each conservation project. This argument corresponds to the
+argument to \code{x}. Note that the project names must not contain any
+duplicates or missing values.}
 
 \item{success_column_name}{\code{character} name of column that
-denotes the probability that each project will succeed if it is funded.
-This column must have \code{numeric} values which lay between zero and one.
-No missing values are permitted.}
+denotes the probability that each project will succeed. This argument
+corresponds to the argument to \code{x}. This column must have
+\code{numeric} values which lay between zero and one. No missing values
+are permitted.}
+
+\item{action_column_name}{\code{character} name of column that contains
+the name for each conservation action. This argument corresponds to the
+argument to \code{y}. Note that the project names must not contain any
+duplicates or missing values.}
 
 \item{cost_column_name}{\code{character} name of column that
-indicates the cost for funding each project. This column must have
-\code{numeric} values which are equal to or greater than zero. No missing
-values are permitted.}
+indicates the cost for funding each action. This argument corresponds
+to the argument to \code{y}. This column must have \code{numeric} values
+which are equal to or greater than zero. No missing values are permitted.}
 }
 \value{
 A \code{\link[tibble]{tibble}} object containing the
@@ -179,8 +186,9 @@ resources among threatened species: A project prioritization protocol.
 }
 \seealso{
 For other methods for generating solutions for the 'Project
-  Prioritization Protocol' problem, see \code{\link{ppp_exact_solution}},
-  \code{\link{ppp_heuristic_solution}}, and
-  \code{\link{ppp_random_solution}}. To visualize the effectiveness of a
-  particular solution, see \code{\link{ppp_plot}}.
+  Prioritization Protocol' problem, see
+  \code{\link{ppp_exact_phylo_solution}},
+  \code{\link{ppp_heuristic_phylo_solution}}, and
+  \code{\link{ppp_random_phylo_solution}}. To visualize the effectiveness of
+  a particular solution, see \code{\link{ppp_phylo_plot}}.
 }
