@@ -139,6 +139,8 @@ NULL
 #'
 #'  \describe{
 #'
+#'    \item{\code{"solution"}}{\code{integer} solution identifier.}
+#'
 #'    \item{\code{"method"}}{\code{character} name of method used to produce the
 #'      solution(s).)}
 #'
@@ -146,9 +148,10 @@ NULL
 #'      the of the solution(s).}
 #'
 #'    \item{\code{"obj"}}{\code{numeric} objective value. If phylogenetic data,
-#'      were specified, then this column contains the expected phylogenetic
-#'      diversity associated with each of the solutions. Otherwise, this column
-#'      contains the sum of the weighted species persistence probabilities.}
+#'      were input, then this column contains the expected phylogenetic
+#'      diversity (Faith 2008) associated with each of the solutions.
+#'      Otherwise, this column contains the sum of the species' weighted
+#'      persistence probabilities .}
 #'
 #'    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
 #'      of the solution(s).}
