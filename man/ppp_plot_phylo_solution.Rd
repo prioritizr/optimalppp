@@ -108,59 +108,54 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
   asterisk symbol. Species that indirectly benefit from funded
   projects---because they are associated with partially funded projects that
   have non-zero costs and share actions with at least one funded
-  project---are denoted with dash symbols.
+  project---are denoted with an open circle symbols.
 }
 \examples{
 # set seed for reproducibility
 set.seed(500)
 
 # load built-in data
-data(sim_project_data, sim_tree)
+data(sim_project_data, sim_action_data, sim_tree)
 
-# load packages to help with plotting
-library(ggplot2)
-
-# print simulated project data set
+# print simulated project data
 print(sim_project_data)
 
-# print simulated phylogenetic tree data set
+# print simulated action data
+print(sim_action_data)
+
+# print simulated phylogenetic tree data
 print(sim_tree)
 
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
 
-
-solutions <- data.frame(S1_project = c(FALSE, FALSE, TRUE),
-                        S2_project = c(TRUE, FALSE, TRUE),
-                        S4_project = c(TRUE, FALSE, TRUE),
-                        S3_project = c(FALSE, FALSE, TRUE),
-                        S5_project = c(TRUE, FALSE, TRUE),
-                        baseline_project = c(TRUE, TRUE, TRUE))
-
-print(solutions)
-
 # create random some solutions with a budget of 700
-s1 <- ppp_random_solution(sim_project_data, sim_tree, 700,
-                          "name", "cost", "success", number_solutions = 10)
+s1 <- ppp_random_phylo_solution(sim_project_data, sim_action_data, sim_tree,
+                                700, "name", "success", "name", "cost",
+                                number_solutions = 10)
 
 # print output
 print(s1)
 
 # plot the first solution
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost")
 
 # plot the second solution
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success", n = 2)
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost", n = 2)
 
 # since this function returns a ggplot2 plot object, we can customize the
 # appearance of the plot using standard ggplot2 commands!
 # for example, we can add a title
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost") +
 ggtitle("solution")
 
 # we could also also set the minimum and maximum values in the color ramp to
 # correspond to those in the data, rather than being capped at 0 and 1
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost") +
 scale_color_gradientn(name = "Probability of\\npersistence",
                       colors = viridisLite::inferno(150, begin = 0,
                                                     end = 0.9,
@@ -168,13 +163,15 @@ scale_color_gradientn(name = "Probability of\\npersistence",
 ggtitle("solution")
 
 # we could also change the color ramp
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost") +
 scale_color_gradient(name = "Probability of\\npersistence",
                      low = "red", high = "black") +
 ggtitle("solution")
 
 # we could even hide the legend if desired
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost") +
 scale_color_gradient(name = "Probability of\\npersistence",
                      low = "red", high = "black") +
 theme(legend.position = "hide") +

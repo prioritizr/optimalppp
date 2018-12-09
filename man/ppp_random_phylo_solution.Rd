@@ -119,34 +119,44 @@ The random solutions are generated using the following algorithm.
  Additionally, actions that are locked in are never deselected for funding.
 }
 \examples{
-# load built-in data
-data(sim_project_data, sim_tree)
+# set seed for reproducibility
+set.seed(500)
 
-# print simulated project data set
+# load built-in data
+data(sim_project_data, sim_action_data, sim_tree)
+
+# print simulated project data
 print(sim_project_data)
 
-# print simulated phylogenetic tree data set
+# print simulated action data
+print(sim_action_data)
+
+# print simulated phylogenetic tree data
 print(sim_tree)
 
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
 
 # generate 10 random solutions that meet a budget of 300
-s1 <- ppp_random_solution(sim_project_data, sim_tree, 300,
-                          "name", "cost", "success", number_solutions = 10)
+s1 <- ppp_random_phylo_solution(sim_project_data, sim_action_data, sim_tree,
+                                300, "name", "success", "name", "cost",
+                                number_solutions = 10)
 
 # print solutions
 print(s1)
 
 # plot first solution
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success", n = 1)
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost", n = 1)
 
-# view histogram of their objective values
-hist(s1$objective, xlab = "solution objective")
+# view histogram of their expected phylogenetic diversity
+hist(s1$epd, xlab = "expected phylogenetic diversity")
+
+# view histogram of their expected species richness
+hist(s1$er, xlab = "expected species richness")
 
 # view histogram of their costs
 hist(s1$cost, xlab = "solution cost")
-
 }
 \references{
 Faith DP (2008) Threatened species and the potential loss of

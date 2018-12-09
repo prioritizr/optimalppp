@@ -215,77 +215,87 @@ given set of projects are funded can then be expressed as:
   prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
 }
 \examples{
-# load built-in data
-data(sim_project_data, sim_tree)
+# set seed for reproducibility
+set.seed(500)
 
-# print simulated project data set
+# load built-in data
+data(sim_project_data, sim_action_data, sim_tree)
+
+# print simulated project data
 print(sim_project_data)
 
-# print simulated phylogenetic tree data set
+# print simulated action data
+print(sim_action_data)
+
+# print simulated phylogenetic tree data
 print(sim_tree)
 
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
 \donttest{
 # find a solution that meets a budget of 300
-s1 <- ppp_heuristic_solution(sim_project_data, sim_tree, 300,
-                             "name", "cost", "success")
+s1 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data,
+                                   sim_tree, 300, "name", "success", "name",
+                                   "cost")
 
 # print solution
 print(s1)
 
-# print the names of which projects were funded
-print(names(s1)[which(unlist(s1[1, sim_project_data$name]))])
+# print the names of which actions were funded
+print(names(s1)[which(unlist(s1[1, sim_action_data$name]))])
 
 # plot solution
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost")
 
 # find a solution that meets a budget of 300 and allocates
-# funding for the "S1_project" project. For instance, species "S1" might
+# funding for the "S1_action" action. For instance, species "S1" might
 # be an iconic species that has cultural and economic importance.
-sim_project_data2 <- sim_project_data
-sim_project_data2$locked_in <- sim_project_data2$name == "S1_project"
-s2 <- ppp_heuristic_solution(sim_project_data2, sim_tree, 300,
-                             "name", "cost", "success",
-                              locked_in_column_name = "locked_in")
+sim_action_data2 <- sim_action_data
+sim_action_data2$locked_in <- sim_action_data2$name == "S1_action"
+s2 <- ppp_heuristic_solution(sim_project_data, sim_action_data2, sim_tree,
+                             300, "name", "success", "name", "cost",
+                             locked_in_column_name = "locked_in")
 
 # print solution
 print(s2)
 
 # plot solution
-ppp_plot(sim_project_data2, sim_tree, s2, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data2, sim_tree, s2,
+                        "name", "success", "name", "cost")
 
 # find a solution that meets a budget of 300 and does not allocate
-# funding for the "S2_project" project. For instance, species "S2"
+# funding for the "S2_action" action. For instance, species "S2"
 # might have very little cultural or economic importance. Broadly speaking,
 # though, it is better to "lock in" "important" species rather than
 # "lock out" unimportant species.
-sim_project_data3 <- sim_project_data
-sim_project_data3$locked_out <- sim_project_data2$name == "S2_project"
-s3 <- ppp_heuristic_solution(sim_project_data3, sim_tree, 300,
-                             "name", "cost", "success",
+sim_action_data3 <- sim_action_data
+sim_action_data3$locked_out <- sim_action_data3$name == "S2_action"
+s3 <- ppp_heuristic_solution(sim_project_data, sim_action_data3, sim_tree,
+                             300, "name", "success", "name", "cost",
                              locked_out_column_name = "locked_out")
 
 # print solution
 print(s3)
 
 # plot solution
-ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data3, sim_tree, s3,
+                        "name", "success", "name", "cost")
 
 # find all solutions from the heuristic algorithm
 # note we can set the budget higher than the total cost of all the
 # projects, and the number of solutions to the total number of
 # projects to achieve this
-s4 <- ppp_heuristic_solution(sim_project_data, sim_tree,
-                             sum(sim_project_data$cost) * 1.1,
-                             "name", "cost", "success",
-                              number_solutions = nrow(sim_project_data))
+s4 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data,
+                                   sim_tree, sum(sim_action_data$cost) * 1.1,
+                                   "name", "success", "name", "cost",
+                                   number_solutions = nrow(sim_action_data))
 
 # print solutions
 print(s4)
 
-# plot solution cost against objective
-plot(objective ~ cost, data = s4,
+# plot solution cost against expected phylogenetic diversity
+plot(epd ~ cost, data = s4,
      main = "Heuristic solutions", xlab = "Cost ($)",
      ylab = "Expected phylogenetic diversity")
 }

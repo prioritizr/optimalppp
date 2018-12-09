@@ -161,18 +161,22 @@ solutions[3, sample.int(nrow(sim_action_data), 4)] <- TRUE
 
 # now we can evaluate the solutions
 s1 <- ppp_manual_phylo_solution(sim_project_data, sim_action_data, sim_tree,
-                                solutions, "name", "cost", "success")
+                                solutions, "name", "success", "name", "cost")
 
 # print the output
 print(s1)
 
 # visualize the effectiveness of the different solutions
-ppp_plot(sim_project_data, sim_action_data, sim_tree, s1, "name", "cost",
-         "success", n = 1) + ggtitle("solution 1")
-ppp_plot(sim_project_data, sim_action_data, sim_tree, s1, "name", "cost",
-         "success", n = 2) + ggtitle("solution 2")
-ppp_plot(sim_project_data, sim_action_data, sim_tree, s1, "name", "cost",
-         "success", n = 2) + ggtitle("solution 3")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost", n = 1) +
+ggtitle("solution 1")
+
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost", n = 2) +
+ggtitle("solution 2")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost", n = 3) +
+ggtitle("solution 1")
 }
 \references{
 Faith DP (2008) Threatened species and the potential loss of
