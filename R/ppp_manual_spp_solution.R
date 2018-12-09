@@ -1,0 +1,128 @@
+#' @include internal.R
+NULL
+
+#' Manually prioritize conservation projects with species-level data
+#'
+#' Manually specify funding schemes for conservation projects using the
+#' 'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and
+#' evaluate their effectiveness using species weights.
+#'
+#' @inheritParams help
+#'
+#' @inherit help return
+#'
+#' @seealso For other methods for generating solutions for the 'Project
+#'   Prioritization Protocol' problem using species-level data, see
+#'   \code{\link{ppp_exact_spp_solution}},
+#'   \code{\link{ppp_heuristic_spp_solution}}, and
+#'   \code{\link{ppp_random_spp_solution}}. To visualize the effectiveness of
+#'   a particular solution, see \code{\link{ppp_plot_spp_solution}}.
+#'
+#' @references
+#' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
+#' resources among threatened species: A project prioritization protocol.
+#' \emph{Conservation Biology}, \strong{23}, 328--338.
+#'
+#' @examples
+#' # set seed for reproducibility
+#' set.seed(500)
+#'
+#' # load built-in data
+#' data(sim_project_data, sim_action_data, sim_species_data)
+#'
+#' # load packages to help with plotting
+#' library(ggplot2)
+#'
+#' # print simulated project data
+#' print(sim_project_data)
+#'
+#' # print simulated action data
+#' print(sim_action_data)
+#'
+#' # print simulated species data
+#' print(sim_species_data)
+#'
+#' # now we will create three solutions
+#' # first, we will initialize a data.frame with no actions funded
+#' solutions <- as.data.frame(matrix(FALSE, ncol = nrow(sim_action_data),
+#'                            nrow = 3))
+#' names(solutions) <- sim_action_data$name
+#'
+#' # the first solution will have no actions funded except for the base line
+#' # actions, so we will make the first value in that column TRUE
+#' solutions$baseline_action[1] <- TRUE
+#'
+#' # the second solution will have all actions funded, so we will set those
+#' # values to TRUE
+#' solutions[2, ] <- TRUE
+#'
+#' # the third solution will have four randomly selected actions funded
+#' solutions[3, sample.int(nrow(sim_action_data), 4)] <- TRUE
+#'
+#' # now we can evaluate the solutions
+#' s1 <- ppp_manual_spp_solution(sim_project_data, sim_action_data,
+#'                               sim_species_data, solutions, "name",
+#'                               "success", "name", "cost", "name", "weight")
+#'
+#' # print the output
+#' print(s1)
+#'
+#' # visualize the effectiveness of the different solutions
+#' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
+#'                       s1, "name", "success", "name", "cost", n = 1) +
+#' ggtitle("solution 1")
+#'
+#' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
+#'                       s1, "name", "success", "name", "cost", n = 2) +
+#' ggtitle("solution 2")
+#'
+#' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
+#'                       s1, "name", "success", "name", "cost", n = 3) +
+#' ggtitle("solution 3")
+#' @export
+ppp_manual_spp_solution <- function(x, y, spp, solution,
+                                    project_column_name,
+                                    success_column_name,
+                                    action_column_name,
+                                    cost_column_name,
+                                    species_column_name,
+                                    weight_column_name = NULL) {
+  # assertions
+  ## coerce x to tibble if just a regular data.frame
+  if (inherits(spp, "data.frame") && !inherits(spp, "tbl_df"))
+    spp <- tibble::as_tibble(spp)
+  ## assert that parameters are valid
+  assertthat::assert_that(inherits(spp, "tbl_df"),
+                          ncol(spp) > 0, nrow(spp) > 0,
+                          assertthat::is.string(species_column_name),
+                          assertthat::has_name(spp, species_column_name),
+                          assertthat::noNA(spp[[species_column_name]]),
+                          inherits(spp[[species_column_name]],
+                                   c("character", "factor")),
+                          isTRUE(all(spp[[species_column_name]] %in% names(x))),
+                          anyDuplicated(spp[[species_column_name]]) == 0)
+  if (!is.null(weight_column_name)) {
+    assertthat::assert_that(assertthat::is.string(weight_column_name),
+                            assertthat::has_name(spp, weight_column_name),
+                            is.numeric(spp[[weight_column_name]]),
+                            assertthat::noNA(spp[[weight_column_name]]))
+    w <- spp[[weight_column_name]]
+  } else {
+    w <- rep(1, nrow(spp))
+  }
+
+  ## coerce factor project names to character
+  if (is.factor(spp[[species_column_name]]))
+    spp[[species_column_name]] <- as.character(x[[species_column_name]])
+
+  # generate random solutions
+  out <- ppp_manual_phylo_solution(
+    x = x, y = y, tree = star_phylogeny(spp[[species_column_name]], w),
+    solution = solution, project_column_name = project_column_name,
+    success_column_name = success_column_name,
+    action_column_name = action_column_name,
+    cost_column_name = cost_column_name)
+
+  # return output
+  out
+}
