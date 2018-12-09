@@ -7,16 +7,20 @@
 \alias{sim_action_data}
 \alias{sim_organization_data}
 \alias{sim_tree}
+\alias{sim_species_data}
 \title{Simulated project and phylogenetic data}
 \format{\describe{
   \item{sim_project_data}{\code{\link[tibble]{tibble}} object.}
   \item{sim_action_data}{\code{\link[tibble]{tibble}} object.}
+  \item{sim_species_data}{\code{\link[tibble]{tibble}} object.}
   \item{sim_tree}{\code{\link[ape]{phylo}} object.}
 }}
 \usage{
 data(sim_project_data)
 
 data(sim_action_data)
+
+data(sim_species_data)
 
 data(sim_tree)
 }
@@ -28,7 +32,7 @@ The data set contains the following objects:
 
 \describe{
 
-  \item{\code{sim_project_data}}{A \code{\link[base]{data.frame}} containing
+  \item{\code{sim_project_data}}{A \code{\link[tibble]{tibble}} containing
     data for six simulated conservation projects. Each row corresponds to a
     different project and each column contains information about the
     projects. This table contains the following columns:
@@ -54,7 +58,7 @@ The data set contains the following objects:
 
     }}
 
-  \item{\code{sim_action_data}}{A \code{\link[base]{data.frame}} containing
+  \item{\code{sim_action_data}}{A \code{\link[tibble]{tibble}} containing
     data for six simulated actions. Each row corresponds to a
     different action and each column contains information about the
     actions. This table contains the following columns:
@@ -73,18 +77,34 @@ The data set contains the following objects:
 
     }}
 
+  \item{\code{sim_species_data}}{A \code{\link[tibble]{tibble}} containing
+    data for six simulated species. Each row corresponds to a
+    different species and each column contains information about the
+    species. This table contains the following columns:
+
+    \describe{
+
+      \item{\code{"name"}}{\code{character} name for each species.}
+
+      \item{\code{"weight"}}{\code{numeric} weight for each species.}
+
+    }}
+
     \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
 
 }
 }
 \examples{
 # load data
-data(sim_project_data, sim_action_data, sim_tree)
+data(sim_project_data, sim_action_data, sim_species_data, sim_tree)
 
 # print project data
 print(sim_project_data)
 # print action data
 print(sim_action_data)
+
+# print species data
+print(sim_species_data)
 # print phylogenetic tree
 print(sim_tree)
 
