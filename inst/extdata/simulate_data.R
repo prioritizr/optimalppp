@@ -33,6 +33,9 @@ sim <- ppp_simulate_data(number_species,
 sim_project_data <- sim$project_data
 sim_action_data <- sim$action_data
 sim_tree <- sim$tree
+sim_species_data <- tibble::tibble(name = sim_tree$tip.label,
+                                   weight = seq_along(sim_tree$tip.label))
 save(sim_project_data, file = "data/sim_project_data.rda", compress = "xz")
 save(sim_action_data, file = "data/sim_action_data.rda", compress = "xz")
+save(sim_species_data, file = "data/sim_species_data.rda", compress = "xz")
 save(sim_tree, file = "data/sim_tree.rda", compress = "xz")
