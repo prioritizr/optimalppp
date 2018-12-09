@@ -192,5 +192,5 @@ For other methods for generating solutions for the 'Project
   \code{\link{ppp_exact_phylo_solution}},
   \code{\link{ppp_heuristic_phylo_solution}}, and
   \code{\link{ppp_random_phylo_solution}}. To visualize the effectiveness of
-  a particular solution, see \code{\link{ppp_phylo_plot}}.
+  a particular solution, see \code{\link{ppp_plot_phylo_solution}}.
 }
