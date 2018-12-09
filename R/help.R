@@ -46,7 +46,23 @@ NULL
 #'   species that is affected by the various conservation projects should
 #'   be represented in this tree.
 #'
-#' @param species_name \code{character} \code{vector} species names.
+#' @param spp \code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+#'   table containing the species data. Here, each row should correspond
+#'   to a different species and columns should contain data that correspond
+#'   to each species. This object should contain data that denote
+#'   (i) the name of each species (specified in the argument to
+#'   \code{species_column_name}). It may also contain (ii) the weight for each
+#'   species (specified in the argument to \code{weight_column_name} if
+#'   relevant).
+#'
+#' @param species_column_name \code{character} name of the column that contains
+#'   the name for each species. This argument corresponds to the argument to
+#'   \code{spp}.
+#'
+#' @param weight_column_name \code{character} name of the column that contains
+#'   the weight for each species. This argument corresponds to the argument to
+#'   \code{spp}. This argument defaults to \code{NULL}, such that all species
+#'   are assigned an equal weighting.
 #'
 #' @param budget \code{numeric} value that represents the total budget available
 #'   for funding conservation projects.

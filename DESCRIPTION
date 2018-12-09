@@ -52,6 +52,8 @@ Collate:
     'ppp_heuristic_phylo_solution.R'
     'ppp_manual_phylo_solution.R'
     'ppp_plot_phylo_solution.R'
+    'ppp_plot_spp_solution.R'
     'ppp_random_phylo_solution.R'
+    'ppp_random_spp_solution.R'
     'ppp_simulate_data.R'
     'star_phylogeny.R'

@@ -44,6 +44,15 @@ the argument to \code{locked_in_column_name} if relevant) and (iv) which
 actions should be locked out (specified using the argument to
 \code{locked_out_column_name} if relevant).}
 
+\item{spp}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing the species data. Here, each row should correspond
+to a different species and columns should contain data that correspond
+to each species. This object should contain data that denote
+(i) the name of each species (specified in the argument to
+\code{species_column_name}). It may also contain (ii) the weight for each
+species (specified in the argument to \code{weight_column_name} if
+relevant).}
+
 \item{budget}{\code{numeric} value that represents the total budget available
 for funding conservation projects.}
 
@@ -67,6 +76,15 @@ duplicates or missing values.}
 indicates the cost for funding each action. This argument corresponds
 to the argument to \code{y}. This column must have \code{numeric} values
 which are equal to or greater than zero. No missing values are permitted.}
+
+\item{species_column_name}{\code{character} name of the column that contains
+the name for each species. This argument corresponds to the argument to
+\code{spp}.}
+
+\item{weight_column_name}{\code{character} name of the column that contains
+the weight for each species. This argument corresponds to the argument to
+\code{spp}. This argument defaults to \code{NULL}, such that all species
+are assigned an equal weighting.}
 
 \item{locked_in_column_name}{\code{character} name of column that
 indicates which actions should be locked into the funding scheme.
@@ -118,7 +136,7 @@ The random solutions are generated using the following algorithm.
 set.seed(500)
 
 # load built-in data
-data(sim_project_data, sim_action_data, sim_tree)
+data(sim_project_data, sim_action_data, sim_species_data)
 
 # print simulated project data
 print(sim_project_data)
@@ -126,30 +144,25 @@ print(sim_project_data)
 # print simulated action data
 print(sim_action_data)
 
-# print simulated phylogenetic tree data
-print(sim_tree)
-
-# plot the simulated phylogeny
-plot(sim_tree, main = "simulated phylogeny")
+# print simulated species data
+print(sim_species_data)
 
 # generate 10 random solutions that meet a budget of 300
-s1 <- ppp_random_spp_solution(sim_project_data, sim_action_data, sim_spp,
-                              300, "name", "success", "name", "cost", "name",
-                              "weight", number_solutions = 10)
+s1 <- ppp_random_spp_solution(sim_project_data, sim_action_data,
+                              sim_species_data, 300, "name", "success",
+                              "name", "cost", "name", "weight",
+                              number_solutions = 10)
 
 # print solutions
 print(s1)
 
 # plot first solution
-ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_spp, s1,
-                        "name", "success", "name", "cost", "name", "weight",
-                         n = 1)
+ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
+                      s1, "name", "success", "name", "cost", "name",
+                      "weight", n = 1)
 
-# view histogram of their expected phylogenetic diversity
-hist(s1$epd, xlab = "expected phylogenetic diversity")
-
-# view histogram of their expected species richness
-hist(s1$er, xlab = "expected species richness")
+# view histogram the objective value
+hist(s1$obj, xlab = "sum weighted species probabilities")
 
 # view histogram of their costs
 hist(s1$cost, xlab = "solution cost")
