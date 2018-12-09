@@ -92,7 +92,7 @@ test_that("multiple solutions", {
 })
 
 test_that("invalid arguments", {
-  # invalid budget
+  # expect simulated data works
   data(sim_project_data, sim_action_data, sim_tree)
   m <- data.frame(S1_action =  FALSE, S2_action = FALSE, S3_action = TRUE,
                   S4_action = TRUE, S5_action = FALSE, baseline_action = TRUE)
