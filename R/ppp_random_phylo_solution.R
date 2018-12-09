@@ -29,7 +29,7 @@ NULL
 #'   \code{\link{ppp_exact_phylo_solution}}, and
 #'   \code{\link{ppp_manual_phylo_solution}}.
 #'   To visualize the effectiveness of a particular solution, see
-#'   \code{\link{ppp_phylo_plot}}.
+#'   \code{\link{ppp_plot_phylo_solution}}.
 #'
 #' @references
 #' Faith DP (2008) Threatened species and the potential loss of
