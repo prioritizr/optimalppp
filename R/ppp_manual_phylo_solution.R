@@ -140,6 +140,8 @@ ppp_manual_phylo_solution <- function(x, y, tree, solution,
                                                    y[[action_column_name]])))
   assertthat::assert_that(is.logical(as.matrix(
     solution[, y[[action_column_name]], drop = FALSE])))
+  assertthat::assert_that(all(!is.na(as.matrix(
+    solution[, y[[action_column_name]], drop = FALSE]))))
   assertthat::assert_that(is.logical(as.matrix(
     x[, y[[action_column_name]], drop = FALSE])))
   assertthat::assert_that(is.numeric(as.matrix(

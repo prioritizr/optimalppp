@@ -180,8 +180,7 @@ test_that("invalid arguments", {
                               sim_tree, m, "name", "success", "name", "cost")
   })
   expect_error({
-    m <- data.frame(S1_action = NA_logical_, S2_action = FALSE,
-                    S3_action = TRUE,
+    m <- data.frame(S1_action = NA, S2_action = FALSE, S3_action = TRUE,
                     S4_action = TRUE, S5_action = FALSE, baseline_action = TRUE)
     ppp_manual_phylo_solution(sim_project_data, sim_action_data,
                               sim_tree, m, "name", "success", "name", "cost")

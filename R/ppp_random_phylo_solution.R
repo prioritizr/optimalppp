@@ -162,6 +162,8 @@ ppp_random_phylo_solution <- function(x, y, tree, budget,
   ## additional column checks
   assertthat::assert_that(is.logical(as.matrix(
     x[, y[[action_column_name]], drop = FALSE])))
+  assertthat::assert_that(all(!is.na(as.matrix(
+    x[, y[[action_column_name]], drop = FALSE]))))
   assertthat::assert_that(is.numeric(as.matrix(
     x[, tree$tip.label, drop = FALSE])))
   assertthat::assert_that(assertthat::noNA(
