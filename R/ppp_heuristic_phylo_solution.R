@@ -189,20 +189,26 @@ NULL
 #'      ylab = "Expected phylogenetic diversity")
 #' }
 #' @export
-ppp_heuristic_phylo_solution <- function(x, tree, budget,
-                                   project_column_name,
-                                   cost_column_name,
-                                   success_column_name,
-                                   locked_in_column_name = NULL,
-                                   locked_out_column_name = NULL,
-                                   number_solutions = 1L) {
+ppp_heuristic_phylo_solution <- function(x, y, tree, budget,
+                                         project_column_name,
+                                         success_column_name,
+                                         action_column_name,
+                                         cost_column_name,
+                                         locked_in_column_name = NULL,
+                                         locked_out_column_name = NULL,
+                                         number_solutions = 1L) {
   # assertions
   ## coerce x to tibble if just a regular data.frame
   if (inherits(x, "data.frame") && !inherits(x, "tbl_df"))
     x <- tibble::as_tibble(x)
+  ## coerce x to tibble if just a regular data.frame
+  if (inherits(y, "data.frame") && !inherits(y, "tbl_df"))
+    y <- tibble::as_tibble(y)
   ## assert that parameters are valid
   assertthat::assert_that(inherits(x, "tbl_df"),
                           ncol(x) > 0, nrow(x) > 0,
+                          inherits(y, "tbl_df"),
+                          ncol(y) > 0, nrow(y) > 0,
                           inherits(tree, "phylo"),
                           assertthat::is.number(budget),
                           is.finite(budget),
@@ -212,45 +218,57 @@ ppp_heuristic_phylo_solution <- function(x, tree, budget,
                           assertthat::noNA(x[[project_column_name]]),
                           inherits(x[[project_column_name]],
                                    c("character", "factor")),
-                          assertthat::is.string(cost_column_name),
-                          assertthat::has_name(x, cost_column_name),
-                          is.numeric(x[[cost_column_name]]),
-                          assertthat::noNA(x[[cost_column_name]]),
                           assertthat::is.string(success_column_name),
                           assertthat::has_name(x, success_column_name),
                           is.numeric(x[[success_column_name]]),
                           assertthat::noNA(x[[success_column_name]]),
+                          all(x[[success_column_name]] >= 0),
+                          all(x[[success_column_name]] <= 1),
+                          assertthat::is.string(action_column_name),
+                          assertthat::has_name(y, action_column_name),
+                          assertthat::noNA(y[[action_column_name]]),
+                          inherits(y[[action_column_name]],
+                                   c("character", "factor")),
+                          all(as.character(y[[action_column_name]]) %in%
+                              names(x)),
+                          assertthat::is.string(cost_column_name),
+                          assertthat::has_name(y, cost_column_name),
+                          is.numeric(y[[cost_column_name]]),
+                          assertthat::noNA(y[[cost_column_name]]),
+                          all(y[[cost_column_name]] >= 0),
                           assertthat::is.count(number_solutions),
                           assertthat::noNA(number_solutions))
-  assertthat::assert_that(min(x[[cost_column_name]]) >= 0,
+  assertthat::assert_that(min(y[[cost_column_name]]) >= 0,
                           msg = "zero cost baseline project missing.")
+  ## coerce factor project names to character
+  if (is.factor(x[[project_column_name]]))
+    x[[project_column_name]] <- as.character(x[[project_column_name]])
+  ## coerce factor action names to character
+  if (is.factor(y[[action_column_name]]))
+    y[[action_column_name]] <- as.character(y[[action_column_name]])
+  ## locked in checks
   if (!is.null(locked_in_column_name))
     assertthat::assert_that(assertthat::is.string(locked_in_column_name),
-                            assertthat::has_name(x, locked_in_column_name),
-                            is.logical(x[[locked_in_column_name]]),
-                            assertthat::noNA(x[[locked_in_column_name]]))
+                            assertthat::has_name(y, locked_in_column_name),
+                            is.logical(y[[locked_in_column_name]]),
+                            assertthat::noNA(y[[locked_in_column_name]]))
   if (!is.null(locked_out_column_name))
     assertthat::assert_that(assertthat::is.string(locked_out_column_name),
-                            assertthat::has_name(x, locked_out_column_name),
-                            is.logical(x[[locked_out_column_name]]),
-                            assertthat::noNA(x[[locked_out_column_name]]))
+                            assertthat::has_name(y, locked_out_column_name),
+                            is.logical(y[[locked_out_column_name]]),
+                            assertthat::noNA(y[[locked_out_column_name]]))
   if (!is.null(locked_in_column_name) && !is.null(locked_out_column_name)) {
-    assertthat::assert_that(max(x[[locked_out_column_name]] +
-                            x[[locked_in_column_name]]) <= 1,
+    assertthat::assert_that(max(y[[locked_out_column_name]] +
+                            y[[locked_in_column_name]]) <= 1,
                             msg = "some projects locked in and locked out.")
   }
+  ## species name checks
   assertthat::assert_that(
     all(tree$tip.label %in% names(x)),
     msg = paste("argument to tree contains species that do not appear as",
                 "column names in the argument to x:",
                 paste(paste0("'", setdiff(tree$tip.label, names(x)), "'"),
                       collapse = ", ")))
-
-  # preliminary data formatting
-  ## coerce factor species names to character
-  if (is.factor(x[[project_column_name]]))
-    x[[project_column_name]] <- as.character(x[[project_column_name]])
-
   ## check that branches have lengths
   if (is.null(tree$edge.length)) {
     tree$edge.length <- rep(1, nrow(tree$edge))
@@ -259,16 +277,27 @@ ppp_heuristic_phylo_solution <- function(x, tree, budget,
   }  else {
     assertthat::assert_that(nrow(tree$edge) == length(tree$edge.length))
   }
-
-  ## determine which projects need to be locked
+  ## additional column checks
+  assertthat::assert_that(is.logical(as.matrix(
+    x[, y[[action_column_name]], drop = FALSE])))
+  assertthat::assert_that(is.numeric(as.matrix(
+    x[, tree$tip.label, drop = FALSE])))
+  assertthat::assert_that(assertthat::noNA(
+    as.matrix(x[, tree$tip.label, drop = FALSE])))
+  assertthat::assert_that(min(as.matrix(x[, tree$tip.label,
+                                          drop = FALSE])) >= 0)
+  assertthat::assert_that(max(as.matrix(x[, tree$tip.label,
+                                          drop = FALSE])) <= 1)
+  # preliminary data formatting
+  ## determine which actions need to be locked
   locked_in <- integer(0)
   locked_out <- integer(0)
   if (!is.null(locked_in_column_name))
-    locked_in <- which(x[[locked_in_column_name]])
+    locked_in <- which(y[[locked_in_column_name]])
   if (!is.null(locked_out_column_name))
-    locked_out <- which(x[[locked_out_column_name]])
-  assertthat::assert_that(sum(x[[cost_column_name]][locked_in]) <= budget,
-                          msg = "locked in projects exceed budget.")
+    locked_out <- which(y[[locked_out_column_name]])
+  assertthat::assert_that(sum(y[[cost_column_name]][locked_in]) <= budget,
+                          msg = "locked in actions exceed budget.")
 
   ## pre-compute conditional probabilities of species persistence
   ## and project success
@@ -279,34 +308,43 @@ ppp_heuristic_phylo_solution <- function(x, tree, budget,
   spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
 
   # solve the problem
-  s <- rcpp_heuristic_solution(spp = spp_probs,
-                               budget = budget,
-                               branch_matrix = branch_matrix(tree),
-                               branch_lengths = tree$edge.length,
-                               costs = x[[cost_column_name]],
-                               locked_in = locked_in,
-                               locked_out = locked_out)
+  s <- rcpp_heuristic_phylo_solution(
+    spp = spp_probs,
+    actions = as(as.matrix(x[, y[[action_column_name]], drop = FALSE]),
+                 "dgCMatrix"),
+    budget = budget,
+    branch_matrix = branch_matrix(tree),
+    branch_lengths = tree$edge.length,
+    costs = y[[cost_column_name]],
+    locked_in = locked_in,
+    locked_out = locked_out)
+
   # prepare results for output
-  colnames(s) <- as.character(x[[project_column_name]])
+  ## add column name
+  colnames(s) <- as.character(y[[action_column_name]])
   out <- tibble::as_tibble(s)
 
   ## format statistics for output
   out <- tibble::as_tibble(cbind(
     tibble::tibble(
-      objective = ppp_objective_value(x, tree, project_column_name,
-                                      success_column_name, out),
+      method = "heuristic",
+      epd = ppp_epd(x, y, tree, out, project_column_name,
+                    success_column_name, action_column_name),
+      er = ppp_epd(x, y, star_phylogeny(tree$tip.label), out,
+                   project_column_name, success_column_name,
+                   action_column_name),
       budget = budget,
-      cost = rowSums(matrix(x[[cost_column_name]], byrow = TRUE,
-                            ncol = ncol(out), nrow = nrow(out)) *
+      cost = rowSums(matrix(y[[cost_column_name]], byrow = TRUE,
+                            ncol = nrow(y), nrow = nrow(s)) *
                      as.matrix(out)),
-      optimal = NA,
-      method = "heuristic"), out))
+      optimal = NA),
+    out))
 
   ## subset solutions with budget
   out <- out[out$cost <= budget, , drop = FALSE]
 
   ## sort by best objective
-  out <- out[order(out$objective, decreasing = TRUE), , drop = FALSE]
+  out <- out[order(out$epd, decreasing = TRUE), , drop = FALSE]
 
   ## return n best solutions
   out <- out[seq_len(min(nrow(out), number_solutions)), , drop = FALSE]
@@ -321,5 +359,5 @@ ppp_heuristic_phylo_solution <- function(x, tree, budget,
                   "solutions exist."))
 
   # return result
-  out
+  out[, c(ncol(out), seq(1, ncol(out) - 1)), drop = FALSE]
 }

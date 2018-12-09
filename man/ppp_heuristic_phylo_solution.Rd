@@ -5,9 +5,10 @@
 \title{Prioritize conservation projects with phylogenetic data using heuristic
 algorithms}
 \usage{
-ppp_heuristic_phylo_solution(x, tree, budget, project_column_name,
-  cost_column_name, success_column_name, locked_in_column_name = NULL,
-  locked_out_column_name = NULL, number_solutions = 1L)
+ppp_heuristic_phylo_solution(x, y, tree, budget, project_column_name,
+  success_column_name, action_column_name, cost_column_name,
+  locked_in_column_name = NULL, locked_out_column_name = NULL,
+  number_solutions = 1L)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -30,6 +31,19 @@ must have a baseline project, with a zero cost, that represents the
 probability that each species will persist if no other conservation
 project is funded.}
 
+\item{y}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing the action data. Here, each row should correspond to a
+different action and columns should contain data that correspond to
+each action. This object should contain data that denote (i)
+the name of each action (specified in the argument to
+\code{action_column_name}), (ii) the cost of each action (specified in the
+argument to \code{cost_column_name}). If certain actions should be locked
+in or out of the solution, then this object should also contain data
+that denote (iii) which actions should be locked in (specified using
+the argument to \code{locked_in_column_name} if relevant) and (iv) which
+actions should be locked out (specified using the argument to
+\code{locked_out_column_name} if relevant).}
+
 \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
 evolutionary history of the species affected by the conservation
 projects that could potentially be funded. Note that every single
@@ -44,16 +58,21 @@ the name for each conservation project. This argument corresponds to the
 argument to \code{x}. Note that the project names must not contain any
 duplicates or missing values.}
 
-\item{cost_column_name}{\code{character} name of column that
-indicates the cost for funding each action. This argument corresponds
-to the argument to \code{y}. This column must have \code{numeric} values
-which are equal to or greater than zero. No missing values are permitted.}
-
 \item{success_column_name}{\code{character} name of column that
 denotes the probability that each project will succeed. This argument
 corresponds to the argument to \code{x}. This column must have
 \code{numeric} values which lay between zero and one. No missing values
 are permitted.}
+
+\item{action_column_name}{\code{character} name of column that contains
+the name for each conservation action. This argument corresponds to the
+argument to \code{y}. Note that the project names must not contain any
+duplicates or missing values.}
+
+\item{cost_column_name}{\code{character} name of column that
+indicates the cost for funding each action. This argument corresponds
+to the argument to \code{y}. This column must have \code{numeric} values
+which are equal to or greater than zero. No missing values are permitted.}
 
 \item{locked_in_column_name}{\code{character} name of column that
 indicates which actions should be locked into the funding scheme.

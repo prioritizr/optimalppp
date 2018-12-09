@@ -9,6 +9,10 @@ rcpp_branch_probabilities <- function(spp, branch_matrix, solutions) {
     .Call(`_optimalppp_rcpp_branch_probabilities`, spp, branch_matrix, solutions)
 }
 
+rcpp_heuristic_phylo_solution <- function(spp, actions, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out) {
+    .Call(`_optimalppp_rcpp_heuristic_phylo_solution`, spp, actions, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out)
+}
+
 rcpp_ppp_epd <- function(spp, actions, branch_matrix, branch_lengths, solutions) {
     .Call(`_optimalppp_rcpp_ppp_epd`, spp, actions, branch_matrix, branch_lengths, solutions)
 }
