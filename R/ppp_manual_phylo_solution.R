@@ -83,10 +83,10 @@ NULL
 #' ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
 #'                         "name", "success", "name", "cost", n = 2) +
 #' ggtitle("solution 2")
-#"
+#'
 #' ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
 #'                         "name", "success", "name", "cost", n = 3) +
-#' ggtitle("solution 1")
+#' ggtitle("solution 3")
 #' @export
 ppp_manual_phylo_solution <- function(x, y, tree, solution,
                                       project_column_name,
