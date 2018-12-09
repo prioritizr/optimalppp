@@ -194,7 +194,7 @@ NULL
 #' print(s4)
 #'
 #' # plot solution cost against expected phylogenetic diversity
-#' plot(epd ~ cost, data = s4,
+#' plot(obj ~ cost, data = s4,
 #'      main = "Heuristic solutions", xlab = "Cost ($)",
 #'      ylab = "Expected phylogenetic diversity")
 #' }
@@ -340,11 +340,8 @@ ppp_heuristic_phylo_solution <- function(x, y, tree, budget,
   out <- tibble::as_tibble(cbind(
     tibble::tibble(
       method = "heuristic",
-      epd = ppp_epd(x, y, tree, out, project_column_name,
+      obj = ppp_epd(x, y, tree, out, project_column_name,
                     success_column_name, action_column_name),
-      er = ppp_epd(x, y, star_phylogeny(tree$tip.label), out,
-                   project_column_name, success_column_name,
-                   action_column_name),
       budget = budget,
       cost = rowSums(matrix(y[[cost_column_name]], byrow = TRUE,
                             ncol = nrow(y), nrow = nrow(s)) *
@@ -356,7 +353,7 @@ ppp_heuristic_phylo_solution <- function(x, y, tree, budget,
   out <- out[out$cost <= budget, , drop = FALSE]
 
   ## sort by best objective
-  out <- out[order(out$epd, decreasing = TRUE), , drop = FALSE]
+  out <- out[order(out$obj, decreasing = TRUE), , drop = FALSE]
 
   ## return n best solutions
   out <- out[seq_len(min(nrow(out), number_solutions)), , drop = FALSE]

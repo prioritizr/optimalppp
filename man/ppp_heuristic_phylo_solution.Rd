@@ -117,15 +117,10 @@ A \code{\link[tibble]{tibble}} object containing the
    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
      the of the solution(s).}
 
-   \item{\code{"epd"}}{\code{numeric} expected phylogenetic diversity
-     associated with each of the solutions. This
-     corresponds to the expected amount of evolutionary history that is
-     retained by each solution (Faith 2008). If no phylogenetic tree
-     was specified, then this column will contain missing values
-     (i.e. \code{NA_real_})}.
-
-   \item{\code{"er"}}{\code{numeric} expected species richness. This is
-     the sum of the species' persistence probabilities.}
+   \item{\code{"obj"}}{\code{numeric} objective value. If phylogenetic data,
+     were specified, then this column contains the expected phylogenetic
+     diversity associated with each of the solutions. Otherwise, this column
+     contains the sum of the weighted species persistence probabilities.}
 
    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
@@ -295,7 +290,7 @@ s4 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data,
 print(s4)
 
 # plot solution cost against expected phylogenetic diversity
-plot(epd ~ cost, data = s4,
+plot(obj ~ cost, data = s4,
      main = "Heuristic solutions", xlab = "Cost ($)",
      ylab = "Expected phylogenetic diversity")
 }

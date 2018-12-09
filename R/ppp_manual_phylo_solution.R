@@ -174,11 +174,8 @@ ppp_manual_phylo_solution <- function(x, y, tree, solution,
     tibble::tibble(
       solution = seq_len(nrow(s)),
       method = "manual",
-      epd = ppp_epd(x, y, tree, s, project_column_name,
+      obj = ppp_epd(x, y, tree, s, project_column_name,
                     success_column_name, action_column_name),
-      er = ppp_epd(x, y, star_phylogeny(tree$tip.label), s,
-                   project_column_name, success_column_name,
-                   action_column_name),
       budget = NA_real_,
       cost = rowSums(matrix(y[[cost_column_name]], byrow = TRUE,
                             ncol = nrow(y), nrow = nrow(s)) *

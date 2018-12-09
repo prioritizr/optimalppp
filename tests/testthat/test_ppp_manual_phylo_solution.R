@@ -25,21 +25,17 @@ test_that("single solution", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
-  expect_equal(nrow(s), 1)
+  expect_equal(ncol(s), 10L)
+  expect_equal(nrow(s), 1L)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$method, "manual")
   expect_equal(s$budget, NA_real_)
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.96 * 0.92))))) +
                (5 * (0.94 * 0.8)) +
                (5 * (0.96 * 0.92)) +
                (5 * (1.00 * 0.1)))
-  expect_equal(s$er,
-               (0.94 * 0.8) +
-               (0.96 * 0.92) +
-               (1.00 * 0.1))
   expect_equal(s$cost, 0.25)
   expect_equal(s$optimal, NA)
   ## solution columns
@@ -74,14 +70,14 @@ test_that("multiple solutions", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
-  expect_equal(nrow(s), 2)
+  expect_equal(ncol(s), 10L)
+  expect_equal(nrow(s), 2L)
   ## statistics
   expect_equal(s$solution, seq_len(2))
   expect_equal(s$method, rep("manual", 2))
   expect_equal(s$budget, rep(NA_real_, nrow(s)))
   expect_equal(s$cost, c(0.1, 0.25))
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                c((100 * (1 - (1 - (0.95 * 0.91)) * (1 - (1 * 0.1)))) +
                  (5 * (0.95 * 0.91)) +
                  (5 * (1 * 0.1)) +

@@ -20,18 +20,14 @@ test_that("single solution, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1L)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0.18)
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_gt(s$cost, 0)
   expect_lte(s$cost, 0.18)
   expect_true(is.finite(s$cost))
@@ -70,18 +66,14 @@ test_that("single solution, zero cost)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1L)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0)
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_equal(s$cost, 0)
   expect_equal(s$budget, 0)
   expect_equal(s$optimal, NA)
@@ -115,18 +107,14 @@ test_that("single solution, locked in constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1L)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0.18)
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_gt(s$cost, 0)
   expect_lte(s$cost, 0.18)
   expect_true(is.finite(s$cost))
@@ -165,18 +153,14 @@ test_that("single solution, locked out constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1L)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0.18)
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_gt(s$cost, 0)
   expect_lte(s$cost, 0.18)
   expect_true(is.finite(s$cost))
@@ -214,18 +198,14 @@ test_that("multiple solutions, no constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
   expect_equal(s$budget, rep(0.18, 100L))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_true(all(s$cost > 0))
   expect_true(all(s$cost < 0.18))
   expect_true(all(is.finite(s$cost)))
@@ -265,18 +245,14 @@ test_that("multiple solutions, locked in constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
   expect_equal(s$budget, rep(0.18, 100L))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_true(all(s$cost > 0))
   expect_true(all(s$cost <= 0.18))
   expect_true(all(is.finite(s$cost)))
@@ -317,18 +293,14 @@ test_that("multiple solutions, locked out constraints)", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 100)
   ## statistic columns
   expect_equal(s$solution, seq_len(100L))
   expect_equal(s$budget, rep(0.18, 100L))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_true(all(s$cost > 0))
   expect_true(all(s$cost <= 0.18))
   expect_true(all(is.finite(s$cost)))

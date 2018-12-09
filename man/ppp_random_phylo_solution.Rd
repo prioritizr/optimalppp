@@ -150,10 +150,7 @@ ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
                         "name", "success", "name", "cost", n = 1)
 
 # view histogram of their expected phylogenetic diversity
-hist(s1$epd, xlab = "expected phylogenetic diversity")
-
-# view histogram of their expected species richness
-hist(s1$er, xlab = "expected species richness")
+hist(s1$obj, xlab = "expected phylogenetic diversity")
 
 # view histogram of their costs
 hist(s1$cost, xlab = "solution cost")

@@ -73,10 +73,7 @@ NULL
 #'                         "name", "success", "name", "cost", n = 1)
 #'
 #' # view histogram of their expected phylogenetic diversity
-#' hist(s1$epd, xlab = "expected phylogenetic diversity")
-#'
-#' # view histogram of their expected species richness
-#' hist(s1$er, xlab = "expected species richness")
+#' hist(s1$obj, xlab = "expected phylogenetic diversity")
 #'
 #' # view histogram of their costs
 #' hist(s1$cost, xlab = "solution cost")
@@ -225,11 +222,8 @@ ppp_random_phylo_solution <- function(x, y, tree, budget,
     tibble::tibble(
       solution = seq_len(nrow(s)),
       method = "random",
-      epd = ppp_epd(x, y, tree, out, project_column_name,
+      obj = ppp_epd(x, y, tree, out, project_column_name,
                     success_column_name, action_column_name),
-      er = ppp_epd(x, y, star_phylogeny(tree$tip.label), out,
-                   project_column_name, success_column_name,
-                   action_column_name),
       budget = budget,
       cost = rowSums(matrix(y[[cost_column_name]], byrow = TRUE,
                             ncol = nrow(y), nrow = nrow(s)) *

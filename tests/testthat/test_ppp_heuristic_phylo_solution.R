@@ -20,7 +20,7 @@ test_that("single solution, no constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
@@ -28,12 +28,11 @@ test_that("single solution, no constraints", {
   expect_equal(s$cost, 0.1)
   expect_equal(s$optimal, NA)
   expect_equal(s$method, "heuristic")
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                (100 * (1 - ((1 - (1.0 * 0.1)) * (1 - (0.96 * 0.92))))) +
                (5 * (1 * 0.1)) +
                (5 * (0.96 * 0.92)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$er, (1 * 0.1) + (0.96 * 0.92) + (1 * 0.1))
   ## solution columns
   expect_equal(s$A1, FALSE)
   expect_equal(s$A2, TRUE)
@@ -61,17 +60,16 @@ test_that("single solution, zero budget", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0)
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                (100 * (1 - ((1 - (1.0 * 0.1)) * (1 - (1.0 * 0.1))))) +
                (5 * (1 * 0.1)) +
                (5 * (1 * 0.1)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$er, (1 * 0.1) + (1 * 0.1) + (1 * 0.1))
   expect_equal(s$cost, 0)
   expect_equal(s$optimal, NA)
   expect_equal(s$method, "heuristic")
@@ -104,17 +102,16 @@ test_that("single solution, locked in constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0.18)
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                (100 * (1 - ((1 - (0.95 * 0.91)) * (1 - (1 * 0.1))))) +
                (5 * (0.95 * 0.91)) +
                (5 * (1 * 0.1)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$er, (0.95 * 0.91) + (1 * 0.1) + (1 * 0.1))
   expect_equal(s$cost, 0.1)
   expect_equal(s$optimal, NA)
   expect_equal(s$method, "heuristic")
@@ -147,17 +144,16 @@ test_that("single solution, locked out constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 1)
   ## statistic columns
   expect_equal(s$solution, 1L)
   expect_equal(s$budget, 0.18)
-  expect_equal(s$epd,
+  expect_equal(s$obj,
                (100 * (1 - ((1 - (0.94 * 0.8)) * (1 - (0.94 * 0.8))))) +
                (5 * (0.94 * 0.8)) +
                (5 * (0.94 * 0.8)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$er, (0.94 * 0.8) + (0.94 * 0.8) + (1 * 0.1))
   expect_equal(s$cost, 0.15)
   expect_equal(s$optimal, NA)
   expect_equal(s$method, "heuristic")
@@ -191,23 +187,21 @@ test_that("multiple solutions, cost limit", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 2L)
   ## statistic columns
   expect_equal(s$solution, seq_len(2L))
   expect_equal(s$budget, rep(0.15, 2))
-  expect_equal(s$epd[1],
+  expect_equal(s$obj[1],
                (100 * (1 - ((1 - (1.0 * 0.1)) * (1 - (0.96 * 0.92))))) +
                (5 * (1 * 0.1)) +
                (5 * (0.96 * 0.92)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$epd[2],
+  expect_equal(s$obj[2],
                (100 * (1 - ((1 - (1.0 * 0.1)) * (1 - (1.0 * 0.1))))) +
                (5 * (1 * 0.1)) +
                (5 * (1 * 0.1)) +
                (5 * (1 * 0.1)))
-  expect_equal(s$er, c((1.0 * 0.1) + (0.96 * 0.92) + (1 * 0.1),
-                       (1 * 0.1) + (1 * 0.1) + (1 * 0.1)))
   expect_equal(s$cost, c(0.1, 0))
   expect_equal(s$optimal, rep(NA, 2))
   expect_equal(s$method, rep("heuristic", 2))
@@ -240,18 +234,14 @@ test_that("multiple solutions, no constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 4L)
   ## statistic columns
   expect_equal(s$solution, seq_len(4L))
   expect_equal(s$budget, rep(100, 4))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_equal(s$cost, c(0.35, 0.2, 0.1, 0))
   expect_equal(s$optimal, rep(NA, 4))
   expect_equal(s$method, rep("heuristic", 4))
@@ -287,18 +277,14 @@ test_that("multiple solutions, locked in constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 3L)
   ## statistic columns
   expect_equal(s$solution, seq_len(3L))
   expect_equal(s$budget, rep(100, 3L))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_equal(s$cost, c(0.35, 0.2, 0.1))
   expect_equal(s$optimal, rep(NA, 3L))
   expect_equal(s$method, rep("heuristic", 3L))
@@ -334,18 +320,14 @@ test_that("multiple solutions, locked out constraints", {
   # tests
   ## class
   expect_is(s, "tbl_df")
-  expect_equal(ncol(s), 11L)
+  expect_equal(ncol(s), 10L)
   expect_equal(nrow(s), 3L)
   ## statistic columns
   expect_equal(s$solution, seq_len(3L))
   expect_equal(s$budget, rep(100, 3L))
-  expect_equal(s$epd, ppp_epd(project_data, action_data, tree,
+  expect_equal(s$obj, ppp_epd(project_data, action_data, tree,
                               s[, action_data$name], "name", "success",
                               "name"))
-  expect_equal(s$er, ppp_epd(project_data, action_data,
-                             star_phylogeny(tree$tip.label),
-                             s[, action_data$name], "name", "success",
-                             "name"))
   expect_equal(s$cost, c(0.25, 0.15, 0))
   expect_equal(s$optimal, rep(NA, 3))
   expect_equal(s$method, rep("heuristic", 3L))
