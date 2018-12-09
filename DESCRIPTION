@@ -51,7 +51,7 @@ Collate:
     'ppp_exact_phylo_solution.R'
     'ppp_heuristic_phylo_solution.R'
     'ppp_manual_phylo_solution.R'
-    'ppp_phylo_plot.R'
+    'ppp_plot_phylo_solution.R'
     'ppp_random_phylo_solution.R'
     'ppp_simulate_data.R'
     'star_phylogeny.R'

@@ -1,15 +1,11 @@
 #' @include internal.R
 NULL
 
-#' Plot a 'Project Prioritization Protocol' solution
+#' Plot a 'Project Prioritization Protocol' solution with phylogenetic data
 #'
 #' Create a plot displaying a phylogenetic tree (phylogram) to visualize a
 #' solution to the 'Project Prioritization Protocol' problem
-#' (Joseph, Maloney & Possingham 2009). In this plot, each
-#' phylogenetic branch is colored according to probability
-#' that it is expected to persist into the future (based on Faith 2008).
-#' Additionally, species that benefit from at least a single funded project
-#' with a non-zero cost are denoted with an asterisk symbol.
+#' (Joseph, Maloney & Possingham 2009) with phlyogenetic data.
 #'
 #' @inheritParams help
 #'
@@ -18,10 +14,10 @@ NULL
 #'   to \code{1} such that the solution in the first row of the argument
 #'   to \code{solution} is plotted.
 #'
-#' @param asterisk_hjust \code{numeric} horizontal adjustment parameter to
-#'   manually align the asterisks in the plot. Defaults to \code{0.007}.
-#'   Increasing this parameter will shift the asterisks further left towards
-#'   the species labels.
+#' @param symbol_hjust \code{numeric} horizontal adjustment parameter to
+#'   manually align the asterisks and dashes in the plot. Defaults to
+#'   \code{0.007}. Increasing this parameter will shift the symbols further
+#'   left towards the species labels.
 #'
 #' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
 #'   Since this package is distributed exclusively
@@ -31,6 +27,15 @@ NULL
 #'   please execute the following command to install it:
 #'   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
 #'   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
+#'
+#'   Here, each phylogenetic branch is colored according to probability
+#'   that it is expected to persist into the future (based on Faith 2008).
+#'   Additionally, species that directly benefit from at least a single
+#'   completely funded project with a non-zero cost are denoted with an
+#'   asterisk symbol. Species that indirectly benefit from funded
+#'   projects---because they are associated with partially funded projects that
+#'   have non-zero costs and share actions with at least one funded
+#'   project---are denoted with an open circle symbols.
 #'
 #' @seealso To generate solutions for the 'Project
 #'   Prioritization Protocol' problem, see
@@ -124,9 +129,10 @@ NULL
 #' theme(legend.position = "hide") +
 #' ggtitle("solution")
 #' @export
-ppp_phylo_plot <- function(x, tree, solution, project_column_name,
-                           cost_column_name, success_column_name, n = 1L,
-                           asterisk_hjust = 0.007) {
+ppp_plot_phylo_solution <- function(x, y, tree, solution, project_column_name,
+                                    success_column_name, action_column_name,
+                                    cost_column_name, n = 1L,
+                                    symbol_hjust = 0.007) {
   # assertions
   ## assert that ggtree R package is installed
   assertthat::assert_that(requireNamespace("ggtree", quietly = TRUE),
@@ -137,9 +143,17 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
   ## coerce solution to tibble if just a regular data.frame
   if (inherits(solution, "data.frame") && !inherits(solution, "tbl_df"))
     solution <- tibble::as_tibble(solution)
+  ## coerce x to tibble if just a regular data.frame
+  if (inherits(y, "data.frame") && !inherits(y, "tbl_df"))
+    y <- tibble::as_tibble(y)
+  ## coerce solution to tibble if just a regular data.frame
+  if (inherits(solution, "data.frame") && !inherits(solution, "tbl_df"))
+    solution <- tibble::as_tibble(solution)
   ## assert that parameters are valid
   assertthat::assert_that(inherits(x, "tbl_df"),
                           ncol(x) > 0, nrow(x) > 0,
+                          inherits(y, "tbl_df"),
+                          ncol(y) > 0, nrow(y) > 0,
                           inherits(solution, "tbl_df"),
                           ncol(solution) > 0, nrow(solution) > 0,
                           inherits(tree, "phylo"),
@@ -148,29 +162,54 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
                           assertthat::noNA(x[[project_column_name]]),
                           inherits(x[[project_column_name]],
                                    c("character", "factor")),
-                          assertthat::is.string(cost_column_name),
-                          assertthat::has_name(x, cost_column_name),
-                          is.numeric(x[[cost_column_name]]),
-                          assertthat::noNA(x[[cost_column_name]]),
                           assertthat::is.string(success_column_name),
                           assertthat::has_name(x, success_column_name),
                           is.numeric(x[[success_column_name]]),
                           assertthat::noNA(x[[success_column_name]]),
+                          all(x[[success_column_name]] >= 0),
+                          all(x[[success_column_name]] <= 1),
+                          assertthat::is.string(action_column_name),
+                          assertthat::has_name(y, action_column_name),
+                          assertthat::noNA(y[[action_column_name]]),
+                          inherits(y[[action_column_name]],
+                                   c("character", "factor")),
+                          all(as.character(y[[action_column_name]]) %in%
+                              names(x)),
+                          assertthat::is.string(cost_column_name),
+                          assertthat::has_name(y, cost_column_name),
+                          is.numeric(y[[cost_column_name]]),
+                          assertthat::noNA(y[[cost_column_name]]),
+                          all(y[[cost_column_name]] >= 0),
                           assertthat::is.count(n),
                           is.finite(n),
                           isTRUE(n <= nrow(solution)),
-                          assertthat::is.number(asterisk_hjust))
-  ## coerce factor species names to character
+                          assertthat::is.number(symbol_hjust),
+                          is.finite(symbol_hjust))
+  ## coerce factor project names to character
   if (is.factor(x[[project_column_name]]))
     x[[project_column_name]] <- as.character(x[[project_column_name]])
-
+  ## coerce factor action names to character
+  if (is.factor(y[[action_column_name]]))
+    y[[action_column_name]] <- as.character(y[[action_column_name]])
   ## additional checks
   assertthat::assert_that(all(assertthat::has_name(solution,
-                                                   x[[project_column_name]])))
-  assertthat::assert_that(all(vapply(solution[, x[[project_column_name]],
-                                              drop = FALSE],
-                                     class, character(1)) == "logical"))
-
+                                                   y[[action_column_name]])))
+  assertthat::assert_that(is.logical(as.matrix(
+    solution[, y[[action_column_name]], drop = FALSE])))
+  assertthat::assert_that(all(!is.na(as.matrix(
+    solution[, y[[action_column_name]], drop = FALSE]))))
+  assertthat::assert_that(is.logical(as.matrix(
+    x[, y[[action_column_name]], drop = FALSE])))
+  assertthat::assert_that(all(!is.na(as.matrix(
+    x[, y[[action_column_name]], drop = FALSE]))))
+  assertthat::assert_that(is.numeric(as.matrix(
+    x[, tree$tip.label, drop = FALSE])))
+  assertthat::assert_that(assertthat::noNA(
+    as.matrix(x[, tree$tip.label, drop = FALSE])))
+  assertthat::assert_that(min(as.matrix(x[, tree$tip.label,
+                                          drop = FALSE])) >= 0)
+  assertthat::assert_that(max(as.matrix(x[, tree$tip.label,
+                                          drop = FALSE])) <= 1)
   # preliminary data processing
   ## check that branches have lengths
   if (is.null(tree$edge.length)) {
@@ -182,15 +221,40 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
   }
 
   ## subset solution and reorder columns
-  solution <- solution[n, x[[project_column_name]], drop = FALSE]
+  solution <- solution[n, y[[action_column_name]], drop = FALSE]
 
-  ## determine which species received funding
-  funded_spp <- as.matrix(x[, tree$tip.label, drop = FALSE]) > 1e-15
-  funded_spp[which(x[[cost_column_name]] < 1e-15), ] <- 0.0
-  funded_projects <- as.numeric(as.matrix(solution))
-  funded_projects <- matrix(funded_projects, ncol = ncol(funded_spp),
-                            nrow = nrow(funded_spp))
-  funded_spp <- tree$tip.label[colSums(funded_spp * funded_projects) > 1e-15]
+  ## determine which projects are funded based on the funded actions
+  ## and omit the baseline project
+  prj <- as.matrix(x[, y[[action_column_name]], drop = FALSE])
+  funding_matrix <- matrix(TRUE, ncol = nrow(y), nrow = nrow(x))
+  pos <- which(prj > 0.5, arr.ind = TRUE)
+  funding_matrix[pos] <- as.matrix(solution)[1, pos[, 2]]
+  funded_projects <- rowSums(funding_matrix) == ncol(prj)
+  partially_funded_projects <- (rowSums(funding_matrix) > 0) &
+                               (rowSums(!funding_matrix ) < rowSums(prj)) &
+                               (rowSums(funding_matrix) != ncol(prj))
+
+  ## determine baseline project(s)
+  zero_cost_projects <- rowSums(
+    as.matrix(x[, y[[action_column_name]], drop = FALSE]) *
+    matrix(y[[cost_column_name]], byrow = TRUE, ncol = nrow(y), nrow = nrow(x)))
+  zero_cost_projects <- zero_cost_projects < 1e-15
+
+  ## determine which species receive funding based on their project being funded
+  completely_funded_spp <- as.matrix(x[, tree$tip.label, drop = FALSE]) > 1e-15
+  completely_funded_spp[!funded_projects, ] <- 0.0
+  completely_funded_spp[zero_cost_projects, ] <- 0.0
+  completely_funded_spp <- colSums(completely_funded_spp) > 1e-15
+  completely_funded_spp <- tree$tip.label[completely_funded_spp]
+
+  ## determine which species receive indirect based on sharing actions with
+  ## a funded project
+  partially_funded_spp <- as.matrix(x[, tree$tip.label, drop = FALSE]) > 1e-15
+  partially_funded_spp[!partially_funded_projects, ] <- 0.0
+  partially_funded_spp[zero_cost_projects, ] <- 0.0
+  partially_funded_spp <- colSums(partially_funded_spp) > 1e-15
+  partially_funded_spp <- setdiff(tree$tip.label[partially_funded_spp],
+                                  completely_funded_spp)
 
   ## pre-compute conditional probabilities of species persistence
   ## and project success
@@ -198,7 +262,7 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
   spp_probs <- spp_probs * matrix(x[[success_column_name]],
                                   ncol = ncol(spp_probs),
                                   nrow = nrow(spp_probs))
-  spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
+  spp_probs <- Matrix::drop0(methods::as(spp_probs, "dgCMatrix"))
 
   ## pre-compute probabilities that each branch will persist
   branch_probs <- rcpp_branch_probabilities(spp_probs, branch_matrix(tree),
@@ -207,9 +271,10 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
 
   # Main processing
   ## format tree data for plotting
-  tree2 <- suppressMessages(suppressWarnings(tidytree::as_data_frame(tree)))
-  tree2$status <- tree2$label %in% funded_spp
-  tree2$status <- c("Not Funded", "Funded")[tree2$status + 1]
+  tree2 <- suppressMessages(suppressWarnings(tidytree::as_tibble(tree)))
+  tree2$status <- NA_character_
+  tree2$status[tree2$label %in% completely_funded_spp] <- "Funded"
+  tree2$status[tree2$label %in% partially_funded_spp] <- "Partially Funded"
   tree2$prob <- c(branch_probs)[match(
     paste0(tree2$parent, "_", tree2$node),
     paste0(tree$edge[, 1], "_", tree$edge[, 2]))]
@@ -220,19 +285,22 @@ ppp_phylo_plot <- function(x, tree, solution, project_column_name,
   point_padding <- max(rowSums(as.matrix(branch_matrix(tree)) *
                                matrix(tree$edge.length, ncol = nrow(tree$edge),
                                       nrow = length(tree$tip.label)))) *
-                   asterisk_hjust
+                   symbol_hjust
   ## make plot
   p <- ggtree::ggtree(tree2, ggplot2::aes_string(color = "prob"), size = 1.1) +
        ggtree::geom_tippoint(
-         ggplot2::aes_string(subset = "status == \"Funded\"",
-                             x = "x + point_padding"),
-         color = "black", pch = 8) +
+         ggplot2::aes_string(x = "x + point_padding", subset = "!is.na(status)",
+                             shape = "status"), color = "black") +
        ggtree::geom_tiplab(color = "black", size = 2.5) +
        ggplot2::scale_color_gradientn(name = "Probability of\npersistence",
                                       colors = viridisLite::inferno(
                                         150, begin = 0, end = 0.9,
                                         direction = -1),
                                       limits = c(0, 1)) +
+       ggplot2::scale_shape_manual(name = "Projects",
+                                   values = c("Funded" = 8,
+                                              "Partially Funded" = 1),
+                                   na.translate = FALSE) +
        ggplot2::theme(legend.position = "right")
 
   # Exports
