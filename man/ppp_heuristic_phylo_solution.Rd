@@ -160,7 +160,7 @@ projects are only considered funded when all of their associated actions are
 also funded---and species only receive benefits from projects that are
 funded, and not individual conservation actions---by iteratively removing
 actions according to their expected utility, this algorithm may identify
-cost-effective funding schemes Note, however, that this algorithm is
+cost-effective funding schemes. Note, however, that this algorithm is
 extremely unlikely to identify optimal solutions.
 
 The calculations that underpin this algorithm can be expressed
@@ -208,8 +208,8 @@ phylogenetic branches \eqn{b \in B}{b in B} (using zeros and ones).
 The amount of evolutionary history that is expected to persist when a
 given set of projects are funded can then be expressed as:
 
-\deqn{P(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S}
-  ifelse(T_{bs} == 1, E_s, 1)\big)}{P(I) = sum_{b = 0}^{B} L_b (1 -
+\deqn{A(I) = \sum_{b = 0}^{B} L_b \times \big(1 - \prod_{s = 0}^{S}
+  ifelse(T_{bs} == 1, E_s, 1)\big)}{A(I) = sum_{b = 0}^{B} L_b (1 -
   prod_{s = 0}^{S} ifelse(T_{bs} == 1, E_s, 1))}
 }
 \examples{
@@ -251,9 +251,10 @@ ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
 # be an iconic species that has cultural and economic importance.
 sim_action_data2 <- sim_action_data
 sim_action_data2$locked_in <- sim_action_data2$name == "S1_action"
-s2 <- ppp_heuristic_solution(sim_project_data, sim_action_data2, sim_tree,
-                             300, "name", "success", "name", "cost",
-                             locked_in_column_name = "locked_in")
+s2 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data2,
+                                   sim_tree, 300, "name", "success", "name",
+                                   "cost",
+                                   locked_in_column_name = "locked_in")
 
 # print solution
 print(s2)
@@ -269,9 +270,10 @@ ppp_plot_phylo_solution(sim_project_data, sim_action_data2, sim_tree, s2,
 # "lock out" unimportant species.
 sim_action_data3 <- sim_action_data
 sim_action_data3$locked_out <- sim_action_data3$name == "S2_action"
-s3 <- ppp_heuristic_solution(sim_project_data, sim_action_data3, sim_tree,
-                             300, "name", "success", "name", "cost",
-                             locked_out_column_name = "locked_out")
+s3 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data3,
+                                   sim_tree, 300, "name", "success", "name",
+                                   "cost",
+                                   locked_out_column_name = "locked_out")
 
 # print solution
 print(s3)
