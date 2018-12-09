@@ -118,7 +118,7 @@ Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decisions in order to evaluate their effectiveness.
 \strong{When informing conservation actions, it is strongly recommended to
-use the \code{\link{ppp_exact_sppp_solution}} method because it can identify
+use the \code{\link{ppp_exact_spp_solution}} method because it can identify
 optimal funding schemes with a guarantee.}
 }
 \details{
@@ -179,5 +179,5 @@ For other methods for generating solutions for the 'Project
   \code{\link{ppp_exact_spp_solution}}, and
   \code{\link{ppp_manual_spp_solution}}.
   To visualize the effectiveness of a particular solution, see
-  \code{\link{ppp_spp_plot}}.
+  \code{\link{ppp_plot_spp_solution}}.
 }
