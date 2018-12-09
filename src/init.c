@@ -12,12 +12,14 @@ extern SEXP _optimalppp_rcpp_branch_matrix(SEXP);
 extern SEXP _optimalppp_rcpp_branch_probabilities(SEXP, SEXP, SEXP);
 extern SEXP _optimalppp_rcpp_heuristic_phylo_solution(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _optimalppp_rcpp_ppp_epd(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _optimalppp_rcpp_random_solution(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_optimalppp_rcpp_branch_matrix",            (DL_FUNC) &_optimalppp_rcpp_branch_matrix,            1},
     {"_optimalppp_rcpp_branch_probabilities",     (DL_FUNC) &_optimalppp_rcpp_branch_probabilities,     3},
     {"_optimalppp_rcpp_heuristic_phylo_solution", (DL_FUNC) &_optimalppp_rcpp_heuristic_phylo_solution, 8},
     {"_optimalppp_rcpp_ppp_epd",                  (DL_FUNC) &_optimalppp_rcpp_ppp_epd,                  5},
+    {"_optimalppp_rcpp_random_solution",          (DL_FUNC) &_optimalppp_rcpp_random_solution,          9},
     {NULL, NULL, 0}
 };
 
