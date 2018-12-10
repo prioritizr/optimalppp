@@ -194,8 +194,8 @@ NULL
 #'  stop("the gurobi R package is not installed.")
 #'
 #' # find a solution that meets a budget of 300
-#' s1 <- ppp_exact_solution(sim_project_data, sim_action_data, sim_tree, 300,
-#'                          "name", "success", "name", "cost")
+#' s1 <- ppp_exact_phylo_solution(sim_project_data, sim_action_data, sim_tree,
+#'                                300, "name", "success", "name", "cost")
 #'
 #' # print solution
 #' print(s1)
