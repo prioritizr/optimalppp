@@ -69,15 +69,18 @@ NULL
 #'
 #' # visualize the effectiveness of the different solutions
 #' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
-#'                       s1, "name", "success", "name", "cost", n = 1) +
+#'                       s1, "name", "success", "name", "cost", "name",
+#'                       "weight", n = 1) +
 #' ggtitle("solution 1")
 #'
 #' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
-#'                       s1, "name", "success", "name", "cost", n = 2) +
+#'                       s1, "name", "success", "name", "cost", "name",
+#'                       "weight", n = 2) +
 #' ggtitle("solution 2")
 #'
 #' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
-#'                       s1, "name", "success", "name", "cost", n = 3) +
+#'                       s1, "name", "success", "name", "cost", "name",
+#'                       "weight", n = 3) +
 #' ggtitle("solution 3")
 #' @export
 ppp_manual_spp_solution <- function(x, y, spp, solution,
