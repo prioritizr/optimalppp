@@ -28,17 +28,31 @@ reference:
       - sim_project_data
       - sim_tree
 
-  - title: Solution methods
-    desc: Functions for generating solutions
+  - title: Phylogenetic solutions
+    desc: Functions for generating solutions with phylogenetic data
     contents:
-      - ppp_exact_solution
-      - ppp_heuristic_solution
-      - ppp_manual_solution
-      - ppp_random_solution
+      - ppp_exact_phlyo_solution
+      - ppp_heuristic_phylo_solution
+      - ppp_manual_phlyo_solution
+      - ppp_random_phlyo_solution
+
+  - title: Species weights solutions
+    desc: Functions for generating solutions with species weight data
+    contents:
+      - ppp_exact_spp_solution
+      - ppp_heuristic_spp_solution
+      - ppp_manual_spp_solution
+      - ppp_random_spp_solution
+
+   - title: Visualization
+     desc: Functions for visualizing solutions
+     contents:
+       - ppp_plot_phylo_solution
+       - ppp_plot_spp_solution
 
   - title: Miscellaneous
     desc: Miscellaneous functions
     contents:
       - branch_matrix
-      - ppp_plot
       - ppp_simulate_data
+      - star_phylogeny
