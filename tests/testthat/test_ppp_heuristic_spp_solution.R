@@ -266,12 +266,12 @@ test_that("multiple solutions, locked in constraints", {
   spp <- tibble::tibble(name = c("S1", "S2", "S3"), weight = c(5, 5, 1))
   tree <- star_phylogeny(spp[[1]], spp[[2]])
   expect_warning(s <- ppp_heuristic_spp_solution(project_data, action_data,
-                                                   tree, 100, "name",
-                                                   "success", "name",
-                                                   "cost", "name", "weight",
-                                                   locked_in_column_name =
-                                                     "locked_in",
-                                                   number_solutions = 100))
+                                                 spp, 100, "name",
+                                                 "success", "name",
+                                                 "cost", "name", "weight",
+                                                 locked_in_column_name =
+                                                   "locked_in",
+                                                 number_solutions = 100))
   # tests
   ## class
   expect_is(s, "tbl_df")
@@ -309,12 +309,12 @@ test_that("multiple solutions, locked out constraints", {
   spp <- tibble::tibble(name = c("S1", "S2", "S3"), weight = c(5, 5, 1))
   tree <- star_phylogeny(spp[[1]], spp[[2]])
   expect_warning(s <- ppp_heuristic_spp_solution(project_data, action_data,
-                                                   tree, 100, "name",
-                                                   "success", "name",
-                                                   "cost", "name", "weight",
-                                                   locked_out_column_name =
-                                                     "locked_out",
-                                                   number_solutions = 100))
+                                                 spp, 100, "name",
+                                                 "success", "name",
+                                                 "cost", "name", "weight",
+                                                 locked_out_column_name =
+                                                   "locked_out",
+                                                 number_solutions = 100))
   # tests
   ## class
   expect_is(s, "tbl_df")
@@ -340,149 +340,149 @@ test_that("invalid arguments", {
   data(sim_project_data, sim_action_data, sim_species_data)
   # verify simulated data actually works
   expect_is(ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
-                                       sim_tree, 1000, "name", "success",
-                                       "name", "cost", "name", "weight"),
-                                       "tbl_df")
+                                       sim_species_data, 1000, "name",
+                                       "success", "name", "cost", "name",
+                                       "weight"), "tbl_df")
   # invalid budget
   expect_error(ppp_heuristic_spp_solution(
-    sim_project_data, sim_action_data, sim_tree, NA_real_, "name", "success",
+    sim_project_data, sim_action_data, sim_species_data, NA_real_, "name",
+    "success", "name", "cost", "name", "weight"))
+  expect_error(ppp_heuristic_spp_solution(
+    sim_project_data, sim_action_data, sim_species_data, "A", "name", "success",
     "name", "cost", "name", "weight"))
   expect_error(ppp_heuristic_spp_solution(
-    sim_project_data, sim_action_data, sim_tree, "A", "name", "success",
-    "name", "cost", "name", "weight"))
-  expect_error(ppp_heuristic_spp_solution(
-    sim_project_data, sim_action_data, sim_tree, -5, "name", "success",
+    sim_project_data, sim_action_data, sim_species_data, -5, "name", "success",
     "name", "cost", "name", "weight"))
   # invalid success
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$success[1] <- NA_real_
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost",
-                               "name", "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$success[1] <- -1
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost",
-                               "name", "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$success[1] <- 2
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$success <- as.character(sim_project_data$success)
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   # invalid species probabilities
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$S1[1] <- NA_real_
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost",
-                               "name", "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$S1[1] <- -1
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$S1[1] <- 2
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_project_data$S1 <- as.character(sim_project_data$S1)
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   # invalid costs
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$cost[1] <- NA_real_
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$cost[1] <- -5
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$cost <- as.character(sim_action_data$cost)
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight")
   })
   # locked in column
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_in <- 5
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", "locked_in")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", "locked_in")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_in[1] <- NA
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", "locked_in")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", "locked_in")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_in <- "T"
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", "locked_in")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", "locked_in")
   })
   # locked out column
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_out <- 5
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost",
-                               "name", "weight", locked_out = "locked_out")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost",
+      "name", "weight", locked_out = "locked_out")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_out[1] <- NA
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", locked_out = "locked_out")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", locked_out = "locked_out")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_out <- "F"
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", locked_out =  "locked_out")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", locked_out =  "locked_out")
   })
   expect_error({
     data(sim_project_data, sim_action_data, sim_species_data)
     sim_action_data$locked_in <- TRUE
     sim_action_data$locked_out <- TRUE
-    ppp_heuristic_spp_solution(sim_project_data, sim_action_data, sim_tree,
-                               200, "name", "success", "name", "cost", "name",
-                               "weight", "locked_in", "locked_out")
+    ppp_heuristic_spp_solution(sim_project_data, sim_action_data,
+      sim_species_data, 200, "name", "success", "name", "cost", "name",
+      "weight", "locked_in", "locked_out")
   })
 })

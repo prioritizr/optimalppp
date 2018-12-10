@@ -194,7 +194,7 @@ NULL
 #'      ylab = "Expected weighted species richness")
 #' }
 #' @export
-ppp_heuristic_spp_solution <- function(x, y, tree, budget,
+ppp_heuristic_spp_solution <- function(x, y, spp, budget,
                                        project_column_name,
                                        success_column_name,
                                        action_column_name,
