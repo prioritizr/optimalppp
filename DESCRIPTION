@@ -49,6 +49,7 @@ Collate:
     'help.R'
     'package.R'
     'ppp_exact_phylo_solution.R'
+    'ppp_exact_spp_solution.R'
     'ppp_heuristic_phylo_solution.R'
     'ppp_heuristic_spp_solution.R'
     'ppp_manual_phylo_solution.R'
