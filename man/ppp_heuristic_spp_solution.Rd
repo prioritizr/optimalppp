@@ -5,7 +5,7 @@
 \title{Prioritize conservation projects with species-level data using heuristic
 algorithms}
 \usage{
-ppp_heuristic_spp_solution(x, y, tree, budget, project_column_name,
+ppp_heuristic_spp_solution(x, y, spp, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,
   species_column_name, weight_column_name = NULL,
   locked_in_column_name = NULL, locked_out_column_name = NULL,
@@ -45,11 +45,14 @@ the argument to \code{locked_in_column_name} if relevant) and (iv) which
 actions should be locked out (specified using the argument to
 \code{locked_out_column_name} if relevant).}
 
-\item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
-evolutionary history of the species affected by the conservation
-projects that could potentially be funded. Note that every single
-species that is affected by the various conservation projects should
-be represented in this tree.}
+\item{spp}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing the species data. Here, each row should correspond
+to a different species and columns should contain data that correspond
+to each species. This object should contain data that denote
+(i) the name of each species (specified in the argument to
+\code{species_column_name}). It may also contain (ii) the weight for each
+species (specified in the argument to \code{weight_column_name} if
+relevant).}
 
 \item{budget}{\code{numeric} value that represents the total budget available
 for funding conservation projects.}
