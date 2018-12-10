@@ -13,8 +13,9 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
   // Initialization
   std::size_t n_spp = spp.n_cols;
   std::size_t n_projects = spp.n_rows;
-  std::size_t n_actions = actions.n_rows;
+  std::size_t n_actions = actions.n_cols;
   std::size_t n_branches = branch_lengths.size();
+  std::size_t n_shared_actions = actions.n_nonzero;
 
   // Preliminary processing
   /// identify branches that are not tips
@@ -36,8 +37,9 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
   std::size_t n_branch_tips = branch_tip_indices.size();
 
   /// determine number of variables
-  std::size_t n_variables = n_projects + (n_projects * n_spp) +
-                            n_branch_tips + n_branch_nontips;
+  std::size_t n_variables = n_actions + n_projects +
+                            (n_projects *  n_spp) +
+                             n_branch_tips + n_branch_nontips;
 
   // Main processing
   /// linear component of objective function
@@ -46,7 +48,7 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
   std::vector<double> model_obj(n_variables, 0.0);
   for (auto itr = branch_tip_indices.cbegin();
        itr != branch_tip_indices.cend(); ++itr)
-    model_obj[n_projects + (n_projects * n_spp) + (*itr)] =
+    model_obj[n_actions + n_projects + (n_projects * n_spp) + (*itr)] =
       branch_lengths[*itr];
 
   /// create model lb and ub variables
@@ -57,13 +59,13 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
   /// set -Inf values for continuous nontip variables
   for (auto itr = branch_nontip_indices.cbegin();
        itr != branch_nontip_indices.cend(); ++itr)
-    model_lb[n_projects + (n_projects * n_spp) + (*itr)] =
+    model_lb[n_actions + n_projects + (n_projects * n_spp) + (*itr)] =
       -std::numeric_limits<double>::infinity();
 
   /// set Inf values for continuous nontip variables
   for (auto itr = branch_nontip_indices.cbegin();
        itr != branch_nontip_indices.cend(); ++itr)
-    model_ub[n_projects + (n_projects * n_spp) + (*itr)] =
+    model_ub[n_actions + n_projects + (n_projects * n_spp) + (*itr)] =
       std::numeric_limits<double>::infinity();
 
   /// apply locked in constraints
@@ -76,15 +78,16 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
 
   /// create model vtype variables
   std::vector<std::string> model_vtype(n_variables, "S");
-  for (std::size_t i = 0; i < n_projects; ++i)
+  for (std::size_t i = 0; i < n_actions + n_projects + (n_spp * n_projects);
+       ++i)
     model_vtype[i] = "B";
   for (auto itr = branch_nontip_indices.cbegin();
        itr != branch_nontip_indices.cend(); ++itr)
-     model_vtype[n_projects + (n_projects * n_spp) + (*itr)] = "C";
-
+     model_vtype[n_actions + n_projects + (n_spp * n_projects) + (*itr)] = "C";
   /// linear constraints
   //// initialization
-  std::size_t n_A_non_zeros_estimate = costs.size() + (n_projects * n_spp) +
+  std::size_t n_A_non_zeros_estimate = costs.size() + n_shared_actions +
+                                       (n_projects * n_spp) +
                                        (n_projects * n_spp) +
                                        (n_projects * n_spp * n_branch_nontips);
   std::vector<std::size_t> model_Ai;
@@ -100,23 +103,24 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
 
   //// budget constraint
   std::size_t r = 0;
-  for (std::size_t p = 0; p < n_projects; ++p)
+  for (std::size_t a = 0; a < n_actions; ++a)
     model_Ai.push_back(r);
-  for (std::size_t p = 0; p < n_projects; ++p)
-    model_Aj.push_back(p);
-  for (std::size_t p = 0; p < n_projects; ++p)
-    model_Ax.push_back(costs[p]);
+  for (std::size_t a = 0; a < n_actions; ++a)
+    model_Aj.push_back(a);
+  for (std::size_t a = 0; a < n_actions; ++a)
+    model_Ax.push_back(costs[a]);
   model_sense.push_back("<=");
   model_rhs.push_back(budget);
 
-  //// project allocation constraints
-  for (std::size_t p = 0; p < n_projects; ++p) {
-    for (std::size_t s = 0; s < n_spp; ++s) {
+  //// constraints to ensure that projects can only be funded if all of their
+  //// actions are funded
+  for (auto pitr = actions.begin(); pitr != actions.end(); ++pitr) {
+    if ((*pitr) > 0.5) {
       r += 1;
       model_Ai.push_back(r);
       model_Ai.push_back(r);
-      model_Aj.push_back(p);
-      model_Aj.push_back(n_projects + (s * n_projects) + p);
+      model_Aj.push_back(pitr.col());
+      model_Aj.push_back(n_actions + pitr.row());
       model_Ax.push_back(1.0);
       model_Ax.push_back(-1.0);
       model_sense.push_back(">=");
@@ -124,12 +128,30 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
     }
   }
 
-  /// species allocation constraints
+  //// constraints to ensure that species can only be allocated to funded
+  //// projects
+  for (std::size_t s = 0; s < n_spp; ++s) {
+    for (std::size_t p = 0; p < n_projects; ++p) {
+      r += 1;
+      model_Ai.push_back(r);
+      model_Ai.push_back(r);
+      model_Aj.push_back(n_actions + p);
+      model_Aj.push_back(n_actions + n_projects + (s * n_projects) + p);
+      model_Ax.push_back(1.0);
+      model_Ax.push_back(-1.0);
+      model_sense.push_back(">=");
+      model_rhs.push_back(0.0);
+    }
+  }
+
+
+  //// constraints to ensure that each species can only be allocated to a single
+  //// project
   for (std::size_t s = 0; s < n_spp; ++s) {
     r += 1;
     for (std::size_t p = 0; p < n_projects; ++p) {
       model_Ai.push_back(r);
-      model_Aj.push_back(n_projects + (s * n_projects) + p);
+      model_Aj.push_back(n_actions + n_projects + (s * n_projects) + p);
       model_Ax.push_back(1.0);
     }
     model_sense.push_back("=");
@@ -148,11 +170,13 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
     for (auto pitr = spp.begin_col(curr_spp);
          pitr != spp.end_col(curr_spp); ++pitr) {
         model_Ai.push_back(r);
-        model_Aj.push_back(n_projects + (curr_spp * n_projects) + pitr.row());
+        model_Aj.push_back(n_actions + n_projects + (curr_spp * n_projects) +
+                           pitr.row());
         model_Ax.push_back(*pitr);
     }
     model_Ai.push_back(r);
-    model_Aj.push_back(n_projects + (n_projects * n_spp) + *bitr);
+    model_Aj.push_back(n_actions + n_projects + (n_spp * n_projects) +
+                       *bitr);
     model_Ax.push_back(-1.0);
     model_sense.push_back("=");
     model_rhs.push_back(0.0);
@@ -183,13 +207,15 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
         for (auto pitr = spp.begin_col(sitr.row());
              pitr != spp.end_col(sitr.row()); ++pitr) {
           model_Ai.push_back(r);
-          model_Aj.push_back(n_projects + (sitr.row() * n_projects) +
+          model_Aj.push_back(n_actions + n_projects +
+                             (sitr.row() * n_projects) +
                              pitr.row());
           model_Ax.push_back(std::log(1.0 - (*pitr)));
         }
       }
       model_Ai.push_back(r);
-      model_Aj.push_back(n_projects + (n_projects * n_spp) + *bitr);
+      model_Aj.push_back(n_actions + n_projects + (n_spp * n_projects) +
+                         *bitr);
       model_Ax.push_back(-1.0);
       model_sense.push_back("=");
       model_rhs.push_back(0.0);
@@ -209,12 +235,13 @@ Rcpp::List rcpp_mip_formulation(arma::sp_mat spp,
               curr_tmp_value = *pitr;
           curr_max_value += std::log(1.0 - curr_tmp_value);
       }
-      /// inflate the range slighlty to account for floating point precision
+      /// inflate the range slightly to account for floating point precision
       /// issues
       curr_min_value *= 0.99;
       curr_max_value *= 1.01;
       /// add pwl constraints
-      model_pwl_var.push_back(1 + n_projects + (n_projects * n_spp) + *bitr);
+      model_pwl_var.push_back(1 + n_actions + n_projects +
+                              (n_spp * n_projects) + *bitr);
       curr_frac = (curr_max_value - curr_min_value) /
                   static_cast<double>(n_approx_points - 1);
       for (std::size_t i = 0; i < n_approx_points; ++i)

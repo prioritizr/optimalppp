@@ -17,6 +17,10 @@ rcpp_heuristic_phylo_solution <- function(spp, actions, budget, branch_matrix, b
     .Call(`_optimalppp_rcpp_heuristic_phylo_solution`, spp, actions, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out)
 }
 
+rcpp_mip_formulation <- function(spp, actions, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_approx_points) {
+    .Call(`_optimalppp_rcpp_mip_formulation`, spp, actions, budget, branch_matrix, branch_lengths, costs, locked_in, locked_out, n_approx_points)
+}
+
 rcpp_ppp_epd <- function(spp, actions, branch_matrix, branch_lengths, solutions) {
     .Call(`_optimalppp_rcpp_ppp_epd`, spp, actions, branch_matrix, branch_lengths, solutions)
 }

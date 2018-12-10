@@ -1,7 +1,11 @@
-r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
+r_mip_formulation <- function(project_data, action_data, tree, budget,
+                              n_approx_points) {
   # Initialization
   ## calculate numbers
   n_projects <- nrow(project_data)
+  n_actions <- nrow(action_data)
+  n_shared_actions <- sum(as.matrix(project_data[, action_data$name,
+                                                 drop = FALSE]))
   species_names <- tree$tip.label
   n_spp <- length(species_names)
 
@@ -14,8 +18,10 @@ r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
   branch_nontip_indices <- which(Matrix::colSums(T_bs) > 1)
 
   ## create variable names
-  variable_names <- c(paste0("X_", seq_len(n_projects)),
-                      paste0("Y_", outer(seq_len(n_projects), species_names,
+  variable_names <- c(paste0("X_", seq_len(n_actions)),
+                      paste0("Y_", seq_len(n_projects)),
+                      paste0("Z_", outer(seq_len(n_projects),
+                                         species_names,
                                          paste0)),
                       paste0("R_", seq_len(n_branches)))
 
@@ -36,48 +42,76 @@ r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
   model$ub <- rep(1, n_v)
   model$ub[match(paste0("R_", branch_nontip_indices), variable_names)] <- Inf
   model$lb[match(paste0("R_", branch_nontip_indices), variable_names)] <- -Inf
-  model$lb[which(project_data$locked_in)] <- 1
-  model$ub[which(project_data$locked_out)] <- 0
+  model$lb[which(action_data$locked_in)] <- 1
+  model$ub[which(action_data$locked_out)] <- 0
 
   ## set variable types
   model$vtype <- rep("S", n_v)
-  model$vtype[seq_len(n_projects)] <- "B"
+  model$vtype[seq_len(n_actions)] <- "B"
+  model$vtype[n_actions + seq_len(n_projects)] <- "B"
+  model$vtype[n_actions + n_projects +
+              seq_along(outer(species_names, seq_len(n_projects),
+                              paste0))] <- "B"
   model$vtype[match(paste0("R_", branch_nontip_indices), variable_names)] <- "C"
 
   ## set linear constraints
   ### initialize constraints
   model$A <- Matrix::sparseMatrix(i = 1, j = 1, x = 0,
-                                  dims = c(1 + (n_spp * n_projects) + n_spp +
+                                  dims = c(1 +
+                                           n_shared_actions +
+                                           (n_spp * n_projects) +
+                                           n_spp +
                                            n_spp +
                                            length(branch_nontip_indices), n_v),
                                   dimnames = list(NULL, variable_names))
   model$A <- Matrix::drop0(model$A)
   model$rhs <- rep(NA_real_, nrow(model$A))
   model$sense <- rep(NA_character_, nrow(model$A))
+  model$rownames <- rep(NA_character_, nrow(model$A))
 
   ### budget constraint
-  model$A[1, paste0("X_", seq_len(n_projects))] <- project_data$cost
+  model$A[1, paste0("X_", seq_len(n_actions))] <- action_data$cost
   model$sense[1] <- "<="
   model$rhs[1] <- budget
-
-  ### project allocation constraints
+  model$rownames[1] <- "C1"
   curr_row <- 1
-  for (i in seq_len(n_projects)) {
-    for (s in species_names) {
-      curr_row <- curr_row + 1
-      model$A[curr_row, paste0("X_", i)] <- 1
-      model$A[curr_row, paste0("Y_", i, s)] <- -1
-      model$sense[curr_row] <- ">="
-      model$rhs[curr_row] <- 0
+
+  ### constraints to ensure that projects can only be funded if all of their
+  ### actions are funded
+  for (j in seq_len(n_projects)) {
+    for (i in seq_len(n_actions)) {
+      if (project_data[[action_data$name[i]]][j]) {
+        curr_row <- curr_row + 1
+        model$A[curr_row, paste0("X_", i)] <- 1
+        model$A[curr_row, paste0("Y_", j)] <- -1
+        model$sense[curr_row] <- ">="
+        model$rhs[curr_row] <- 0
+        model$rownames[curr_row] <- "C2"
+      }
     }
   }
 
-  ### species allocation constraints
+  ### constraints to ensure that species can only be allocated to funded
+  ### projects
+  for (s in species_names) {
+    for (j in seq_len(n_projects)) {
+      curr_row <- curr_row + 1
+      model$A[curr_row, paste0("Y_", j)] <- 1
+      model$A[curr_row, paste0("Z_", j, s)] <- -1
+      model$sense[curr_row] <- ">="
+      model$rhs[curr_row] <- 0
+      model$rownames[curr_row] <- "C3"
+    }
+  }
+
+  ### constraints to ensure that each species can only be allocated to a single
+  ### project
   for (s in species_names) {
     curr_row <- curr_row + 1
-    model$A[curr_row, paste0("Y_", seq_len(n_projects), s)] <- 1
+    model$A[curr_row, paste0("Z_", seq_len(n_projects), s)] <- 1
     model$sense[curr_row] <- "="
     model$rhs[curr_row] <- 1
+    model$rownames[curr_row] <- "C3"
   }
 
   ### species persistence probability constraints
@@ -86,16 +120,17 @@ r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
     curr_projects_for_spp <- which(project_data[[s]] > 0)
     b <- which((Matrix::colSums(T_bs) == 1) &
                (T_bs[match(s, species_names), ] == 1))
-    model$A[curr_row, paste0("Y_", curr_projects_for_spp, s)] <-
-      round(project_data[[s]][curr_projects_for_spp] *
-            project_data$success[curr_projects_for_spp], 5)
+    model$A[curr_row, paste0("Z_", curr_projects_for_spp, s)] <-
+      project_data[[s]][curr_projects_for_spp] *
+      project_data$success[curr_projects_for_spp]
     model$A[curr_row, paste0("R_", b)] <- -1
     model$sense[curr_row] <- "="
     model$rhs[curr_row] <- 0
+    model$rownames[curr_row] <- "C4"
   }
 
-  ## set constraints to specify log-sum probabilities for branches associated with
-  ## multiple species
+  ## set constraints to specify log-sum probabilities for branches associated
+  ## with multiple species
   if (length(branch_nontip_indices) > 0) {
     ### initialize variables
     model$pwlobj <- list()
@@ -107,13 +142,14 @@ r_mip_formulation <- function(project_data, tree, budget, n_approx_points) {
       ### apply linear constraints
       for (s in species_names[which(T_bs[, b] > 0.5)]) {
         curr_projects_for_spp <- which(project_data[[s]] > 0)
-        model$A[curr_row, paste0("Y_", curr_projects_for_spp, s)] <-
+        model$A[curr_row, paste0("Z_", curr_projects_for_spp, s)] <-
           log(1 - (project_data[[s]][curr_projects_for_spp] *
                    project_data$success[curr_projects_for_spp]))
       }
       model$A[curr_row, paste0("R_", b)] <- -1
       model$sense[curr_row] <- "="
       model$rhs[curr_row] <- 0
+      model$rownames[curr_row] <- "C5"
       ### apply piecewise linear approximation constraints
       #### calculate extinction probabilities for each spp and project
       curr_probs <- as.matrix(project_data[, species_names[T_bs[, b] > 0.5]])

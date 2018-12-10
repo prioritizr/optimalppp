@@ -2,13 +2,15 @@
 % Please edit documentation in R/ppp_exact_phylo_solution.R
 \name{ppp_exact_phylo_solution}
 \alias{ppp_exact_phylo_solution}
-\title{Solve the 'Project Prioritization Protocol' problem using exact algorithms}
+\title{Prioritize conservation projects with phylogenetic data using exact
+algorithms}
 \usage{
-ppp_exact_phylo_solution(x, tree, budget, project_column_name,
-  cost_column_name, success_column_name, locked_in_column_name = NULL,
-  locked_out_column_name = NULL, gap = 1e-06, threads = 1L,
-  number_solutions = 1L, time_limit = .Machine$integer.max,
-  number_approx_points = 300, verbose = FALSE)
+ppp_exact_phylo_solution(x, y, tree, budget, project_column_name,
+  success_column_name, action_column_name, cost_column_name,
+  locked_in_column_name = NULL, locked_out_column_name = NULL,
+  gap = 1e-06, threads = 1L, number_solutions = 1L,
+  time_limit = .Machine$integer.max, number_approx_points = 300,
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
@@ -31,6 +33,19 @@ must have a baseline project, with a zero cost, that represents the
 probability that each species will persist if no other conservation
 project is funded.}
 
+\item{y}{\code{\link[base]{data.frame}} or \code{\link[tibble]{tibble}}
+table containing the action data. Here, each row should correspond to a
+different action and columns should contain data that correspond to
+each action. This object should contain data that denote (i)
+the name of each action (specified in the argument to
+\code{action_column_name}), (ii) the cost of each action (specified in the
+argument to \code{cost_column_name}). If certain actions should be locked
+in or out of the solution, then this object should also contain data
+that denote (iii) which actions should be locked in (specified using
+the argument to \code{locked_in_column_name} if relevant) and (iv) which
+actions should be locked out (specified using the argument to
+\code{locked_out_column_name} if relevant).}
+
 \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree describing the
 evolutionary history of the species affected by the conservation
 projects that could potentially be funded. Note that every single
@@ -45,16 +60,21 @@ the name for each conservation project. This argument corresponds to the
 argument to \code{x}. Note that the project names must not contain any
 duplicates or missing values.}
 
-\item{cost_column_name}{\code{character} name of column that
-indicates the cost for funding each action. This argument corresponds
-to the argument to \code{y}. This column must have \code{numeric} values
-which are equal to or greater than zero. No missing values are permitted.}
-
 \item{success_column_name}{\code{character} name of column that
 denotes the probability that each project will succeed. This argument
 corresponds to the argument to \code{x}. This column must have
 \code{numeric} values which lay between zero and one. No missing values
 are permitted.}
+
+\item{action_column_name}{\code{character} name of column that contains
+the name for each conservation action. This argument corresponds to the
+argument to \code{y}. Note that the project names must not contain any
+duplicates or missing values.}
+
+\item{cost_column_name}{\code{character} name of column that
+indicates the cost for funding each action. This argument corresponds
+to the argument to \code{y}. This column must have \code{numeric} values
+which are equal to or greater than zero. No missing values are permitted.}
 
 \item{locked_in_column_name}{\code{character} name of column that
 indicates which actions should be locked into the funding scheme.
@@ -141,8 +161,9 @@ A \code{\link[tibble]{tibble}} object containing the
  }
 }
 \description{
-Prioritize funding for conservation projects using exact algorithms. Unlike
-other methods for solving the under the 'Project Prioritization Protocol'
+Prioritize funding for conservation projects with phylogenetic data and
+using exact algorithms. Unlike other algorithms for solving the
+'Project Prioritization Protocol'
 (Joseph, Maloney & Possingham 2009), this method can identify
 solutions that are guaranteed to be optimal (or within a pre-specified
 optimality gap; see Underhill 1994; Rodrigues & Gaston 2002).
@@ -169,39 +190,47 @@ instructions for
   \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems).
 
 The objective of this problem is to maximize the amount of evolutionary
-history
-that is expected to remain within a specified period of time (e.g. 100
-years; i.e. 'expected phylogenetic diversity'; Faith 2008). Let \eqn{I}
-represent each project (indexed by \eqn{i}). Let \eqn{P_i} represent the
-probability of project \eqn{i} being successful if it is funded. Let
-\eqn{C_i} denote the cost for funding project \eqn{i}, and let \eqn{m}
-define the maximum
-expenditure (budget) for funding the projects. Also, let \eqn{S} represent
-each species (e.g. species; indexed by \eqn{s}). Note that \eqn{S} should,
-ideally, contain all species in the study area to account for the complete
-phylogenetic diversity present in the study area. To represent the benefits
-for funding a project, let \eqn{B_{is}} denote the probability of
-persistence for the species \eqn{s} if project \eqn{i} is funded and project
-\eqn{i} is used to conserve that species (see below for why funded projects
-may not necessarily be used to conserve a given species). To account for the
-phylogenetic contributions for protecting each species, consider a
-phylogenetic tree that contains species \eqn{s \in S}{s in S} and contains
-branches with  known lengths. To describe the tree using mathematical
-notation, let \eqn{B} represent the branches (indexed by \eqn{b}) with
-lengths
-\eqn{L_b} and let \eqn{T_{bs}} indicate which species \eqn{s \in S}{s in S}
-are associated with which phylogenetic branches \eqn{b \in B}{b in B} using
-zeros and ones.
+history that is expected to remain within a specified period of time (e.g.
+100 years; i.e. 'expected phylogenetic diversity'; Faith 2008).
+Let \eqn{I} represent the set of conservation actions (indexed by \eqn{i}).
+Let \eqn{C_i} denote the cost for funding action \eqn{i}, and let \eqn{m}
+define the maximum expenditure (budget) for funding all the actions. Also,
+let \eqn{S} represent each species (indexed by \eqn{s}). To describe the
+evolutionary relationships between the species \eqn{s \in S}{s in S},
+consider a phylogenetic tree that contains species \eqn{s \in S}{s in S}
+with branches of known lengths. This tree can be described using
+mathematical notation by letting \eqn{B} represent the branches (indexed by
+\eqn{b}) with lengths \eqn{L_b} and letting \eqn{T_{bs}} indicate which
+species \eqn{s \in S}{s in S} are associated with which phylogenetic
+branches \eqn{b \in B}{b in B} using zeros and ones. Ideally, the set of
+species \eqn{S} would contain all of the species in the study
+area---including non-threatened species and species which are not associated
+with any conservation projects---to fully account for the benefits for
+funding different projects.
+
+To guide the prioritization, the conservation actions are organized into
+conservation projects. Let \eqn{J} denote the set of conservation projects
+(indexed by \eqn{j}, and let \eqn{A_{ij}} denote which actions
+\eqn{i \in I}{i in I} comprise each conservation project
+\eqn{j \in J}{j in J} using zeros and ones. Next, let \eqn{P_i} represent
+the probability of project \eqn{i} being successful if it is funded. Also,
+let \eqn{B_{sj}} denote the enhanced probability that each species'
+\eqn{s \in S}{s in S} associated with the project \eqn{j \in J}{j in J}
+will persist if all of the actions that comprise project \eqn{j} are funded
+and that project is allocated to species \eqn{s}.
 
 The binary control variables \eqn{X_i} in this problem indicate whether each
 project \eqn{i \in I}{i in I} is funded (variable equal to one) or not
-(variable equal to zero). The decision variables in this problem represent
-which projects are the \eqn{Y_{is}}, \eqn{E_s}, and \eqn{R_b} variables.
-Specifically, the binary \eqn{Y_{is}} variables indicate if project \eqn{i}
-is used to conserve species \eqn{s} (variable equal to one) or not (variable
-equal to zero); the semi-continuous \eqn{E_s} variables denote if species
-\eqn{s} will go extinct; and the semi-continuous \eqn{R_b} variables denote
-the probability that phylogenetic branch \eqn{b} will remain.
+(variable equal to zero). The decision variables in this problem are the
+\eqn{Y_{j}}, \eqn{Z_{sj}}, \eqn{E_s}, and \eqn{R_b} variables.
+Specifically, the binary \eqn{Y_{j}} variables indicate if project \eqn{j}
+is funded (variable equal to one) or not (variable equal to zero) based on
+which actions are funded; the binary \eqn{Z_{sj}} variables indicate
+if project \eqn{j} is used to manage species \eqn{s} (variable equal to one)
+or not (variable equal to zero); the semi-continuous \eqn{E_s} variables
+denote the probability that species \eqn{s} will go extinct; and the
+semi-continuous \eqn{R_b} variables denote the probability that phylogenetic
+branch \eqn{b} will remain.
 
 Now that we have defined all the data and variables, we can formulate
 the problem. For convenience, let the symbol used to denote each set also
@@ -218,49 +247,46 @@ represent the set of ten species and also the number ten).
   \space \mathrm{(eqn \space 1c)} \\
   \sum_{i = 0}^{I} C_i \leq m \space
   \mathrm{(eqn \space 1d)} \\
-  Y_{is} \leq X_{i} \space \forall \space i \in I, \space s \in S \space
-  \mathrm{(eqn \space 1e)} \\
-  \sum_{i = 0}^{I} Y_{is} = 1 \space \forall \space s \in S \space
-  \mathrm{(eqn \space 1f)} \\
-  R_{b} \geq 0 \space \forall \space b \in B \space
+  Z_{sj} \leq Y_{j} \space \forall \space j \in J \space \mathrm{(eqn \space
+  1e)} \\
+  \sum_{j = 0}^{J} Z_{sj} = 1 \space \forall \space s \in s \space
+  \mathrm{eqn \space 1f} \\
+  A_{ij} Y_{j} \leq X_{i} \space \forall \space i \in I, j \in J \space
   \mathrm{(eqn \space 1g)} \\
-  R_{b} \leq 1 \space \forall \space b \in B \space
+  R_{b} \geq 0, R_{b} \leq 1 \space \forall \space b \in B \space
   \mathrm{(eqn \space 1h)} \\
-  Y_{is} \in [0, 1] \space \forall \space i \in I, \space s \in S \space
+  E_{s} \geq 0, E_{s} \leq 1 \space \forall \space b \in B \space
   \mathrm{(eqn \space 1i)} \\
-  X_{i} \in [0, 1] \space \forall \space i \in I \space
-  \mathrm{(eqn \space 1j)}}{
+  X_{i}, Y_{j}, Z_{sj} \in [0, 1] space \forall \space i \in I, j \in J, s
+  \in S \space \mathrm{(eqn \space 1j)}{
   Maximize sum_b^B L_b R_b (eqn 1a); Subject to:
   R_b = 1 - prod_s^S ifelse(T_{bs} == 1, E_s, 1) for all b in B (eqn 1b),
   E_s = 1 - sum_i^I Y_{is} P_i B_{is} for all s in S (eqn 1c),
   sum_i^I C_i <= m (eqn 1d),
-  Y_{is} <= X_i for all i in I, s in S (eqn 1e),
-  sum_i^I Y_{is} = 1 for all s in S (eqn 1f),
-  R_b >= 0 for all b in B (eqn 1g),
-  R_b <= 1 for all b in B (eqn 1h),
-  Y_{is} in [0, 1] for all i in I, s in S (eqn 1i),
-  X_i in [0, 1] for all i in I (eqn 1j)}
+  Z_{sj} <= Y_j for all j in J (eqn 1e),
+  sum_j^J Z_{sj} = 1 for all s in s (eqn 1f),
+  A_{ij} Y_{j} <= X_{i} for all i I, j in J (eqn 1g),
+  R_b >= 0, R_b >= 1 for all b in B (eqn 1h),
+  E_s >= 0, E_s >= 1 for all s in S (eqn 1i),
+  X_i, Y_j, Z_{sj} in [0, 1] for all i in I, j in J, s in S (eqn 1j)}}
 
 The objective (eqn 1a) is to maximize the amount of expected phylogenetic
 history that will remain in the future. This is expressed as the sum of
 branch lengths (\eqn{L_b}) weighted by the probability that at least one of
 the species connected to this branch will not go extinct (\eqn{R_b}).
 Constraints (eqn 1b) state that the probability that a branch will remain
-(\eqn{R_b}) is equal to one minus the probability that at least one of the
-species associated will not go extinct. Constraints (eqn 1c) calculate the
-probability that each species will go extinct given their allocated
-projects. Since each species is only allocated to a single project (per eqn
-1e), we can just calculate this as one minus the sum of the probabilities
-that the species would persist under each project if it were successful and
-each project being successful. Constraint (eqn 1d) ensures that the
-calculation for  that the total cost of the funded projects does not exceed
-the budget \eqn{m}. Constraints (eqn 1e) ensure that each species can be
-assigned to a project if the project has been allocated funding. Constraints
-(eqn 1f) ensure that each species only be assigned to a single project.
-Constraints (eqns 1g and 1h) ensure that the probability that each
-phylogenetic branch will remain (\eqn{R_b}) is between zero and one.
-Constraints (eqns 1i and 1j) ensure that the project funding (\eqn{X_i}) and
-species' project allocation (\eqn{Y_{is}}) variables are binary.
+(\eqn{R_b}) is equal to one minus the probability that all species will go
+extinct. Constraints (eqn 1c) calculate the probability that each species
+will go extinct according to their allocated project. Constraint (eqn 1d)
+ensures that the cost of all the funded actions do not exceed the budget.
+Constraints (eqn 1e) ensure that species can only be allocated to projects
+that have all of their actions funded. Constraints (eqn 1f) state that each
+species can only be allocated to a single project. Constraints (eqn 1g)
+ensure that a project cannot be funded unless all of its actions are funded.
+Constraints (eqns 1h, 1i) ensure that the probability variables (\eqn{R_b},
+\eqn{E_s}) remain between zero and one. Constraints (eqns 1h) ensure that
+the action funding (\eqn{X_j}), project funding (\eqn{Y_j}), and project
+allocation (\eqn{Z_{sj}}) variables are binary.
 
 Although this formulation is a mixed integer quadratically constrained
 programming problem (due to eqn 1b), it can be linearized and then solved
@@ -277,10 +303,13 @@ trivial period of time.
 }
 \examples{
 # load built-in data
-data(sim_project_data, sim_tree)
+data(sim_project_data, sim_action_data, sim_tree)
 
 # print simulated project data set
 print(sim_project_data)
+
+# print simulated action data
+print(sim_action_data)
 
 # print simulated phylogenetic tree data set
 print(sim_tree)
@@ -293,49 +322,52 @@ if (!require(gurobi, quietly = TRUE))
  stop("the gurobi R package is not installed.")
 
 # find a solution that meets a budget of 300
-s1 <- ppp_exact_solution(sim_project_data, sim_tree, 300,
-                         "name", "cost", "success")
+s1 <- ppp_exact_solution(sim_project_data, sim_action_data, sim_tree, 300,
+                         "name", "success", "name", "cost")
 
 # print solution
 print(s1)
 
 # print the names of which projects were funded
-print(names(s1)[which(unlist(s1[1, sim_project_data$name]))])
+print(names(s1)[which(unlist(s1[1, sim_action_data$name]))])
 
 # plot solution
-ppp_plot(sim_project_data, sim_tree, s1, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        "name", "success", "name", "cost")
 
 # find a solution that meets a budget of 300 and allocates
 # funding for the "S1_project" project. For instance, species "S1" might
 # be an iconic species that has cultural and economic importance.
-sim_project_data2 <- sim_project_data
-sim_project_data2$locked_in <- sim_project_data2$name == "S1_project"
-s2 <- ppp_exact_solution(sim_project_data2, sim_tree, 300,
-                         "name", "cost", "success",
-                         locked_in_column_name = "locked_in")
+sim_action_data2 <- sim_action_data
+sim_action_data2$locked_in <- sim_action_data2$name == "S1_project"
+s2 <- ppp_exact_phylo_solution(sim_project_data, sim_action_data2, sim_tree,
+                               300, "name", "success", "name", "cost",
+                               locked_in_column_name = "locked_in")
 
 # print solution
 print(s2)
 
 # plot solution
-ppp_plot(sim_project_data2, sim_tree, s2, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data2, sim_tree, s2,
+                        "name", "success", "name", "cost")
 
 # find a solution that meets a budget of 300 and does not allocate
 # funding for the "S2_project" project. For instance, species "S2"
 # might have very little cultural or economic importance. Broadly speaking,
 # though, it is better to "lock in" "important" species rather than
 # "lock out" unimportant species.
-sim_project_data3 <- sim_project_data
-sim_project_data3$locked_out <- sim_project_data2$name == "S2_project"
-s3 <- ppp_exact_solution(sim_project_data3, sim_tree, 300,
-                         "name", "cost", "success",
-                         locked_out_column_name = "locked_out")
+sim_action_data3 <- sim_action_data
+sim_action_data3$locked_out <- sim_action_data3$name == "S2_project"
+s3 <- ppp_exact_phylo_solution(sim_project_data, sim_action_data3, sim_tree,
+                               300, "name", "success", "name", "cost",
+                               locked_out_column_name = "locked_out")
 
 # print solution
 print(s3)
 
 # plot solution
-ppp_plot(sim_project_data3, sim_tree, s3, "name", "cost", "success")
+ppp_plot_phylo_solution(sim_project_data, sim_action_data3, sim_tree, s3,
+                        "name", "success", "name", "cost")
 }
 }
 \references{
