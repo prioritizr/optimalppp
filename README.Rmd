@@ -68,7 +68,17 @@ geom_tiplab(size = 2.5) +
 geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
 
-Next, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the `"name"` column contains the name of each project, the `"cost"` column contains the cost of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, and the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project---the `"baseline_project"`---has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
+Next, we will load the `sim_action_data` object. This object stores information about various conservation actions in a tabular format (i.e. `tibble`). Each row corresponds to a different action, and each column describes different properties associated with the actions. These actions correspond to specific management actions that have known costs. For example, they may relate to baiting or trapping sites of conservation importance. In this table, the `"name"` column contains the name of each action, and the `"cost"` action denotes the cost of funding each project. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project---the `"baseline_action"`---has a zero cost and is used subsequently to represent the baseline probability for species when no conservation actions are funded for them.
+
+```{r}
+# load data
+data(sim_action_data)
+
+# print table
+head(as.data.frame(sim_action_data))
+```
+
+Additionally, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. These projects correspond to groups of conservation actions. For example, a conservation project may pertain to a set of conservation actions that relate to a single species or single geographic locality. In this table, the `"name"` column contains the name of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded, and the `"S1_action"`--`"SN_action"` columns indicate which actions are associated with which project.  Note that the last project---the `"baseline_project"`---is associated with the `"baseline_action"` action. This project has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, although most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
 
 ```{r}
 # load data
@@ -82,23 +92,28 @@ Let us assume that our resources are limited such that we can only spend, at mos
 
 ```{r, message = FALSE, warning = FALSE}
 # solve problem
-s1 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
-                         budget = 200, project_column_name = "name",
-                         cost_column_name = "cost",
-                         success_column_name = "success")
+s1 <- ppp_exact_phylo_solution(x = sim_project_data, y = sim_action_data,
+                               tree = sim_tree, budget = 200,
+                               project_column_name = "name",
+                               success_column_name = "success",
+                               action_column_name = "name",
+                               cost_column_name = "cost")
 
 # print solution
 head(as.data.frame(s1))
 ```
 
-The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"S50_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
+The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (which may be useful for methods that output multiple solutions), the `"obj"` column contains the objective value (i.e. the expected phylogenetic diversity for this problem; Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"SN_project"`, and `"baseline_project"`) indicate if each project was prioritized for funding in the solution.
 
-Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. `r round(s1$objective, 3)` million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
+Here, the objective value (in the `"obj"` column) denotes the amount of evolutionary history that is expected to persist (i.e. `r round(s1$obj, 3)` million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
 
 ```{r}
 # visualize solution
-ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
-         cost_column_name = "cost", success_column_name = "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        project_column_name =  "name",
+                        success_column_name = "success",
+                        action_column_name = "name",
+                        cost_column_name = "cost") +
 geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
 

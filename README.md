@@ -47,7 +47,25 @@ geom_treescale(width = 2, x = 0, offset = 0.1)
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
-Next, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. Importantly, the `"name"` column contains the name of each project, the `"cost"` column contains the cost of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, and the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project---the `"baseline_project"`---has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, though most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
+Next, we will load the `sim_action_data` object. This object stores information about various conservation actions in a tabular format (i.e. `tibble`). Each row corresponds to a different action, and each column describes different properties associated with the actions. These actions correspond to specific management actions that have known costs. For example, they may relate to baiting or trapping sites of conservation importance. In this table, the `"name"` column contains the name of each action, and the `"cost"` action denotes the cost of funding each project. It also contains additional columns for customizing the solutions, but we will ignore them for now. Note that the last project---the `"baseline_action"`---has a zero cost and is used subsequently to represent the baseline probability for species when no conservation actions are funded for them.
+
+``` r
+# load data
+data(sim_action_data)
+
+# print table
+head(as.data.frame(sim_action_data))
+```
+
+    ##              name      cost locked_in locked_out
+    ## 1       S1_action  94.39929     FALSE      FALSE
+    ## 2       S2_action 100.99137     FALSE      FALSE
+    ## 3       S3_action 103.22583      TRUE      FALSE
+    ## 4       S4_action  99.24274     FALSE      FALSE
+    ## 5       S5_action  99.90791     FALSE       TRUE
+    ## 6 baseline_action   0.00000     FALSE      FALSE
+
+Additionally, we will load the `sim_project_data` object. This object stores information about various conservation projects in a tabular format (i.e. `tibble`). Each row corresponds to a different project, and each column describes various properties associated with the projects. These projects correspond to groups of conservation actions. For example, a conservation project may pertain to a set of conservation actions that relate to a single species or single geographic locality. In this table, the `"name"` column contains the name of each project, the `"success"` column denotes the probability of each project succeeding if it is funded, the `"S1"`--`"SN"` columns show the enhanced probability of each species persisting if the project is funded, and the `"S1_action"`--`"SN_action"` columns indicate which actions are associated with which project. Note that the last project---the `"baseline_project"`---is associated with the `"baseline_action"` action. This project has a zero cost and represents the baseline probability of each species persisting if no other project is funded. Finally, although most projects in this example directly relate to a single species, you can input projects that directly affect the persistence of multiple species.
 
 ``` r
 # load data
@@ -57,51 +75,63 @@ data(sim_project_data)
 head(as.data.frame(sim_project_data))
 ```
 
-    ##               name      cost   success locked_in locked_out        S1
-    ## 1       S1_project  94.39929 0.8470486     FALSE      FALSE 0.8022048
-    ## 2       S2_project 100.99137 0.9694998     FALSE      FALSE 0.0000000
-    ## 3       S3_project 103.22583 0.7323494     FALSE       TRUE 0.0000000
-    ## 4       S4_project  99.24274 0.9792034     FALSE      FALSE 0.0000000
-    ## 5       S5_project  99.90791 0.7142838      TRUE      FALSE 0.0000000
-    ## 6 baseline_project   0.00000 1.0000000     FALSE      FALSE 0.2933155
-    ##          S2         S3        S4        S5
-    ## 1 0.0000000 0.00000000 0.0000000 0.0000000
-    ## 2 0.8079388 0.00000000 0.0000000 0.0000000
-    ## 3 0.0000000 0.67841372 0.0000000 0.0000000
-    ## 4 0.0000000 0.00000000 0.7034556 0.0000000
-    ## 5 0.0000000 0.00000000 0.0000000 0.6569473
-    ## 6 0.3883986 0.01203652 0.1952440 0.1237303
+    ##               name   success        S1        S2        S3        S4
+    ## 1       S1_project 0.9190985 0.7905800 0.0000000 0.0000000 0.0000000
+    ## 2       S2_project 0.9232556 0.0000000 0.8881011 0.0000000 0.0000000
+    ## 3       S3_project 0.8293499 0.0000000 0.0000000 0.5020887 0.0000000
+    ## 4       S4_project 0.8475053 0.0000000 0.0000000 0.0000000 0.6899938
+    ## 5       S5_project 0.8137868 0.0000000 0.0000000 0.0000000 0.0000000
+    ## 6 baseline_project 1.0000000 0.2977965 0.2500224 0.0864612 0.2489246
+    ##          S5 S1_action S2_action S3_action S4_action S5_action
+    ## 1 0.0000000      TRUE     FALSE     FALSE     FALSE     FALSE
+    ## 2 0.0000000     FALSE      TRUE     FALSE     FALSE     FALSE
+    ## 3 0.0000000     FALSE     FALSE      TRUE     FALSE     FALSE
+    ## 4 0.0000000     FALSE     FALSE     FALSE      TRUE     FALSE
+    ## 5 0.6166465     FALSE     FALSE     FALSE     FALSE      TRUE
+    ## 6 0.1820005     FALSE     FALSE     FALSE     FALSE     FALSE
+    ##   baseline_action
+    ## 1           FALSE
+    ## 2           FALSE
+    ## 3           FALSE
+    ## 4           FALSE
+    ## 5           FALSE
+    ## 6            TRUE
 
 Let us assume that our resources are limited such that we can only spend, at most, $200 on funding conservation projects. In other words, our budget is capped at $200. Now, given the project data (`sim_project_data`), the species' evolutionary relationships (`sim_tree`), and this budget (`200`), So, let's cut to the chase and find an optimal solution.
 
 ``` r
 # solve problem
-s1 <- ppp_exact_solution(x = sim_project_data, tree = sim_tree,
-                         budget = 200, project_column_name = "name",
-                         cost_column_name = "cost",
-                         success_column_name = "success")
+s1 <- ppp_exact_phylo_solution(x = sim_project_data, y = sim_action_data,
+                               tree = sim_tree, budget = 200,
+                               project_column_name = "name",
+                               success_column_name = "success",
+                               action_column_name = "name",
+                               cost_column_name = "cost")
 
 # print solution
 head(as.data.frame(s1))
 ```
 
-    ##   solution objective budget    cost optimal method S1_project S2_project
-    ## 1        1  3.045741    200 193.642    TRUE  exact       TRUE      FALSE
-    ##   S3_project S4_project S5_project baseline_project
-    ## 1      FALSE       TRUE      FALSE             TRUE
+    ##   solution method      obj budget    cost optimal S1_action S2_action
+    ## 1        1  exact 2.447308    200 193.642    TRUE      TRUE     FALSE
+    ##   S3_action S4_action S5_action baseline_action
+    ## 1     FALSE      TRUE     FALSE            TRUE
 
-The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (this is useful for methods that output multiple solutions), the `"objective"` column contains the objective value (i.e. the expected phylogenetic diversity, Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"S50_project"`, and `"baseline_project"`) indicate if a given project was prioritized for funding in the solution or not.
+The object `s1` contains the solution and also various statistics associated with the solution in a tabular format (i.e. `tibble`). Here, each row corresponds to a different solution. Specifically, the `"solution"` column contains an identifier for the solution (which may be useful for methods that output multiple solutions), the `"obj"` column contains the objective value (i.e. the expected phylogenetic diversity for this problem; Faith 2008), the `"budget"` column stores the budget used for generating the solution, the `"cost"` column stores the cost of the solution, the `"optimal"` column indicates if the solution is known to be optimal (`NA` values mean the optimality is unknown), and the `"method"` column contains the name of the method used to generate the solution. The remaining columns (`"S1_project"`, `"S2_project"`, `"S3_project"`, ..., `"SN_project"`, and `"baseline_project"`) indicate if each project was prioritized for funding in the solution.
 
-Here, the objective value (in the `"objective"` column) denotes the amount of evolutionary history that is expected to persist (i.e. 3.046 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
+Here, the objective value (in the `"obj"` column) denotes the amount of evolutionary history that is expected to persist (i.e. 2.447 million years). Put simply, solutions that are expected to result in better conservation outcomes will be associated with a greater objective value. Since tabular data can be difficult to intuit, let's visualize how well this solution would maintain the different branches in the phylogeny. Note that species which receive any funding are denoted with an asterisk.
 
 ``` r
 # visualize solution
-ppp_plot(sim_project_data, sim_tree, s1, project_column_name = "name",
-         cost_column_name = "cost", success_column_name = "success") +
+ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
+                        project_column_name =  "name",
+                        success_column_name = "success",
+                        action_column_name = "name",
+                        cost_column_name = "cost") +
 geom_treescale(width = 2, x = 0, offset = 0.1)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
 
 This has just been a taster of the *optimalppp R* package. For more information, see the [package vignette](https://prioritizr.github.io/optimalppp/articles/optimalppp.html).
 
@@ -112,4 +142,4 @@ Please use the following citation to cite the *optimalppp R* package in publicat
 
 **This package is still under development and not ready for use. Please do not use this package yet.**
 
-Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (2018). optimalppp: Optimal Project Prioritization Protocol. R package version 0.0.0.3. Available at <https://github.com/prioritizr/optimalppp>.
+Hanson JO, Schuster R, Strimas-Mackey M, Bennett J, (2018). optimalppp: Optimal Project Prioritization Protocol. R package version 0.0.0.4. Available at <https://github.com/prioritizr/optimalppp>.
