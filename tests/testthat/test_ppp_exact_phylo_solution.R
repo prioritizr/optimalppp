@@ -42,7 +42,7 @@ test_that("solution (single solution, no constraints)", {
   expect_equal(s$A3, TRUE)
   expect_equal(s$A4, TRUE)
 })
-#
+
 test_that("solution (single solution, locked in + out constraints)", {
   skip_on_cran()
   skip_on_travis()
