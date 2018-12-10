@@ -93,7 +93,7 @@ NULL
 #' ggtitle("solution")
 #'
 #' # we could even hide the legend if desired
-#' ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_species_data,
+#' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
 #'                         s1, "name", "success", "name", "cost", "name",
 #'                         "weight") +
 #' scale_color_gradient(name = "Probability of\npersistence",
@@ -135,7 +135,7 @@ ppp_plot_spp_solution <- function(x, y, spp, solution, project_column_name,
 
   # Main processing
   ## make plot
-  p <- ppp_plot_spp_solution(
+  p <- ppp_plot_phylo_solution(
     x = x, y = y, tree = star_phylogeny(spp[[species_column_name]], w),
     solution = solution, project_column_name = project_column_name,
     success_column_name = success_column_name,

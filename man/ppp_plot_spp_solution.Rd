@@ -187,7 +187,7 @@ scale_color_gradient(name = "Probability of\\npersistence",
 ggtitle("solution")
 
 # we could even hide the legend if desired
-ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_species_data,
+ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
                         s1, "name", "success", "name", "cost", "name",
                         "weight") +
 scale_color_gradient(name = "Probability of\\npersistence",
