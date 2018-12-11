@@ -32,7 +32,7 @@ apt_packages:
   - qpdf
 
 before_script:
-  - Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('ggtree')"
+  - Rscript -e "if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages('BiocManager'); BiocManager::install('ggtree', version = '3.8')"
 
 before_install:
   - echo "TRAVIS_OS_NAME = $TRAVIS_OS_NAME"
