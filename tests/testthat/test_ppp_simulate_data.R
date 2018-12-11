@@ -7,6 +7,7 @@ test_that("valid arguments", {
   expect_is(s, "list")
   expect_is(s$project_data, "tbl_df")
   expect_is(s$action_data, "tbl_df")
+  expect_is(s$species_data, "tbl_df")
   expect_is(s$tree, "phylo")
   # project data
   ## dimensions
@@ -72,6 +73,18 @@ test_that("valid arguments", {
   expect_is(s$action_data$cost, "numeric")
   expect_true(all(s$action_data$cost >= 0))
   expect_true(all(is.finite(s$action_data$cost)))
+  # species
+  ## structure
+
+  expect_equal(ncol(s$species_data), 2)
+  expect_equal(nrow(s$species_data), 5)
+  ## name column
+  expect_is(s$species_data$name, "character")
+  expect_equal(anyDuplicated(s$species_data$name), 0)
+  expect_equal(sort(s$species_data$name), paste0("S", seq_len(5)))
+  # tree
+  ## structure
+  expect_equal(length(s$tree$tip.label), nrow(s$project_data) - 1)
 })
 
 test_that("invalid arguments", {

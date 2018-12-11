@@ -38,7 +38,7 @@ test_that("sim_action_data", {
   # name column
   expect_is(sim_action_data$name, "character")
   expect_equal(anyDuplicated(sim_action_data$name), 0)
-  expect_true(assertthat::noNA(sim_action_data$cost))
+  expect_true(assertthat::noNA(sim_action_data$name))
   # cost column
   expect_is(sim_action_data$cost, "numeric")
   expect_true(all(sim_action_data$cost >= 0))
@@ -52,6 +52,22 @@ test_that("sim_action_data", {
   expect_true(sum(sim_action_data$locked_out) == 1)
   expect_true(assertthat::noNA(sim_action_data$locked_out))
   expect_equal(max(sim_action_data$locked_in + sim_action_data$locked_out), 1)
+})
+
+test_that("sim_species_data", {
+  # data.frame properties
+  data(sim_species_data)
+  expect_is(sim_species_data, c("data.frame", "tbl_df"))
+  expect_equal(ncol(sim_species_data), 2)
+  expect_equal(nrow(sim_species_data), 5)
+  # name column
+  expect_is(sim_species_data$name, "character")
+  expect_equal(anyDuplicated(sim_species_data$name), 0)
+  expect_true(assertthat::noNA(sim_species_data$name))
+  # weight column
+  expect_is(sim_species_data$weight, "numeric")
+  expect_true(all(sim_species_data$weight >= 0))
+  expect_true(assertthat::noNA(sim_species_data$weight))
 })
 
 test_that("sim_tree", {
