@@ -1,7 +1,7 @@
 #' @include internal.R
 NULL
 
-#' Simulated project and phylogenetic data
+#' Simulated data
 #'
 #' Simulated data for prioritizing conservations projects.
 #'

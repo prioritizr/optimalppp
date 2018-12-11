@@ -95,6 +95,20 @@ A \code{list} object containing the elements:
 
     }}
 
+    \item{\code{"species_data"}}{A \code{\link[tibble]{tibble}} containing
+      the data for the species. It contains the following columns:
+
+      \describe{
+
+
+        \item{\code{"weight"}}{\code{numeric} weight for each species.
+          For each species, this is calculated as the amount of time that
+          elapsed between the present and the species' last common ancestor.
+          In other words, the weights are calculated as the unique amount
+          of evolutionary history that each species has experienced.}
+
+    }}
+
    \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
 
  }
@@ -148,16 +162,16 @@ The simulated data set will contain one conservation project for
 \examples{
 # create a simulated data set
 s <- ppp_simulate_data(number_species = 5,
-                         cost_mean = 100,
-                         cost_sd = 5,
-                         success_min_probability = 0.7,
-                         success_max_probability = 0.99,
-                         funded_min_persistence_probability = 0.5,
-                         funded_max_persistence_probability = 0.9,
-                         not_funded_min_persistence_probability = 0.01,
-                         not_funded_max_persistence_probability = 0.4,
-                         locked_in_proportion = 0.01,
-                         locked_out_proportion = 0.01)
+                       cost_mean = 100,
+                       cost_sd = 5,
+                       success_min_probability = 0.7,
+                       success_max_probability = 0.99,
+                       funded_min_persistence_probability = 0.5,
+                       funded_max_persistence_probability = 0.9,
+                       not_funded_min_persistence_probability = 0.01,
+                       not_funded_max_persistence_probability = 0.4,
+                       locked_in_proportion = 0.01,
+                       locked_out_proportion = 0.01)
 
 # print data set
 print(s)

@@ -27,11 +27,11 @@ ow = "400"
 
 **This package is still under development and not ready for use. Please do not use this package yet.**
 
-The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. A range of methods are provided for identifying priority projects for funding. These include exact algorithm solvers which can identify optimal solutions, and also stingy heuristic algorithms that have conventionally been used to identify solutions. This package also provides the functionality to visualize how well solutions maintain biodiversity.
+The _optimalppp R_ package provides methods for prioritizing funding of conservation projects using the 'Protect Prioritization Protocol'. Projects can be prioritized by maximizing expected species richness or expected phylogenetic diversity. Prioritizations can be generated using a range of methods, such as exact algorithms which can identify optimal solutions, heuristic algorithms which have conventionally been used to identify solutions, and by randomly funding projects. This package also provides the functionality to visualize how well solutions maintain biodiversity.
 
 ## Installation
 
-The latest development version can be installed using the following code. Please note that you will need install the _ggtree_ package from Bioconductor since it is not available on [The Comprehensive R Archive Network](https://cran.r-project.org/).
+The latest development version of the _optimalppp R_ package can be installed using the following code. Please note that you will need install the _ggtree_ package from Bioconductor since it is not available on [The Comprehensive R Archive Network](https://cran.r-project.org/).
 
 ```{r, eval = FALSE}
 if (!require(devtools))
@@ -40,6 +40,8 @@ devtools::install_github("prioritizr/optimalppp")
 if (!require(ggtree))
   devtools::install_bioc("ggtree")
 ```
+
+Please note that you will also need to install the [Gurobi optimization suite](http://www.gurobi.com/) and [_gurobi R_ package](https://www.gurobi.com/documentation/8.1/refman/r_api_overview.html). For instructions on installing these softwares, please refer to [this installation guide](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation.html).
 
 ## Usage
 

@@ -8,7 +8,7 @@
 \alias{sim_organization_data}
 \alias{sim_tree}
 \alias{sim_species_data}
-\title{Simulated project and phylogenetic data}
+\title{Simulated data}
 \format{\describe{
   \item{sim_project_data}{\code{\link[tibble]{tibble}} object.}
   \item{sim_action_data}{\code{\link[tibble]{tibble}} object.}

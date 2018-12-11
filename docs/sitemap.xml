@@ -13,28 +13,46 @@
     <loc>https://prioritizr.github.io/optimalppp/reference/optimalppp.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_exact_solution.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_epd.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_heuristic_solution.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_exact_phylo_solution.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_manual_solution.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_exact_spp_solution.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_objective_value.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_heuristic_phylo_solution.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_plot.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_heuristic_spp_solution.html</loc>
   </url>
   <url>
-    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_random_solution.html</loc>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_manual_phylo_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_manual_spp_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_plot_phylo_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_plot_spp_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_random_phylo_solution.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/ppp_random_spp_solution.html</loc>
   </url>
   <url>
     <loc>https://prioritizr.github.io/optimalppp/reference/ppp_simulate_data.html</loc>
   </url>
   <url>
     <loc>https://prioritizr.github.io/optimalppp/reference/sim_data.html</loc>
+  </url>
+  <url>
+    <loc>https://prioritizr.github.io/optimalppp/reference/star_phylogeny.html</loc>
   </url>
   <url>
     <loc>https://prioritizr.github.io/optimalppp/articles/optimalppp.html</loc>

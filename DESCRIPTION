@@ -6,9 +6,9 @@ Description: Prioritize conservation projects for funding under limited
     budgets. To identify optimal solutions, the 'Gurobi' optimizer will need to
     be installed (available from <https://www.gurobi.com>).
 Authors@R: c(person(c('Jeffrey', 'O'), 'Hanson',
-               email='jeffrey.hanson@uqconnect.edu.au', role = c('aut')),
+               email='jeffrey.hanson@uqconnect.edu.au', role = c('aut', 'cre')),
              person(c('Richard'), 'Schuster',
-               email='mail@richard-schuster.com', role = c('aut', 'cre')),
+               email='mail@richard-schuster.com', role = c('aut')),
              person(c('Matthew'), 'Strimas-Mackey',
                email='mstrimas@gmail.com', role = c('aut')),
              person(c('Joeseph'), 'Bennett',
