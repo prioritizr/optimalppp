@@ -1,7 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Randomly prioritize conservation projects with phylogenetic data
+#' Randomly prioritize conservation projects under expected phylogenetic
+#' diversity
 #'
 #' Generate random solutions for the 'Project Prioritization Protocol'
 #' problem (Joseph, Maloney & Possingham 2009).

@@ -2,8 +2,8 @@
 % Please edit documentation in R/ppp_heuristic_spp_solution.R
 \name{ppp_heuristic_spp_solution}
 \alias{ppp_heuristic_spp_solution}
-\title{Prioritize conservation projects with species-level data using heuristic
-algorithms}
+\title{Prioritize conservation projects by maximizing expected weighted species
+richness using heuristic algorithms}
 \usage{
 ppp_heuristic_spp_solution(x, y, spp, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,

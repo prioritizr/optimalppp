@@ -2,7 +2,8 @@
 % Please edit documentation in R/ppp_manual_spp_solution.R
 \name{ppp_manual_spp_solution}
 \alias{ppp_manual_spp_solution}
-\title{Manually prioritize conservation projects with species-level data}
+\title{Manually prioritize conservation projects under expected weighted species
+richness}
 \usage{
 ppp_manual_spp_solution(x, y, spp, solution, project_column_name,
   success_column_name, action_column_name, cost_column_name,

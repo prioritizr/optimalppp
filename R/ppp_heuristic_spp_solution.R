@@ -1,8 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Prioritize conservation projects with species-level data using heuristic
-#' algorithms
+#' Prioritize conservation projects by maximizing expected weighted species
+#' richness using heuristic algorithms
 #'
 #' Prioritize funding for conservation projects using the 'Project
 #' Prioritization Protocol' (Joseph, Maloney & Possingham 2009) with

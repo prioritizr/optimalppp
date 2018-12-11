@@ -1,7 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Randomly prioritize conservation projects with species data
+#' Randomly prioritize conservation projects under expected weighted species
+#' richness
 #'
 #' Generate random solutions for the 'Project Prioritization Protocol'
 #' problem (Joseph, Maloney & Possingham 2009) with species weights.

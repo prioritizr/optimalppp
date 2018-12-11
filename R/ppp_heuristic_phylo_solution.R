@@ -1,8 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Prioritize conservation projects with phylogenetic data using heuristic
-#' algorithms
+#' Prioritize conservation projects by maximizing expected phylogenetic
+#' diversity with heuristic algorithms
 #'
 #' Prioritize funding for conservation projects using the 'Project
 #' Prioritization Protocol' (Joseph, Maloney & Possingham 2009) with

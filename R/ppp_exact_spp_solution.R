@@ -1,8 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Prioritize conservation projects with species-level data using exact
-#' algorithms
+#' Prioritize conservation projects by maximizing expected weighted species
+#' richness using exact algorithms
 #'
 #' Prioritize funding for conservation projects with species weights and
 #' using exact algorithms. Unlike other algorithms for solving the

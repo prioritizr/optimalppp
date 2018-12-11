@@ -32,34 +32,7 @@
 
 <meta property="og:title" content="<span class="pkg">optimalppp</span> — optimalppp" />
 
-<meta property="og:description" content="The optimalppp R package provides methods for prioritizing
-funding of conservation projects using the 'Protect Prioritization
-Protocol'. A range of methods are provided for identifying priority projects
-for funding. These include exact algorithm solvers which can identify
-optimal solutions, and also stingy heuristic algorithms that have
-conventionally been used to identify solutions. This package also
-provides the functionality to visualize how well solutions maintain
-biodiversity.
-To make the most of this package, the ggtree,, and
-gurobi R packages will need to be installed.
-Since the ggtree package is exclusively available
-at Bioconductor---and is not available on
-The Comprehensive R Archive Network---please
-execute the following command to install it:
-source(&quot;https://bioconductor.org/biocLite.R&quot;);biocLite(&quot;ggtree&quot;).
-If the installation process fails, please consult the
-package's online documentation. To install the gurobi package, the
-Gurobi optimization suite will first need to
-be installed (see instructions for Linux,
-  Mac OSX, and
-  Windows operating systems). Although
-Gurobi is a commercial software, academics
-can obtain a
-special license for no cost. After installing the
-Gurobi optimization suite, the gurobi
- package can then be installed (see instructions for Linux,
-  Mac OSX, and
-  Windows operating systems)." />
+<meta property="og:description" content="optimalppp" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,15 +112,24 @@ Gurobi optimization suite, the gurobi
 
     <div class="ref-description">
     
+    <p><span class="pkg">optimalppp</span></p>
+    
+    </div>
+
+        
+    <h2 class="hasAnchor" id="description"><a class="anchor" href="#description"></a>Description</h2>
+
+    
     <p>The <span class="pkg">optimalppp</span> <em>R</em> package provides methods for prioritizing
-funding of conservation projects using the 'Protect Prioritization
-Protocol'. A range of methods are provided for identifying priority projects
-for funding. These include exact algorithm solvers which can identify
-optimal solutions, and also stingy heuristic algorithms that have
-conventionally been used to identify solutions. This package also
-provides the functionality to visualize how well solutions maintain
-biodiversity.</p>
-<p>To make the most of this package, the <a href='https://bioconductor.org/packages/release/bioc/html/ggtree.html'><span class="pkg">ggtree</span></a>,, and
+funding of
+conservation projects using the 'Protect Prioritization Protocol'. Projects
+can be prioritized by maximizing expected species richness or expected
+phylogenetic diversity. Prioritizations can be generated using a range of
+methods, such as exact algorithms which can identify optimal solutions,
+heuristic algorithms which have conventionally been used to identify
+solutions, and by randomly funding actions. This package also provides the
+functionality to visualize how well solutions maintain biodiversity.</p>
+<p>To make the most of this package, the <a href='https://bioconductor.org/packages/release/bioc/html/ggtree.html'><span class="pkg">ggtree</span></a> and
 <a href='http://www.gurobi.com/documentation/8.1/refman/r_api_overview.html'><span class="pkg">gurobi</span></a> R packages will need to be installed.
 Since the <a href='https://bioconductor.org/packages/release/bioc/html/ggtree.html'><span class="pkg">ggtree</span></a> package is exclusively available
 at <a href='https://bioconductor.org'>Bioconductor</a>---and is not available on
@@ -168,15 +150,55 @@ can obtain a
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html'>Mac OSX</a>, and
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html'>Windows</a> operating systems).</p>
     
-    </div>
+    <h2 class="hasAnchor" id="overview"><a class="anchor" href="#overview"></a>Overview</h2>
 
-        
+    
+    <p>This package provides functions for generating, evaluating, and visualizing
+prioritizations using 'expected weighted species richness' and 'expected
+phylogenetic diversity' metrics of conservation benefit. For convenience,
+the main functions in the package are listed below.</p>
+<p><strong>Expected weighted species richness:</strong></p>
+<p></p><dl class='dl-horizontal'>
+    <dt><code><a href='ppp_exact_spp_solution.html'>ppp_exact_spp_solution</a></code></dt><dd><p>Prioritize conservation projects by maximizing expected weighted
+         species richness using exact algorithms.</p></dd>
+    <dt><code><a href='ppp_heuristic_spp_solution.html'>ppp_heuristic_spp_solution</a></code></dt><dd><p>Prioritize conservation projects by maximizing expected weighted
+         species richness using heuristic algorithms.</p></dd>
+    <dt><code><a href='ppp_manual_spp_solution.html'>ppp_manual_spp_solution</a></code></dt><dd><p>Manually prioritize conservation projects under expected weighted
+         species richness.</p></dd>
+    <dt><code><a href='ppp_random_spp_solution.html'>ppp_random_spp_solution</a></code></dt><dd><p>Randomly prioritize
+         conservation projects under expected weighted species
+         richness.</p></dd>
+    </dl>
+    <p><strong>Expected phylogenetic diversity:</strong></p>
+<p></p><dl class='dl-horizontal'>
+    <dt><code><a href='ppp_exact_phylo_solution.html'>ppp_exact_phylo_solution</a></code></dt><dd><p>Prioritize conservation projects by maximizing expected phylogenetic
+         diversity with exact algorithms.</p></dd>
+    <dt><code><a href='ppp_heuristic_phylo_solution.html'>ppp_heuristic_phylo_solution</a></code></dt><dd><p>Prioritize conservation projects by maximizing expected phylogenetic
+         diversity with heuristic algorithms.</p></dd>
+    <dt><code><a href='ppp_manual_phylo_solution.html'>ppp_manual_phylo_solution</a></code></dt><dd><p>Manually prioritize conservation projects under expected
+         phylogenetic diversity.</p></dd>
+    <dt><code><a href='ppp_random_phylo_solution.html'>ppp_random_phylo_solution</a></code></dt><dd><p>Randomly prioritize conservation projects under expected
+          phylogenetic diversity.</p></dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Please refer to the package vignette for more information and worked
+  examples. This can be accessed using the code
+  <code><a href='../articles/optimalppp.html'>vignette("optimalppp")</a></code>.</p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      
+      <li><a href="#description">Description</a></li>
+
+      <li><a href="#overview">Overview</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

@@ -1,7 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Manually prioritize conservation projects with species-level data
+#' Manually prioritize conservation projects under expected weighted species
+#' richness
 #'
 #' Manually specify funding schemes for conservation projects using the
 #' 'Project Prioritization Protocol' (Joseph, Maloney & Possingham 2009), and

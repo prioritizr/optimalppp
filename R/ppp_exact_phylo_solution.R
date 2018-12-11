@@ -1,8 +1,8 @@
 #' @include internal.R
 NULL
 
-#' Prioritize conservation projects with phylogenetic data using exact
-#' algorithms
+#' Prioritize conservation projects by maximizing expected phylogenetic
+#' diversity with exact algorithms
 #'
 #' Prioritize funding for conservation projects with phylogenetic data and
 #' using exact algorithms. Unlike other algorithms for solving the

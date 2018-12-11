@@ -2,8 +2,8 @@
 % Please edit documentation in R/ppp_exact_spp_solution.R
 \name{ppp_exact_spp_solution}
 \alias{ppp_exact_spp_solution}
-\title{Prioritize conservation projects with species-level data using exact
-algorithms}
+\title{Prioritize conservation projects by maximizing expected weighted species
+richness using exact algorithms}
 \usage{
 ppp_exact_spp_solution(x, y, spp, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,

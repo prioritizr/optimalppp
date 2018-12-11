@@ -2,7 +2,8 @@
 % Please edit documentation in R/ppp_manual_phylo_solution.R
 \name{ppp_manual_phylo_solution}
 \alias{ppp_manual_phylo_solution}
-\title{Manually prioritize conservation projects with phylogenetic data}
+\title{Manually prioritize conservation projects under expected phylogenetic
+diversity}
 \usage{
 ppp_manual_phylo_solution(x, y, tree, solution, project_column_name,
   success_column_name, action_column_name, cost_column_name)

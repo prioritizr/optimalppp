@@ -2,8 +2,8 @@
 % Please edit documentation in R/ppp_heuristic_phylo_solution.R
 \name{ppp_heuristic_phylo_solution}
 \alias{ppp_heuristic_phylo_solution}
-\title{Prioritize conservation projects with phylogenetic data using heuristic
-algorithms}
+\title{Prioritize conservation projects by maximizing expected phylogenetic
+diversity with heuristic algorithms}
 \usage{
 ppp_heuristic_phylo_solution(x, y, tree, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,

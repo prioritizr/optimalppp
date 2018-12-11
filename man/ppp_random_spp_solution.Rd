@@ -2,7 +2,8 @@
 % Please edit documentation in R/ppp_random_spp_solution.R
 \name{ppp_random_spp_solution}
 \alias{ppp_random_spp_solution}
-\title{Randomly prioritize conservation projects with species data}
+\title{Randomly prioritize conservation projects under expected weighted species
+richness}
 \usage{
 ppp_random_spp_solution(x, y, spp, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,

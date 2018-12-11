@@ -2,7 +2,8 @@
 % Please edit documentation in R/ppp_random_phylo_solution.R
 \name{ppp_random_phylo_solution}
 \alias{ppp_random_phylo_solution}
-\title{Randomly prioritize conservation projects with phylogenetic data}
+\title{Randomly prioritize conservation projects under expected phylogenetic
+diversity}
 \usage{
 ppp_random_phylo_solution(x, y, tree, budget, project_column_name,
   success_column_name, action_column_name, cost_column_name,
