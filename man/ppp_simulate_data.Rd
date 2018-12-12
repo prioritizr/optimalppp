@@ -15,10 +15,10 @@ ppp_simulate_data(number_species, cost_mean = 100, cost_sd = 5,
 \arguments{
 \item{number_species}{\code{numeric} number of species.}
 
-\item{cost_mean}{\code{numeric} average cost for the projects. Defaults to
+\item{cost_mean}{\code{numeric} average cost for the actions. Defaults to
 \code{100}.}
 
-\item{cost_sd}{\code{numeric} standard deviation in project costs. Defaults
+\item{cost_sd}{\code{numeric} standard deviation in action costs. Defaults
 to \code{5}.}
 
 \item{success_min_probability}{\code{numeric} minimum probability of the
@@ -43,10 +43,10 @@ Defaults to \code{0.01}.}
 probability of the species persisting if their projects are not funded.
 Defaults to \code{0.4}.}
 
-\item{locked_in_proportion}{\code{numeric} of projects that are locked
+\item{locked_in_proportion}{\code{numeric} of actions that are locked
 into the solution. Defaults to \code{0}.}
 
-\item{locked_out_proportion}{\code{numeric} of projects that are locked
+\item{locked_out_proportion}{\code{numeric} of actions that are locked
 into the solution. Defaults to \code{0}.}
 }
 \value{
@@ -60,6 +60,7 @@ A \code{list} object containing the elements:
 
       \describe{
 
+        \item{\code{"name"}}{\code{character} name for each project.}
 
         \item{\code{"success"}}{\code{numeric} probability of each project
           succeeding if it is funded.}
@@ -84,6 +85,7 @@ A \code{list} object containing the elements:
 
       \describe{
 
+        \item{\code{"name"}}{\code{character} name for each action.}
 
         \item{\code{"cost"}}{\code{numeric} cost for each action.}
 
@@ -100,6 +102,7 @@ A \code{list} object containing the elements:
 
       \describe{
 
+       \item{\code{"name"}}{\code{character} name for each species.}
 
         \item{\code{"weight"}}{\code{numeric} weight for each species.
           For each species, this is calculated as the amount of time that
@@ -109,7 +112,7 @@ A \code{list} object containing the elements:
 
     }}
 
-   \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
+   \item{"tree"}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
 
  }
 }
@@ -156,6 +159,10 @@ The simulated data set will contain one conservation project for
 
     \item A phylogenetic tree is simulated for the species using
       \code{\link[ape]{rcoal}}.
+
+    \item Species data are created from the phylogenetic tree. The
+      weights are calculated as the amount of evolutionary history
+      that has elapsed between each species and its last common ancestor.
 
  }
 }

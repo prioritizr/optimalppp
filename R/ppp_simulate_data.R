@@ -7,10 +7,10 @@ NULL
 #'
 #' @param number_species \code{numeric} number of species.
 #'
-#' @param cost_mean \code{numeric} average cost for the projects. Defaults to
+#' @param cost_mean \code{numeric} average cost for the actions. Defaults to
 #'   \code{100}.
 #'
-#' @param cost_sd \code{numeric} standard deviation in project costs. Defaults
+#' @param cost_sd \code{numeric} standard deviation in action costs. Defaults
 #'   to \code{5}.
 #'
 #' @param success_min_probability \code{numeric} minimum probability of the
@@ -35,10 +35,10 @@ NULL
 #'   probability of the species persisting if their projects are not funded.
 #'   Defaults to \code{0.4}.
 #'
-#' @param locked_in_proportion \code{numeric} of projects that are locked
+#' @param locked_in_proportion \code{numeric} of actions that are locked
 #'   into the solution. Defaults to \code{0}.
 #'
-#' @param locked_out_proportion \code{numeric} of projects that are locked
+#' @param locked_out_proportion \code{numeric} of actions that are locked
 #'   into the solution. Defaults to \code{0}.
 #'
 #' @details The simulated data set will contain one conservation project for
@@ -81,6 +81,10 @@ NULL
 #'     \item A phylogenetic tree is simulated for the species using
 #'       \code{\link[ape]{rcoal}}.
 #'
+#'     \item Species data are created from the phylogenetic tree. The
+#'       weights are calculated as the amount of evolutionary history
+#'       that has elapsed between each species and its last common ancestor.
+#'
 #'  }
 #'
 #' @return A \code{list} object containing the elements:
@@ -93,7 +97,7 @@ NULL
 #'
 #'       \describe{
 #'
-# '       \item{\code{"name"}}{\code{character} name for each project.}
+#'         \item{\code{"name"}}{\code{character} name for each project.}
 #'
 #'         \item{\code{"success"}}{\code{numeric} probability of each project
 #'           succeeding if it is funded.}
@@ -118,7 +122,7 @@ NULL
 #'
 #'       \describe{
 #'
-#  '       \item{\code{"name"}}{\code{character} name for each action.}
+#'         \item{\code{"name"}}{\code{character} name for each action.}
 #'
 #'         \item{\code{"cost"}}{\code{numeric} cost for each action.}
 #'
@@ -135,7 +139,7 @@ NULL
 #'
 #'       \describe{
 #'
-#  '       \item{\code{"name"}}{\code{character} name for each species.}
+#'        \item{\code{"name"}}{\code{character} name for each species.}
 #'
 #'         \item{\code{"weight"}}{\code{numeric} weight for each species.
 #'           For each species, this is calculated as the amount of time that
@@ -145,7 +149,7 @@ NULL
 #'
 #'     }}
 #'
-#'    \item{tree}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
+#'    \item{"tree"}{\code{\link[ape]{phylo}} phylogenetic tree for the species.}
 #'
 #'  }
 #'
