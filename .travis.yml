@@ -32,7 +32,7 @@ apt_packages:
   - qpdf
 
 before_script:
-  - Rscript -e "devtools::install_bioc('ggtree')"
+  - Rscript -e "if (!requireNamespace('devtools', quietly = TRUE)) install.packages('devtools'); devtools::install_bioc('ggtree')"
 
 before_install:
   - echo "TRAVIS_OS_NAME = $TRAVIS_OS_NAME"
