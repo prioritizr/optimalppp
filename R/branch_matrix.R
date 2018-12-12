@@ -7,15 +7,15 @@ NULL
 #' species. Each branch in a phylogenetic tree represents a period of
 #' evolutionary history. Species that are connected to the same branch
 #' both share that same period of evolutionary history. This function creates
-#' a matrix that shows which species are connected with branch. In other words,
-#' it creates a matrix that shows which periods of evolutionary history
-#' each species have experienced.
+#' a matrix that shows which species are connected with which branches. In
+#' other words, it creates a matrix that shows which periods of evolutionary
+#' history different species have experienced.
 #'
 #' @param x \code{\link[ape]{phylo}} tree object.
 #'
 #' @return \code{\link[Matrix]{dgCMatrix-class}} sparse matrix object. Each row
 #'   corresponds to a different species. Each column corresponds to a different
-#'   branch. Species that inherit from a given branch are denoted with a one.
+#'   branch. Species that inherit from a given branch are indicated with a one.
 #'
 #' @name branch_matrix
 #'
