@@ -222,6 +222,7 @@ test_that("solution (multiple solutions, locked in + out constraints)", {
 })
 
 test_that("invalid arguments", {
+  skip_if_not_installed("gurobi", "8.0.0")
   # verify that function works using built-in dataset
   data(sim_project_data, sim_action_data, sim_tree)
   expect_is(ppp_exact_phylo_solution(sim_project_data, sim_action_data,
