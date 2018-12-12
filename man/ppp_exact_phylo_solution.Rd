@@ -261,7 +261,7 @@ represent the set of ten species and also the number ten).
   }{
   Maximize sum_b^B L_b R_b (eqn 1a); Subject to:
   R_b = 1 - prod_s^S ifelse(T_{bs} == 1, E_s, 1) for all b in B (eqn 1b),
-  E_s = 1 - sum_i^I Y_{is} P_i B_{is} for all s in S (eqn 1c),
+  E_s = 1 - sum_j^J Y_{sj} P_j B_{sj} for all s in S (eqn 1c),
   sum_i^I C_i <= m (eqn 1d),
   Z_{sj} <= Y_j for all j in J (eqn 1e),
   sum_j^J Z_{sj} = 1 for all s in s (eqn 1f),
