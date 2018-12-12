@@ -165,10 +165,12 @@ funded to maximize the expected weighted species richness (i.e. sum of each
 species' persisting into the future, multiplied by its weight). Briefly,
 this algorithm works by starting off with all conservation actions selected
 for funding and then begins iteratively defunding (removing) actions until
-the budget is met (Joseph, Maloney & Possingham 2009; Bennett \emph{et al}.
-2014). In a given iteration, each action is evaluated in terms of the
-expected weighted species riches when the action is not funded, and the
-action associated with the lowest reduction in this metric is defunded. Since
+the budget is met
+(Joseph, Maloney & Possingham 2009; Bennett \emph{et al}. 2014). In a given
+iteration, each action is evaluated in terms of the amount of evolutionary
+history that is expected to be lost per unit cost when the action is not
+funded (based on expected weighted species richness),
+and the action associated with the lowest utility is defunded. Since
 projects are only considered funded when all of their associated actions are
 also funded---and species only receive benefits from projects that are
 funded, and not individual conservation actions---by iteratively removing
@@ -177,45 +179,45 @@ cost-effective funding schemes. Note, however, that this algorithm is
 extremely unlikely to identify optimal solutions.
 
 The calculations that underpin this algorithm can be expressed
-mathematically. To calculate the utility for funding a given action (\eqn{L})
-among a set of actions (\eqn{L}), let the expected weighted species
-richness when all the actions are funded
-be expressed as \eqn{A(L)}. Also, let the expected weighted species
-richness when all the remaining actions are funded except for action \eqn{l}
-be expressed as \eqn{A(L - l)}. Furthermore, allow the cost for funding
-action \eqn{l} to be \eqn{C_l}. Given this, the relative benefit (or
-utility) for funding action \eqn{l}
-(\eqn{U_l}) in a given iteration can be expressed as:
+mathematically. To calculate the utility for funding a given action (\eqn{l})
+among a set of actions (\eqn{L}), let the expected amount of evolutionary
+history that will persist into the future when all the actions are funded
+be expressed as \eqn{A(L)}. Also, let the expected amount of evolutionary
+history that will persist into the future when all the remaining actions
+are funded except for action \eqn{l} be expressed as \eqn{A(L - l)}.
+Furthermore, allow the cost for funding action \eqn{l} to be \eqn{C_l}.
+Given this, the relative benefit (or utility) for funding action \eqn{l}
+in a given iteration can be expressed as (\eqn{U_l}):
 
 \deqn{U_l = \frac{A(L) - A(L - l)}{C_l}}{A_l = (A(L) - A(L - l)) / C_l}
 
-To calculate the weighted species richness that is expected to persist into
-the future for a given set of funded actions, we will adopt a new set
+To calculate the expected amount of evolutionary history that will persist
+into the future for a given set of funded actions, we will adopt a new set
 of definitions to avoid confusion. Let \eqn{I} represent a given set of
 funded actions (indexed by \eqn{i}). For example, \eqn{I} could denote all
 of the actions in a given iteration (\eqn{A(L)}) or all of the actions in a
 given iteration except for a specific action (\eqn{A(L - l)}).
-Next, let \eqn{S} represent each species (e.g. species;
-conservation projects (indexed by
+Next, let \eqn{S} represent each species (indexed by \eqn{s}). Additionally,
+let \eqn{J} denote the set of funded conservation projects (indexed by
 \eqn{j}) given the set of funded actions \eqn{I}. Let \eqn{P_j} represent
 the probability of project \eqn{j} being successful if
 it is funded. To represent the conservation outcome for
-funding the projects \eqn{J}, let \eqn{B_{js}} denote the probability of
+funding the projects \eqn{J}, let \eqn{B_{sj}} denote the probability of
 persistence for the species \eqn{s} if project \eqn{j} is funded and project
-\eqn{j} is used to conserve that species (i.e. it is the best funded
-funded project for that species). Furthermore, let \eqn{W_s} denote
-the weight for each species. This weight may reflect cultural or
-economic importance.
+\eqn{j} is used to conserve that species (i.e. it is the funded
+project which best improves the persistence probability for that species).
+Furthermore, let \eqn{W_s} denote the weight for each species. This weight
+may reflect cultural, economic, or taxonomic importance.
 
 The probability that each species will go extinct (\eqn{E_s}) when a given
 set of projects are funded (\eqn{J}) can then be  expressed as as:
 
-\deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{1s}, \ldots, P_J \times B_{Js})}{E_s = 1 - max(P_1 B_{1s}, ..., P_J B_{Js})}
+\deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{s1}, \ldots, P_J \times B_{sJ})}{E_s = 1 - max(P_1 B_{s1}, ..., P_J B_{sJ})}
 
 The weighted species richness that is expected to persist when a
 given set of projects are funded can then be expressed as:
 
-\deqn{A(I) = \sum_{s = 0}^{S} (1 - E_s) W_s}{A(I) = sum_{s = 0}^{S} (1 - E_s) W_s}
+\deqn{A(I) = \sum_{s = 0}^{S} (1 - E_s) W_s}{A(I) = sum_s^S (1 - E_s) W_s}
 }
 \examples{
 # set seed for reproducibility
@@ -250,22 +252,22 @@ ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
                       "weight")
 
 # find a solution that meets a budget of 300 and allocates
-# funding for the "S1_action" action. For instance, species "S1" might
+# funding for the "S3_action" action. For instance, species "S3" might
 # be an iconic species that has cultural and economic importance.
 sim_action_data2 <- sim_action_data
-sim_action_data2$locked_in <- sim_action_data2$name == "S1_action"
+sim_action_data2$locked_in <- sim_action_data2$name == "S3_action"
 s2 <- ppp_heuristic_spp_solution(sim_project_data, sim_action_data2,
                                  sim_species_data, 300, "name", "success",
-                                 "name", "cost",
+                                 "name", "cost", "name", "weight",
                                  locked_in_column_name = "locked_in")
 
 # print solution
 print(s2)
 
 # plot solution
-ppp_plot_phylo_solution(sim_project_data, sim_action_data2,
-                        sim_species_data, s2, "name", "success", "name",
-                        "cost", "name", "weight")
+ppp_plot_spp_solution(sim_project_data, sim_action_data2,
+                      sim_species_data, s2, "name", "success", "name",
+                      "cost", "name", "weight")
 
 # find a solution that meets a budget of 300 and does not allocate
 # funding for the "S2_action" action. For instance, species "S2"
@@ -283,9 +285,9 @@ s3 <- ppp_heuristic_spp_solution(sim_project_data, sim_action_data3,
 print(s3)
 
 # plot solution
-ppp_plot_phylo_solution(sim_project_data, sim_action_data3,
-                        sim_species_data, s3, "name", "success", "name",
-                        "cost", "name", "weight")
+ppp_plot_spp_solution(sim_project_data, sim_action_data3, sim_species_data,
+                      s3, "name", "success", "name", "cost", "name",
+                      "weight")
 
 # find all solutions from the heuristic algorithm
 # note we can set the budget higher than the total cost of all the
