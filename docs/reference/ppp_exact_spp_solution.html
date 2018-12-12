@@ -361,15 +361,30 @@ instructions for
  <a href='http://www.gurobi.com/documentation/8.1/quickstart_linux/r_installing_the_r_package.html'>Linux</a>,
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html'>Mac OSX</a>, and
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html'>Windows</a> operating systems).</p>
-<p>The mathematical formulation is described in
-  <code><a href='ppp_exact_phylo_solution.html'>ppp_exact_phylo_solution</a></code>. Instead of using a "real"
-  phylogeny, it simply uses a star phylogeny---constructed using the species'
-  weights---to denote the relationships and importance for conserving
-  different species.</p>
+<p>This problem aims to maximize expected species weighted richness given
+  a budget. Let \(S\) denote the set of species (indexed by
+  \(s\)), and let \(W_s\) denote the weight for each species.
+  Additionally, let <code>E_s</code> denote the probability that each species
+  will go extinct given the funded conservation projects. The objective
+  can be expressed as:
+  $$
+  \sum_{s}^{S} (1 - E_s) W_s
+  $$
+  For the complete mathematical formulation, please refer to the formulation
+  for maximizing expected phylogenetic diversity (i.e.
+  <code><a href='ppp_exact_phylo_solution.html'>ppp_exact_phylo_solution</a></code>). This is because maximizing
+  expected weighted species richness is merely a special-case of
+  expected phylogenetic diversity---instead of using a complete phylogeny,
+  expected weighted species richness simply uses a star phylogeny with
+  branch lengths set according to the species' weights.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
+    <p>Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>: 1461--1470.</p>
+<p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
 resources among threatened species: A project prioritization protocol.
 <em>Conservation Biology</em>, <strong>23</strong>, 328--338.</p>
 <p>Rodrigues AS &amp; Gaston KJ (2002) Optimisation in reserve selection
@@ -437,42 +452,84 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   1.66    300  295. TRUE    TRUE      TRUE      FALSE    
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
-<span class='co'># print the names of which projects were funded</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>s1</span>)[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlist'>unlist</a></span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_action_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "solution" "method"   "budget"   "optimal" </div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_species_data</span>,
-                      <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: spp[[species_column_name]] does not inherit from class character</span></div><div class='input'>
+                      <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>,
+                      <span class='st'>"weight"</span>)</div><div class='img'><img src='ppp_exact_spp_solution-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
-<span class='co'># funding for the "S1_project" project. For instance, species "S1" might</span>
+<span class='co'># funding for the "S3_action" project. For instance, species "S3" might</span>
 <span class='co'># be an iconic species that has cultural and economic importance.</span>
 <span class='no'>sim_action_data2</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data</span>
-<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S1_project"</span>
-<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>,
-                            <span class='no'>sim_species_data</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>,
-                            <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>,
-                            <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ppp_plot_spp_solution(sim_project_data, sim_action_data2, sim_species_data,     300, "name", "success", "name", "cost", "name", "weight",     locked_in_column_name = "locked_in"): unused argument (locked_in_column_name = "locked_in")</span></div><div class='input'>
+<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S3_action"</span>
+<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_spp_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>,
+                             <span class='no'>sim_species_data</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>,
+                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>,
+                             <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
+
 <span class='co'># print solution</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(s2): object 's2' not found</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 12</span><span>
+#&gt;   solution method   obj budget  cost optimal S1_action S2_action S3_action
+#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   1.37    300  297. TRUE    TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>, <span class='no'>sim_species_data</span>,
                       <span class='no'>s2</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>,
-                      <span class='st'>"weight"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ppp_plot_phylo_solution(x = x, y = y, tree = star_phylogeny(spp[[species_column_name]],     w), solution = solution, project_column_name = project_column_name,     success_column_name = success_column_name, action_column_name = action_column_name,     cost_column_name = cost_column_name, n = n, symbol_hjust = symbol_hjust): object 's2' not found</span></div><div class='input'>
+                      <span class='st'>"weight"</span>)</div><div class='img'><img src='ppp_exact_spp_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
-<span class='co'># funding for the "S2_project" project. For instance, species "S2"</span>
+<span class='co'># funding for the "S2_action" project. For instance, species "S2"</span>
 <span class='co'># might have very little cultural or economic importance. Broadly speaking,</span>
 <span class='co'># though, it is better to "lock in" "important" species rather than</span>
 <span class='co'># "lock out" unimportant species.</span>
 <span class='no'>sim_action_data3</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data</span>
-<span class='no'>sim_action_data3</span>$<span class='no'>locked_out</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data3</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S2_project"</span>
-<span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>,
-                            <span class='no'>sim_species_data</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>,
-                            <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>,
-                            <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ppp_plot_spp_solution(sim_project_data, sim_action_data3, sim_species_data,     300, "name", "success", "name", "cost", "name", "weight",     locked_out_column_name = "locked_out"): unused argument (locked_out_column_name = "locked_out")</span></div><div class='input'>
+<span class='no'>sim_action_data3</span>$<span class='no'>locked_out</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data3</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S2_action"</span>
+<span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_spp_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>,
+                             <span class='no'>sim_species_data</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>,
+                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>,
+                             <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
+
 <span class='co'># print solution</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(s3): object 's3' not found</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 12</span><span>
+#&gt;   solution method   obj budget  cost optimal S1_action S2_action S3_action
+#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   1.37    300  294. TRUE    TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot solution</span>
-<span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>,
-                      <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: spp does not inherit from class tbl_df</span></div></span></pre>
+<span class='fu'><a href='ppp_plot_spp_solution.html'>ppp_plot_spp_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>, <span class='no'>sim_species_data</span>,
+                      <span class='no'>s3</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>,
+                      <span class='st'>"weight"</span>)</div><div class='img'><img src='ppp_exact_spp_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># find the top solutions</span>
+<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_spp_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>,
+                             <span class='no'>sim_species_data</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>,
+                             <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>, <span class='st'>"weight"</span>,
+                             <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: although 1000 requested, only 18 solutions exist.</span></div><div class='input'>
+<span class='co'># print solution</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s4</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 18 x 12</span><span>
+#&gt;    solution method   obj budget  cost optimal S1_action S2_action S3_action
+#&gt;       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>        1 exact   1.66    300 295.  TRUE    TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>        2 exact   1.60    300 295.  FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>        3 exact   1.57    300 200.  FALSE   FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>        4 exact   1.45    300 200.  FALSE   FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>        5 exact   1.37    300 294.  FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>        6 exact   1.37    300 297.  FALSE   TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>        7 exact   1.30    300 194.  FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        8 exact   1.28    300 199.  FALSE   FALSE     FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        9 exact   1.28    300 202.  FALSE   FALSE     FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>       10 exact   1.21    300  99.2 FALSE   FALSE     FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span>       11 exact   1.20    300 294.  FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span>       12 exact   1.20    300 295.  FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span>       13 exact   1.19    300 299.  FALSE   TRUE      TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span>       14 exact   1.17    300 297.  FALSE   TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span>       15 exact   1.12    300 195.  FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span>       16 exact   1.10    300 201.  FALSE   FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span>       17 exact   1.10    300 204.  FALSE   FALSE     TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span>       18 exact   1.08    300 194.  FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

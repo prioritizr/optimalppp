@@ -35,11 +35,23 @@ NULL
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_mac/r_installing_the_r_package.html}{Mac OSX}, and
 #'   \href{http://www.gurobi.com/documentation/8.1/quickstart_windows/r_installing_the_r_package.html}{Windows} operating systems).
 #'
-#'   The mathematical formulation is described in
-#'   \code{\link{ppp_exact_phylo_solution}}. Instead of using a "real"
-#'   phylogeny, it simply uses a star phylogeny---constructed using the species'
-#'   weights---to denote the relationships and importance for conserving
-#'   different species.
+#'   This problem aims to maximize expected species weighted richness given
+#'   a budget. Let \eqn{S} denote the set of species (indexed by
+#'   \eqn{s}), and let \eqn{W_s} denote the weight for each species.
+#'   Additionally, let \code{E_s} denote the probability that each species
+#'   will go extinct given the funded conservation projects. The objective
+#'   can be expressed as:
+#'   \deqn{
+#'   \sum_{s}^{S} (1 - E_s) W_s
+#'   }{
+#'   sum_s^S (1 - E_s) W_s}
+#'   For the complete mathematical formulation, please refer to the formulation
+#'   for maximizing expected phylogenetic diversity (i.e.
+#'   \code{\link{ppp_exact_phylo_solution}}). This is because maximizing
+#'   expected weighted species richness is merely a special-case of
+#'   expected phylogenetic diversity---instead of using a complete phylogeny,
+#'   expected weighted species richness simply uses a star phylogeny with
+#'   branch lengths set according to the species' weights.
 #'
 #' @seealso For other methods for solving the 'Project Prioritization Protocol'
 #'   problem, see \code{\link{ppp_heuristic_phylo_solution}},
@@ -49,6 +61,11 @@ NULL
 #'   \code{\link{ppp_plot_phylo_solution}}.
 #'
 #' @references
+#' Faith DP (2008) Threatened species and the potential loss of
+#' phylogenetic diversity: conservation scenarios based on estimated extinction
+#' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+#' \strong{22}: 1461--1470.
+#'
 #' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
 #' resources among threatened species: A project prioritization protocol.
 #' \emph{Conservation Biology}, \strong{23}, 328--338.
@@ -84,22 +101,20 @@ NULL
 #' # print solution
 #' print(s1)
 #'
-#' # print the names of which projects were funded
-#' print(names(s1)[which(unlist(s1[1, sim_action_data$name]))])
-#'
 #' # plot solution
 #' ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
-#'                       "name", "success", "name", "cost", "name", "weight")
+#'                       s1, "name", "success", "name", "cost", "name",
+#'                       "weight")
 #'
 #' # find a solution that meets a budget of 300 and allocates
-#' # funding for the "S1_project" project. For instance, species "S1" might
+#' # funding for the "S3_action" project. For instance, species "S3" might
 #' # be an iconic species that has cultural and economic importance.
 #' sim_action_data2 <- sim_action_data
-#' sim_action_data2$locked_in <- sim_action_data2$name == "S1_project"
-#' s2 <- ppp_plot_spp_solution(sim_project_data, sim_action_data2,
-#'                             sim_species_data, 300, "name", "success",
-#'                             "name", "cost", "name", "weight",
-#'                             locked_in_column_name = "locked_in")
+#' sim_action_data2$locked_in <- sim_action_data2$name == "S3_action"
+#' s2 <- ppp_exact_spp_solution(sim_project_data, sim_action_data2,
+#'                              sim_species_data, 300, "name", "success",
+#'                              "name", "cost", "name", "weight",
+#'                              locked_in_column_name = "locked_in")
 #'
 #' # print solution
 #' print(s2)
@@ -110,23 +125,34 @@ NULL
 #'                       "weight")
 #'
 #' # find a solution that meets a budget of 300 and does not allocate
-#' # funding for the "S2_project" project. For instance, species "S2"
+#' # funding for the "S2_action" project. For instance, species "S2"
 #' # might have very little cultural or economic importance. Broadly speaking,
 #' # though, it is better to "lock in" "important" species rather than
 #' # "lock out" unimportant species.
 #' sim_action_data3 <- sim_action_data
-#' sim_action_data3$locked_out <- sim_action_data3$name == "S2_project"
-#' s3 <- ppp_plot_spp_solution(sim_project_data, sim_action_data3,
-#'                             sim_species_data, 300, "name", "success",
-#'                             "name", "cost", "name", "weight",
-#'                             locked_out_column_name = "locked_out")
+#' sim_action_data3$locked_out <- sim_action_data3$name == "S2_action"
+#' s3 <- ppp_exact_spp_solution(sim_project_data, sim_action_data3,
+#'                              sim_species_data, 300, "name", "success",
+#'                              "name", "cost", "name", "weight",
+#'                              locked_out_column_name = "locked_out")
 #'
 #' # print solution
 #' print(s3)
 #'
 #' # plot solution
-#' ppp_plot_spp_solution(sim_project_data, sim_action_data3, sim_tree, s3,
-#'                       "name", "success", "name", "cost")
+#' ppp_plot_spp_solution(sim_project_data, sim_action_data3, sim_species_data,
+#'                       s3, "name", "success", "name", "cost", "name",
+#'                       "weight")
+#'
+#' # find the top solutions
+#' s4 <- ppp_exact_spp_solution(sim_project_data, sim_action_data,
+#'                              sim_species_data, 300, "name", "success",
+#'                              "name", "cost", "name", "weight",
+#'                              number_solutions = 1000)
+#'
+#' # print solution
+#' print(s4)
+#'
 #' }
 #' @export
 ppp_exact_spp_solution <- function(x, y, spp, budget,
