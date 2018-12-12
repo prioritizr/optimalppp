@@ -35,7 +35,8 @@ diversity — ppp_random_phylo_solution • optimalppp</title>
 diversity — ppp_random_phylo_solution" />
 
 <meta property="og:description" content="Generate random solutions for the 'Project Prioritization Protocol'
-problem (Joseph, Maloney &amp;amp; Possingham 2009).
+problem (Joseph, Maloney &amp;amp; Possingham 2009) and evaluate them using
+'expected phylogenetic diversity' (Faith 2008).
 Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decisions in order to evaluate their effectiveness.
@@ -123,7 +124,8 @@ diversity</h1>
     <div class="ref-description">
     
     <p>Generate random solutions for the 'Project Prioritization Protocol'
-problem (Joseph, Maloney &amp; Possingham 2009).
+problem (Joseph, Maloney &amp; Possingham 2009) and evaluate them using
+'expected phylogenetic diversity' (Faith 2008).
 Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decisions in order to evaluate their effectiveness.
@@ -255,11 +257,11 @@ are permitted. Defaults to <code>1</code>.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The random solutions are generated using the following algorithm.
- Firstly, all projects are initially selected for funding (excepting actions
+    <p>Each random solution is generated using the following algorithm.
+ Firstly, all actions are initially selected for funding (excepting actions
  which are locked out). Secondly, an action is randomly selected and
  defunded. Thirdly, the second step is
- repeated until the total cost of the remaining projects that are selected
+ repeated until the total cost of the remaining actions that are prioritized
  for funding is within the budget. Note that actions that have zero cost
  are never deselected for funding, and are always included in the solutions.
  Additionally, actions that are locked in are never deselected for funding.</p>
@@ -349,9 +351,9 @@ resources among threatened species: A project prioritization protocol.
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their expected phylogenetic diversity</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>obj</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"expected phylogenetic diversity"</span>)</div><div class='img'><img src='ppp_random_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>obj</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Expected phylogenetic diversity"</span>)</div><div class='img'><img src='ppp_random_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their costs</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution cost"</span>)</div><div class='img'><img src='ppp_random_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Solution cost ($)"</span>)</div><div class='img'><img src='ppp_random_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

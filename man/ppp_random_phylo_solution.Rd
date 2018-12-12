@@ -101,7 +101,8 @@ are permitted. Defaults to \code{1}.}
 }
 \description{
 Generate random solutions for the 'Project Prioritization Protocol'
-problem (Joseph, Maloney & Possingham 2009).
+problem (Joseph, Maloney & Possingham 2009) and evaluate them using
+'expected phylogenetic diversity' (Faith 2008).
 Although conservation projects should, ideally, not be funded based on random
 allocations, it can be useful to compare the effectiveness of solutions to
 random decisions in order to evaluate their effectiveness.
@@ -110,11 +111,11 @@ use the \code{\link{ppp_exact_phylo_solution}} method because it can identify
 optimal funding schemes with a guarantee.}
 }
 \details{
-The random solutions are generated using the following algorithm.
- Firstly, all projects are initially selected for funding (excepting actions
+Each random solution is generated using the following algorithm.
+ Firstly, all actions are initially selected for funding (excepting actions
  which are locked out). Secondly, an action is randomly selected and
  defunded. Thirdly, the second step is
- repeated until the total cost of the remaining projects that are selected
+ repeated until the total cost of the remaining actions that are prioritized
  for funding is within the budget. Note that actions that have zero cost
  are never deselected for funding, and are always included in the solutions.
  Additionally, actions that are locked in are never deselected for funding.
@@ -151,10 +152,10 @@ ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
                         "name", "success", "name", "cost", n = 1)
 
 # view histogram of their expected phylogenetic diversity
-hist(s1$obj, xlab = "expected phylogenetic diversity")
+hist(s1$obj, xlab = "Expected phylogenetic diversity")
 
 # view histogram of their costs
-hist(s1$cost, xlab = "solution cost")
+hist(s1$cost, xlab = "Solution cost ($)")
 }
 \references{
 Faith DP (2008) Threatened species and the potential loss of
