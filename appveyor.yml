@@ -19,7 +19,7 @@ install:
 # Adapt as necessary starting from here
 
 build_script:
-  - R -e "options(repos=c(CRAN='https://cran.rstudio.com/')); install.packages('devtools'); devtools::install_bioc('ggtree')"
+  - R -e "options(repos=c(CRAN='https://cran.rstudio.com/')); install.packages('devtools'); devtools::install_bioc('ggtree'); install.packages('RcppArmadillo')"
 
 test_script:
   - travis-tool.sh run_tests
