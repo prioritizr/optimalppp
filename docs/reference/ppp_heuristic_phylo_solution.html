@@ -308,7 +308,7 @@ actions according to their expected utility, this algorithm may identify
 cost-effective funding schemes. Note, however, that this algorithm is
 extremely unlikely to identify optimal solutions.</p>
 <p>The calculations that underpin this algorithm can be expressed
-mathematically. To calculate the utility for funding a given action (\(L\))
+mathematically. To calculate the utility for funding a given action (\(l\))
 among a set of actions (\(L\)), let the expected amount of evolutionary
 history that will persist into the future when all the actions are funded
 be expressed as \(A(L)\). Also, let the expected amount of evolutionary
@@ -316,7 +316,7 @@ history that will persist into the future when all the remaining actions
 are funded except for action \(l\) be expressed as \(A(L - l)\).
 Furthermore, allow the cost for funding action \(l\) to be \(C_l\).
 Given this, the relative benefit (or utility) for funding action \(l\)
-(\(U_l\)) in a given iteration can be expressed as:</p>
+in a given iteration can be expressed as (\(U_l\)):</p>
 <p>$$U_l = \frac{A(L) - A(L - l)}{C_l}$$</p>
 <p>To calculate the expected amount of evolutionary history that will persist
 into the future for a given set of funded actions, we will adopt a new set
@@ -324,18 +324,18 @@ of definitions to avoid confusion. Let \(I\) represent a given set of
 funded actions (indexed by \(i\)). For example, \(I\) could denote all
 of the actions in a given iteration (\(A(L)\)) or all of the actions in a
 given iteration except for a specific action (\(A(L - l)\)).
-Next, let \(S\) represent each species (e.g. species;
-conservation projects (indexed by
+Next, let \(S\) represent each species (indexed by \(s\)). Additionally,
+let \(J\) denote the set of funded conservation projects (indexed by
 \(j\)) given the set of funded actions \(I\). Let \(P_j\) represent
 the probability of project \(j\) being successful if
 it is funded. To represent the conservation outcome for
-funding the projects \(J\), let \(B_{js}\) denote the probability of
+funding the projects \(J\), let \(B_{sj}\) denote the probability of
 persistence for the species \(s\) if project \(j\) is funded and project
-\(j\) is used to conserve that species (i.e. it is the best funded
-funded project for that species).</p>
+\(j\) is used to conserve that species (i.e. it is the funded
+project which best improves the persistence probability for that species).</p>
 <p>The probability that each species will go extinct (\(E_s\)) when a given
 set of projects are funded (\(J\)) can then be  expressed as as:</p>
-<p>$$E_s = 1 - \mathrm{max}(P_1 \times B_{1s}, \ldots, P_J \times B_{Js})$$</p>
+<p>$$E_s = 1 - \mathrm{max}(P_1 \times B_{s1}, \ldots, P_J \times B_{sj})$$</p>
 <p>To account for the phylogenetic contributions of funding a project,
 consider a phylogenetic tree that contains species \(s \in S\) and
 contains branches with known lengths. To describe the tree using mathematical
@@ -428,16 +428,14 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 heuri~  2.92    300  295. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      FALSE    
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
-<span class='co'># print the names of which actions were funded</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>s1</span>)[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlist'>unlist</a></span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_action_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "solution" "method"   "budget"   "optimal" </div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='img'><img src='ppp_heuristic_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
-<span class='co'># funding for the "S1_action" action. For instance, species "S1" might</span>
+<span class='co'># funding for the "S3_action" action. For instance, species "S3" might</span>
 <span class='co'># be an iconic species that has cultural and economic importance.</span>
 <span class='no'>sim_action_data2</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data</span>
-<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S1_action"</span>
+<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S3_action"</span>
 <span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_heuristic_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>,
                                    <span class='no'>sim_tree</span>, <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>,
                                    <span class='st'>"cost"</span>,
@@ -447,7 +445,7 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 12</span><span>
 #&gt;   solution method   obj budget  cost optimal S1_action S2_action S3_action
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 heuri~  2.92    300  295. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 heuri~  2.28    300  202. </span><span style='color: #BB0000;'>NA</span><span>      FALSE     FALSE     TRUE     
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot solution</span>

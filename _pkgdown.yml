@@ -26,14 +26,14 @@ reference:
       - sim_action_data
       - sim_species_data
       - sim_tree
-  - title: Phylogenetic solutions
+  - title: Expected phylogenetic diversity
     desc: Functions for generating solutions with phylogenetic data
     contents:
       - ppp_exact_phylo_solution
       - ppp_heuristic_phylo_solution
       - ppp_manual_phylo_solution
       - ppp_random_phylo_solution
-  - title: Species weights solutions
+  - title: Expected weighted species richness
     desc: Functions for generating solutions with species weight data
     contents:
       - ppp_exact_spp_solution

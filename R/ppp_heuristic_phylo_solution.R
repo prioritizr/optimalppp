@@ -34,7 +34,7 @@ NULL
 #' extremely unlikely to identify optimal solutions.
 #'
 #' The calculations that underpin this algorithm can be expressed
-#' mathematically. To calculate the utility for funding a given action (\eqn{L})
+#' mathematically. To calculate the utility for funding a given action (\eqn{l})
 #' among a set of actions (\eqn{L}), let the expected amount of evolutionary
 #' history that will persist into the future when all the actions are funded
 #' be expressed as \eqn{A(L)}. Also, let the expected amount of evolutionary
@@ -42,7 +42,7 @@ NULL
 #' are funded except for action \eqn{l} be expressed as \eqn{A(L - l)}.
 #' Furthermore, allow the cost for funding action \eqn{l} to be \eqn{C_l}.
 #' Given this, the relative benefit (or utility) for funding action \eqn{l}
-#' (\eqn{U_l}) in a given iteration can be expressed as:
+#' in a given iteration can be expressed as (\eqn{U_l}):
 #'
 #' \deqn{U_l = \frac{A(L) - A(L - l)}{C_l}}{A_l = (A(L) - A(L - l)) / C_l}
 #'
@@ -52,21 +52,20 @@ NULL
 #' funded actions (indexed by \eqn{i}). For example, \eqn{I} could denote all
 #' of the actions in a given iteration (\eqn{A(L)}) or all of the actions in a
 #' given iteration except for a specific action (\eqn{A(L - l)}).
-#' Next, let \eqn{S} represent each species (e.g. species;
-#  indexed by \eqn{s}). Additionally, let \eqn{J} denote the set of funded
-#' conservation projects (indexed by
+#' Next, let \eqn{S} represent each species (indexed by \eqn{s}). Additionally,
+#' let \eqn{J} denote the set of funded conservation projects (indexed by
 #' \eqn{j}) given the set of funded actions \eqn{I}. Let \eqn{P_j} represent
 #' the probability of project \eqn{j} being successful if
 #' it is funded. To represent the conservation outcome for
-#' funding the projects \eqn{J}, let \eqn{B_{js}} denote the probability of
+#' funding the projects \eqn{J}, let \eqn{B_{sj}} denote the probability of
 #' persistence for the species \eqn{s} if project \eqn{j} is funded and project
-#' \eqn{j} is used to conserve that species (i.e. it is the best funded
-#' funded project for that species).
+#' \eqn{j} is used to conserve that species (i.e. it is the funded
+#' project which best improves the persistence probability for that species).
 #'
 #' The probability that each species will go extinct (\eqn{E_s}) when a given
 #' set of projects are funded (\eqn{J}) can then be  expressed as as:
 #'
-#' \deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{1s}, \ldots, P_J \times B_{Js})}{E_s = 1 - max(P_1 B_{1s}, ..., P_J B_{Js})}
+#' \deqn{E_s = 1 - \mathrm{max}(P_1 \times B_{s1}, \ldots, P_J \times B_{sj})}{E_s = 1 - max(P_1 B_{s1}, ..., P_J B_{sj})}
 #'
 #' To account for the phylogenetic contributions of funding a project,
 #' consider a phylogenetic tree that contains species \eqn{s \in S}{s in S} and
@@ -140,18 +139,15 @@ NULL
 #' # print solution
 #' print(s1)
 #'
-#' # print the names of which actions were funded
-#' print(names(s1)[which(unlist(s1[1, sim_action_data$name]))])
-#'
 #' # plot solution
 #' ppp_plot_phylo_solution(sim_project_data, sim_action_data, sim_tree, s1,
 #'                         "name", "success", "name", "cost")
 #'
 #' # find a solution that meets a budget of 300 and allocates
-#' # funding for the "S1_action" action. For instance, species "S1" might
+#' # funding for the "S3_action" action. For instance, species "S3" might
 #' # be an iconic species that has cultural and economic importance.
 #' sim_action_data2 <- sim_action_data
-#' sim_action_data2$locked_in <- sim_action_data2$name == "S1_action"
+#' sim_action_data2$locked_in <- sim_action_data2$name == "S3_action"
 #' s2 <- ppp_heuristic_phylo_solution(sim_project_data, sim_action_data2,
 #'                                    sim_tree, 300, "name", "success", "name",
 #'                                    "cost",
