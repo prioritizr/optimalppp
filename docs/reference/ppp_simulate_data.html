@@ -311,14 +311,14 @@ into the solution. Defaults to <code>0</code>.</p></td>
 <span class='co'># print data set</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s</span>)</div><div class='output co'>#&gt; $project_data
 #&gt; <span style='color: #949494;'># A tibble: 6 x 13</span><span>
-#&gt;   name  success     S1    S2    S3    S4    S5 S1_action S2_action S3_action
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S1_p~   0.900 0.692  0     0     0     0     TRUE      FALSE     FALSE    
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S2_p~   0.709 0      0.673 0     0     0     FALSE     TRUE      FALSE    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S3_p~   0.765 0      0     0.783 0     0     FALSE     FALSE     TRUE     
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S4_p~   0.787 0      0     0     0.879 0     FALSE     FALSE     FALSE    
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S5_p~   0.885 0      0     0     0     0.572 FALSE     FALSE     FALSE    
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> base~   1     0.094</span><span style='text-decoration: underline;'>6</span><span> 0.275 0.205 0.260 0.268 FALSE     FALSE     FALSE    
+#&gt;   name  success    S1     S2    S3    S4     S5 S1_action S2_action S3_action
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S1_p~   0.756 0.789 0      0     0     0      TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S2_p~   0.889 0     0.511  0     0     0      FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S3_p~   0.723 0     0      0.808 0     0      FALSE     FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S4_p~   0.936 0     0      0     0.838 0      FALSE     FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S5_p~   0.980 0     0      0     0     0.655  FALSE     FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> base~   1     0.373 0.023</span><span style='text-decoration: underline;'>2</span><span> 0.162 0.101 0.077</span><span style='text-decoration: underline;'>6</span><span> FALSE     FALSE     FALSE    
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>
 #&gt; 
@@ -326,29 +326,29 @@ into the solution. Defaults to <code>0</code>.</p></td>
 #&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt;   name             cost locked_in locked_out
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S1_action        93.0 FALSE     TRUE      
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S2_action       101.  FALSE     FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S3_action        87.8 FALSE     FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S4_action       100.0 FALSE     FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S5_action       103.  TRUE      FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S1_action       101.  TRUE      FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S2_action       104.  FALSE     FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S3_action       106.  FALSE     TRUE      
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S4_action        94.4 FALSE     FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S5_action        91.2 FALSE     FALSE     
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span> baseline_action   0   FALSE     FALSE     
 #&gt; 
 #&gt; $species_data
 #&gt; </span><span style='color: #949494;'># A tibble: 5 x 2</span><span>
 #&gt;   name  weight
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S5     0.883
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S3     0.287
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S1     0.287
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S2     0.449
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S4     0.449
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> S2    1.24  
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> S1    0.068</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> S3    0.068</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> S4    0.177 
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> S5    0.177 
 #&gt; 
 #&gt; $tree
 #&gt; 
 #&gt; Phylogenetic tree with 5 tips and 4 internal nodes.
 #&gt; 
 #&gt; Tip labels:
-#&gt; [1] "S5" "S3" "S1" "S2" "S4"
+#&gt; [1] "S2" "S1" "S3" "S4" "S5"
 #&gt; 
 #&gt; Rooted; includes branch lengths.
 #&gt; </div><div class='input'>
