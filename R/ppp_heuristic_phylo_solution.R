@@ -6,7 +6,7 @@ NULL
 #'
 #' Prioritize funding for conservation projects using the 'Project
 #' Prioritization Protocol' (Joseph, Maloney & Possingham 2009) with
-#' phylogenetic data and using a stingy heuristic algorithm (Bennett
+#' phylogenetic data and using a backwards heuristic algorithm (Bennett
 #' \emph{et al}. 2014). \strong{Although this algorithm can deliver solutions
 #' that perform better than random, it is extremely unlikely to identify
 #' solutions that are optimal (Underhill 1994; Rodrigues & Gaston 2002).}

@@ -153,7 +153,7 @@ A \code{\link[tibble]{tibble}} object containing the
 \description{
 Prioritize funding for conservation projects using the 'Project
 Prioritization Protocol' (Joseph, Maloney & Possingham 2009) with
-species weights and using a stingy heuristic algorithm (Bennett
+species weights and using a backwards heuristic algorithm (Bennett
 \emph{et al}. 2014). \strong{Although this algorithm can deliver solutions
 that perform better than random, it is extremely unlikely to identify
 solutions that are optimal (Underhill 1994; Rodrigues & Gaston 2002).}
