@@ -181,9 +181,10 @@ be represented in this tree.</p></td>
       <td><p><code><a href='https://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code> object containing the solution
 data. Here, each row corresponds to a different solution. This object
 should contain a column for each action---with the column names matching
-the project names---and the column should contain <code>logical</code> values
-that indicate if the action is funded (<code>TRUE</code>) or not (<code>FALSE</code>).
-Although additional columns can also be included, they will be ignored.</p></td>
+the action names (i.e. the argument to <code>y</code>---and the columns should
+contain <code>logical</code> values that indicate if the action is funded
+(<code>TRUE</code>) or not (<code>FALSE</code>). Although additional columns can also
+be included, they will be ignored.</p></td>
     </tr>
     <tr>
       <th>project_column_name</th>
@@ -355,13 +356,13 @@ resources among threatened species: A project prioritization protocol.
 <span class='co'># visualize the effectiveness of the different solutions</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>) +
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 2"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 2"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>) +
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 3"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 3"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

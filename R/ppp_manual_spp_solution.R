@@ -20,6 +20,11 @@ NULL
 #'   a particular solution, see \code{\link{ppp_plot_spp_solution}}.
 #'
 #' @references
+#' Faith DP (2008) Threatened species and the potential loss of
+#' phylogenetic diversity: conservation scenarios based on estimated extinction
+#' probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+#' \strong{22}: 1461--1470.
+#'
 #' Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
 #' resources among threatened species: A project prioritization protocol.
 #' \emph{Conservation Biology}, \strong{23}, 328--338.
@@ -59,6 +64,9 @@ NULL
 #'
 #' # the third solution will have four randomly selected actions funded
 #' solutions[3, sample.int(nrow(sim_action_data), 4)] <- TRUE
+#'
+#' # print the manually specified solutions
+#' print(solutions)
 #'
 #' # now we can evaluate the solutions
 #' s1 <- ppp_manual_spp_solution(sim_project_data, sim_action_data,

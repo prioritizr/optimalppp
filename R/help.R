@@ -138,9 +138,10 @@ NULL
 #' @param solution \code{\link[tibble]{tibble}} object containing the solution
 #'   data. Here, each row corresponds to a different solution. This object
 #'   should contain a column for each action---with the column names matching
-#'   the project names---and the column should contain \code{logical} values
-#'   that indicate if the action is funded (\code{TRUE}) or not (\code{FALSE}).
-#'   Although additional columns can also be included, they will be ignored.
+#'   the action names (i.e. the argument to \code{y}---and the columns should
+#'   contain \code{logical} values that indicate if the action is funded
+#'   (\code{TRUE}) or not (\code{FALSE}). Although additional columns can also
+#'   be included, they will be ignored.
 #'
 #' @keywords internal
 #'

@@ -55,9 +55,10 @@ relevant).}
 \item{solution}{\code{\link[tibble]{tibble}} object containing the solution
 data. Here, each row corresponds to a different solution. This object
 should contain a column for each action---with the column names matching
-the project names---and the column should contain \code{logical} values
-that indicate if the action is funded (\code{TRUE}) or not (\code{FALSE}).
-Although additional columns can also be included, they will be ignored.}
+the action names (i.e. the argument to \code{y}---and the columns should
+contain \code{logical} values that indicate if the action is funded
+(\code{TRUE}) or not (\code{FALSE}). Although additional columns can also
+be included, they will be ignored.}
 
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. This argument corresponds to the
@@ -168,6 +169,9 @@ solutions[2, ] <- TRUE
 # the third solution will have four randomly selected actions funded
 solutions[3, sample.int(nrow(sim_action_data), 4)] <- TRUE
 
+# print the manually specified solutions
+print(solutions)
+
 # now we can evaluate the solutions
 s1 <- ppp_manual_spp_solution(sim_project_data, sim_action_data,
                               sim_species_data, solutions, "name",
@@ -193,6 +197,11 @@ ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
 ggtitle("solution 3")
 }
 \references{
+Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+\strong{22}: 1461--1470.
+
 Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
 resources among threatened species: A project prioritization protocol.
 \emph{Conservation Biology}, \strong{23}, 328--338.

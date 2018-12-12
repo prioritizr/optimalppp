@@ -183,9 +183,10 @@ relevant).</p></td>
       <td><p><code><a href='https://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code> object containing the solution
 data. Here, each row corresponds to a different solution. This object
 should contain a column for each action---with the column names matching
-the project names---and the column should contain <code>logical</code> values
-that indicate if the action is funded (<code>TRUE</code>) or not (<code>FALSE</code>).
-Although additional columns can also be included, they will be ignored.</p></td>
+the action names (i.e. the argument to <code>y</code>---and the columns should
+contain <code>logical</code> values that indicate if the action is funded
+(<code>TRUE</code>) or not (<code>FALSE</code>). Although additional columns can also
+be included, they will be ignored.</p></td>
     </tr>
     <tr>
       <th>project_column_name</th>
@@ -272,7 +273,11 @@ are assigned an equal weighting.</p></td>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
+    <p>Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>: 1461--1470.</p>
+<p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
 resources among threatened species: A project prioritization protocol.
 <em>Conservation Biology</em>, <strong>23</strong>, 328--338.</p>
     
@@ -344,6 +349,11 @@ resources among threatened species: A project prioritization protocol.
 <span class='co'># the third solution will have four randomly selected actions funded</span>
 <span class='no'>solutions</span>[<span class='fl'>3</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample.int</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>sim_action_data</span>), <span class='fl'>4</span>)] <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
 
+<span class='co'># print the manually specified solutions</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>solutions</span>)</div><div class='output co'>#&gt;   S1_action S2_action S3_action S4_action S5_action baseline_action
+#&gt; 1     FALSE     FALSE     FALSE     FALSE     FALSE            TRUE
+#&gt; 2      TRUE      TRUE      TRUE      TRUE      TRUE            TRUE
+#&gt; 3     FALSE      TRUE     FALSE      TRUE      TRUE            TRUE</div><div class='input'>
 <span class='co'># now we can evaluate the solutions</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_manual_spp_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>,
                               <span class='no'>sim_species_data</span>, <span class='no'>solutions</span>, <span class='st'>"name"</span>,
