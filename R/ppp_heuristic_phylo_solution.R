@@ -364,7 +364,7 @@ ppp_heuristic_phylo_solution <- function(x, y, tree, budget,
   out$solution <- seq_len(nrow(out))
 
   ## throw warning if the number of output solutions is not equal to the number
-  ## of the requested solution
+  ## of the requested solutions
   if (nrow(out) != number_solutions)
     warning(paste("although", number_solutions, "requested, only", nrow(out),
                   "solutions exist."))

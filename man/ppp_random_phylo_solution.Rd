@@ -20,7 +20,7 @@ the name of each project (specified in the argument to
 probability that each project will succeed if all of its actions are funded
 (specified in the argument to \code{success_column_name}), (iii)
 the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}),
+is funded,
 and (iv) and which actions are associated with which projects
 (specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
@@ -51,7 +51,7 @@ species that is affected by the various conservation projects should
 be represented in this tree.}
 
 \item{budget}{\code{numeric} value that represents the total budget available
-for funding conservation projects.}
+for funding conservation actions.}
 
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. This argument corresponds to the

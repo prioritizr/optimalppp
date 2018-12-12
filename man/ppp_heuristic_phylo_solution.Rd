@@ -20,7 +20,7 @@ the name of each project (specified in the argument to
 probability that each project will succeed if all of its actions are funded
 (specified in the argument to \code{success_column_name}), (iii)
 the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}),
+is funded,
 and (iv) and which actions are associated with which projects
 (specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
@@ -51,7 +51,7 @@ species that is affected by the various conservation projects should
 be represented in this tree.}
 
 \item{budget}{\code{numeric} value that represents the total budget available
-for funding conservation projects.}
+for funding conservation actions.}
 
 \item{project_column_name}{\code{character} name of column that contains
 the name for each conservation project. This argument corresponds to the
@@ -119,17 +119,18 @@ A \code{\link[tibble]{tibble}} object containing the
    \item{\code{"budget"}}{\code{numeric} budget used for generating each of
      the of the solution(s).}
 
-   \item{\code{"obj"}}{\code{numeric} objective value. If phylogenetic data,
+   \item{\code{"obj"}}{\code{numeric} objective value. If phylogenetic data
      were input, then this column contains the expected phylogenetic
      diversity (Faith 2008) associated with each of the solutions.
-     Otherwise, this column contains the sum of the species' weighted
-     persistence probabilities .}
+     Otherwise, this column contains the expected weighted species richness
+     (i.e. the sum of the product between the species' persistence
+     probabilities and their weights.}
 
    \item{\code{"cost"}}{\code{numeric} total cost associated with each of
      of the solution(s).}
 
    \item{\code{"optimal"}}{\code{logical} indicating if each of the
-     solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}.
+     solution(s) is known to be optimal (\code{TRUE}) or not (\code{FALSE}).
      Missing values (\code{NA}) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).}

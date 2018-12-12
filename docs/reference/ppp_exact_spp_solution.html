@@ -154,7 +154,7 @@ the name of each project (specified in the argument to
 probability that each project will succeed if all of its actions are funded
 (specified in the argument to <code>success_column_name</code>), (iii)
 the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to <code>tree</code>),
+is funded,
 and (iv) and which actions are associated with which projects
 (specified in the action names in the argument to <code>y</code>).
 To account for the combined benefits of multiple actions (e.g. baiting
@@ -194,7 +194,7 @@ relevant).</p></td>
     <tr>
       <th>budget</th>
       <td><p><code>numeric</code> value that represents the total budget available
-for funding conservation projects.</p></td>
+for funding conservation actions.</p></td>
     </tr>
     <tr>
       <th>project_column_name</th>
@@ -265,7 +265,7 @@ the solution.</p></td>
     <tr>
       <th>gap</th>
       <td><p><code>numeric</code> optimality gap. This gap should be expressed as
-a proportion. For example, to find a solution that is within 10 <!-- % of -->
+a proportion. For example, to find a solution that is within 10 % of
 optimality, then <code>0.1</code> should be supplied. No missing values are
 permitted. Defaults to <code>0</code>, so that the optimal solution will be
 returned.</p></td>
@@ -323,17 +323,18 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
    <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
      the of the solution(s).</p></dd>
 
-   <dt><code>"obj"</code></dt><dd><p><code>numeric</code> objective value. If phylogenetic data,
+   <dt><code>"obj"</code></dt><dd><p><code>numeric</code> objective value. If phylogenetic data
      were input, then this column contains the expected phylogenetic
      diversity (Faith 2008) associated with each of the solutions.
-     Otherwise, this column contains the sum of the species' weighted
-     persistence probabilities .</p></dd>
+     Otherwise, this column contains the expected weighted species richness
+     (i.e. the sum of the product between the species' persistence
+     probabilities and their weights.</p></dd>
 
    <dt><code>"cost"</code></dt><dd><p><code>numeric</code> total cost associated with each of
      of the solution(s).</p></dd>
 
    <dt><code>"optimal"</code></dt><dd><p><code>logical</code> indicating if each of the
-     solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>.
+     solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>).
      Missing values (<code>NA</code>) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).</p></dd>

@@ -154,7 +154,7 @@ the name of each project (specified in the argument to
 probability that each project will succeed if all of its actions are funded
 (specified in the argument to <code>success_column_name</code>), (iii)
 the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to <code>tree</code>),
+is funded,
 and (iv) and which actions are associated with which projects
 (specified in the action names in the argument to <code>y</code>).
 To account for the combined benefits of multiple actions (e.g. baiting
@@ -191,7 +191,7 @@ be represented in this tree.</p></td>
     <tr>
       <th>budget</th>
       <td><p><code>numeric</code> value that represents the total budget available
-for funding conservation projects.</p></td>
+for funding conservation actions.</p></td>
     </tr>
     <tr>
       <th>project_column_name</th>
@@ -249,7 +249,7 @@ the solution.</p></td>
     <tr>
       <th>gap</th>
       <td><p><code>numeric</code> optimality gap. This gap should be expressed as
-a proportion. For example, to find a solution that is within 10 <!-- % of -->
+a proportion. For example, to find a solution that is within 10 % of
 optimality, then <code>0.1</code> should be supplied. No missing values are
 permitted. Defaults to <code>0</code>, so that the optimal solution will be
 returned.</p></td>
@@ -307,17 +307,18 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
    <dt><code>"budget"</code></dt><dd><p><code>numeric</code> budget used for generating each of
      the of the solution(s).</p></dd>
 
-   <dt><code>"obj"</code></dt><dd><p><code>numeric</code> objective value. If phylogenetic data,
+   <dt><code>"obj"</code></dt><dd><p><code>numeric</code> objective value. If phylogenetic data
      were input, then this column contains the expected phylogenetic
      diversity (Faith 2008) associated with each of the solutions.
-     Otherwise, this column contains the sum of the species' weighted
-     persistence probabilities .</p></dd>
+     Otherwise, this column contains the expected weighted species richness
+     (i.e. the sum of the product between the species' persistence
+     probabilities and their weights.</p></dd>
 
    <dt><code>"cost"</code></dt><dd><p><code>numeric</code> total cost associated with each of
      of the solution(s).</p></dd>
 
    <dt><code>"optimal"</code></dt><dd><p><code>logical</code> indicating if each of the
-     solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>.
+     solution(s) is known to be optimal (<code>TRUE</code>) or not (<code>FALSE</code>).
      Missing values (<code>NA</code>) indicate that optimality is unknown
      (i.e. because the method used to produce the solution(s) does not
      provide any bounds on their quality).</p></dd>
@@ -334,7 +335,7 @@ the problem? No missing values are permitted. Defaults to <code>FALSE</code>.</p
   Although <a href='https://www.gurobi.com'>Gurobi</a> is a commercial software,
   academics can obtain a <a href='https://user.gurobi.com/download/licenses/free-academic'>special license for no cost</a>.
    After downloading and installing the
-  hrefhttps://www.gurobi.comGurobi software suite, the
+  <a href='https://www.gurobi.com'>Gurobi</a> software suite, the
   <span class="pkg">gurobi</span> package will also need to be installed (see instructions for
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_linux/software_installation_guid.html'>Linux</a>,
   <a href='http://www.gurobi.com/documentation/8.1/quickstart_mac/software_installation_guid.html'>Mac OSX</a>, and
@@ -359,15 +360,14 @@ mathematical notation by letting \(B\) represent the branches (indexed by
 species \(s \in S\) are associated with which phylogenetic
 branches \(b \in B\) using zeros and ones. Ideally, the set of
 species \(S\) would contain all of the species in the study
-area---including non-threatened species and species which are not associated
-with any conservation projects---to fully account for the benefits for
-funding different projects.</p>
+area---including non-threatened species---to fully account for the benefits
+for funding different actions.</p>
 <p>To guide the prioritization, the conservation actions are organized into
 conservation projects. Let \(J\) denote the set of conservation projects
-(indexed by \(j\), and let \(A_{ij}\) denote which actions
+(indexed by \(j\)), and let \(A_{ij}\) denote which actions
 \(i \in I\) comprise each conservation project
-\(j \in J\) using zeros and ones. Next, let \(P_i\) represent
-the probability of project \(i\) being successful if it is funded. Also,
+\(j \in J\) using zeros and ones. Next, let \(P_j\) represent
+the probability of project \(j\) being successful if it is funded. Also,
 let \(B_{sj}\) denote the enhanced probability that each species'
 \(s \in S\) associated with the project \(j \in J\)
 will persist if all of the actions that comprise project \(j\) are funded
@@ -383,7 +383,7 @@ if project \(j\) is used to manage species \(s\) (variable equal to one)
 or not (variable equal to zero); the semi-continuous \(E_s\) variables
 denote the probability that species \(s\) will go extinct; and the
 semi-continuous \(R_b\) variables denote the probability that phylogenetic
-branch \(b\) will remain.</p>
+branch \(b\) will remain in the future.</p>
 <p>Now that we have defined all the data and variables, we can formulate
 the problem. For convenience, let the symbol used to denote each set also
 represent its cardinality (e.g. if there are ten species, let \(S\)
@@ -394,39 +394,30 @@ represent the set of ten species and also the number ten).</p>
   \mathrm{Subject \space to} \space R_b = 1 - \prod_{s = 0}^{S}
   ifelse(T_{bs} == 1, \space E_s, \space
   1) \space \forall \space b \in B \space \mathrm{(eqn \space 1b)} \\
-  E_s = 1 - \sum_{i = 0}^{I} Y_{is} P_i B_{is} \space \forall \space s \in S
+  E_s = 1 - \sum_{j = 0}^{J} Z_{sj} P_j B_{sj} \space \forall \space s \in S
   \space \mathrm{(eqn \space 1c)} \\
-  \sum_{i = 0}^{I} C_i \leq m \space
-  \mathrm{(eqn \space 1d)} \\
+  \sum_{i = 0}^{I} C_i \leq m \space \mathrm{(eqn \space 1d)} \\
   Z_{sj} \leq Y_{j} \space \forall \space j \in J \space \mathrm{(eqn \space
   1e)} \\
   \sum_{j = 0}^{J} Z_{sj} = 1 \space \forall \space s \in s \space
-  \mathrm{eqn \space 1f} \\
+  \mathrm{(eqn \space 1f)} \\
   A_{ij} Y_{j} \leq X_{i} \space \forall \space i \in I, j \in J \space
   \mathrm{(eqn \space 1g)} \\
   R_{b} \geq 0, R_{b} \leq 1 \space \forall \space b \in B \space
   \mathrm{(eqn \space 1h)} \\
   E_{s} \geq 0, E_{s} \leq 1 \space \forall \space b \in B \space
   \mathrm{(eqn \space 1i)} \\
-  X_{i}, Y_{j}, Z_{sj} \in [0, 1] space \forall \space i \in I, j \in J, s
-  \in S \space \mathrm{(eqn \space 1j)}{
-  Maximize sum_b^B L_b R_b (eqn 1a); Subject to:
-  R_b = 1 - prod_s^S ifelse(T_{bs} == 1, E_s, 1) for all b in B (eqn 1b),
-  E_s = 1 - sum_i^I Y_{is} P_i B_{is} for all s in S (eqn 1c),
-  sum_i^I C_i &lt;= m (eqn 1d),
-  Z_{sj} &lt;= Y_j for all j in J (eqn 1e),
-  sum_j^J Z_{sj} = 1 for all s in s (eqn 1f),
-  A_{ij} Y_{j} &lt;= X_{i} for all i I, j in J (eqn 1g),
-  R_b &gt;= 0, R_b &gt;= 1 for all b in B (eqn 1h),
-  E_s &gt;= 0, E_s &gt;= 1 for all s in S (eqn 1i),
-  X_i, Y_j, Z_{sj} in [0, 1] for all i in I, j in J, s in S (eqn 1j)}$$</p>
+  X_{i}, Y_{j}, Z_{sj} \in [0, 1] \space \forall \space i \in I, j \in J, s
+  \in S \space \mathrm{(eqn \space 1j)}
+  $$</p>
 <p>The objective (eqn 1a) is to maximize the amount of expected phylogenetic
 history that will remain in the future. This is expressed as the sum of
 branch lengths (\(L_b\)) weighted by the probability that at least one of
 the species connected to this branch will not go extinct (\(R_b\)).
 Constraints (eqn 1b) state that the probability that a branch will remain
-(\(R_b\)) is equal to one minus the probability that all species will go
-extinct. Constraints (eqn 1c) calculate the probability that each species
+(\(R_b\)) is equal to one minus the probability that all species connected
+to the branch will go extinct. Constraints (eqn 1c) calculate the
+probability that each species
 will go extinct according to their allocated project. Constraint (eqn 1d)
 ensures that the cost of all the funded actions do not exceed the budget.
 Constraints (eqn 1e) ensure that species can only be allocated to projects
@@ -434,8 +425,8 @@ that have all of their actions funded. Constraints (eqn 1f) state that each
 species can only be allocated to a single project. Constraints (eqn 1g)
 ensure that a project cannot be funded unless all of its actions are funded.
 Constraints (eqns 1h, 1i) ensure that the probability variables (\(R_b\),
-\(E_s\)) remain between zero and one. Constraints (eqns 1h) ensure that
-the action funding (\(X_j\)), project funding (\(Y_j\)), and project
+\(E_s\)) are bounded between zero and one. Constraints (eqns 1j) ensure
+that the action funding (\(X_j\)), project funding (\(Y_j\)), and project
 allocation (\(Z_{sj}\)) variables are binary.</p>
 <p>Although this formulation is a mixed integer quadratically constrained
 programming problem (due to eqn 1b), it can be linearized and then solved
@@ -526,16 +517,14 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   2.92    300  295. TRUE    TRUE      TRUE      FALSE    
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
-<span class='co'># print the names of which projects were funded</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>s1</span>)[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/which'>which</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlist'>unlist</a></span>(<span class='no'>s1</span>[<span class='fl'>1</span>, <span class='no'>sim_action_data</span>$<span class='no'>name</span>]))])</div><div class='output co'>#&gt; [1] "solution" "method"   "budget"   "optimal" </div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='img'><img src='ppp_exact_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and allocates</span>
-<span class='co'># funding for the "S1_project" project. For instance, species "S1" might</span>
+<span class='co'># funding for the "S3_action" action. For instance, species "S3" might</span>
 <span class='co'># be an iconic species that has cultural and economic importance.</span>
 <span class='no'>sim_action_data2</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data</span>
-<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S1_project"</span>
+<span class='no'>sim_action_data2</span>$<span class='no'>locked_in</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data2</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S3_action"</span>
 <span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>, <span class='no'>sim_tree</span>,
                                <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>,
                                <span class='kw'>locked_in_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_in"</span>)
@@ -544,19 +533,19 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 12</span><span>
 #&gt;   solution method   obj budget  cost optimal S1_action S2_action S3_action
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   2.92    300  295. TRUE    TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   2.60    300  297. TRUE    TRUE      FALSE     TRUE     
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data2</span>, <span class='no'>sim_tree</span>, <span class='no'>s2</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='img'><img src='ppp_exact_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># find a solution that meets a budget of 300 and does not allocate</span>
-<span class='co'># funding for the "S2_project" project. For instance, species "S2"</span>
+<span class='co'># funding for the "S2_action" project. For instance, species "S2"</span>
 <span class='co'># might have very little cultural or economic importance. Broadly speaking,</span>
 <span class='co'># though, it is better to "lock in" "important" species rather than</span>
 <span class='co'># "lock out" unimportant species.</span>
 <span class='no'>sim_action_data3</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data</span>
-<span class='no'>sim_action_data3</span>$<span class='no'>locked_out</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data3</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S2_project"</span>
+<span class='no'>sim_action_data3</span>$<span class='no'>locked_out</span> <span class='kw'>&lt;-</span> <span class='no'>sim_action_data3</span>$<span class='no'>name</span> <span class='kw'>==</span> <span class='st'>"S2_action"</span>
 <span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>, <span class='no'>sim_tree</span>,
                                <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>,
                                <span class='kw'>locked_out_column_name</span> <span class='kw'>=</span> <span class='st'>"locked_out"</span>)
@@ -565,12 +554,32 @@ algorithms. <em>Biological Conservation</em>, <strong>70</strong>: 85--87.</p>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s3</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 12</span><span>
 #&gt;   solution method   obj budget  cost optimal S1_action S2_action S3_action
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   2.92    300  295. TRUE    TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>        1 exact   2.61    300  294. TRUE    TRUE      FALSE     FALSE    
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot solution</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data3</span>, <span class='no'>sim_tree</span>, <span class='no'>s3</span>,
-                        <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='img'><img src='ppp_exact_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
+                        <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)</div><div class='img'><img src='ppp_exact_phylo_solution-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># find the top solutions</span>
+<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_exact_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>,
+                               <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>,
+                               <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: although 1000 requested, only 23 solutions exist.</span></div><div class='input'>
+<span class='co'># print solution</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s4</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 23 x 12</span><span>
+#&gt;    solution method   obj budget  cost optimal S1_action S2_action S3_action
+#&gt;       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>        1 exact   2.92    300  295. TRUE    TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>        2 exact   2.82    300  295. FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>        3 exact   2.64    300  200. FALSE   FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>        4 exact   2.61    300  294. FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>        5 exact   2.60    300  297. FALSE   TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>        6 exact   2.50    300  295. FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>        7 exact   2.50    300  299. FALSE   TRUE      TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        8 exact   2.45    300  194. FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        9 exact   2.39    300  294. FALSE   TRUE      FALSE     FALSE    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>       10 exact   2.38    300  195. FALSE   TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #949494;'># ... with 13 more rows, and 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

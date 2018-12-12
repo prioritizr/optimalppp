@@ -19,7 +19,7 @@ the name of each project (specified in the argument to
 probability that each project will succeed if all of its actions are funded
 (specified in the argument to \code{success_column_name}), (iii)
 the enhanced probability that each species will persist if it
-is funded (specified as the tip labels in the argument to \code{tree}),
+is funded,
 and (iv) and which actions are associated with which projects
 (specified in the action names in the argument to \code{y}).
 To account for the combined benefits of multiple actions (e.g. baiting
