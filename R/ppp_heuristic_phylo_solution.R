@@ -320,8 +320,8 @@ ppp_heuristic_phylo_solution <- function(x, y, tree, budget,
   # solve the problem
   s <- rcpp_heuristic_phylo_solution(
     spp = spp_probs,
-    actions = as(as.matrix(x[, y[[action_column_name]], drop = FALSE]),
-                 "dgCMatrix"),
+    actions = methods::as(as.matrix(x[, y[[action_column_name]],
+                                      drop = FALSE]), "dgCMatrix"),
     budget = budget,
     branch_matrix = branch_matrix(tree),
     branch_lengths = tree$edge.length,

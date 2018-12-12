@@ -391,17 +391,17 @@ ppp_exact_phylo_solution <- function(x, y, tree, budget,
   spp_probs <- Matrix::drop0(methods::as(round(spp_probs, 5), "dgCMatrix"))
 
   # formulate the problem
-  f <- rcpp_mip_formulation(spp = spp_probs,
-                            actions = as(as.matrix(x[, y[[action_column_name]],
-                                                     drop = FALSE]),
-                                         "dgCMatrix"),
-                            budget = budget,
-                            branch_matrix = branch_matrix(tree),
-                            branch_lengths = tree$edge.length,
-                            costs = y[[cost_column_name]],
-                            locked_in = locked_in,
-                            locked_out = locked_out,
-                            n_approx_points = number_approx_points)
+  f <- rcpp_mip_formulation(
+    spp = spp_probs,
+    actions = methods::as(as.matrix(x[, y[[action_column_name]],
+                                      drop = FALSE]), "dgCMatrix"),
+    budget = budget,
+    branch_matrix = branch_matrix(tree),
+    branch_lengths = tree$edge.length,
+    costs = y[[cost_column_name]],
+    locked_in = locked_in,
+    locked_out = locked_out,
+    n_approx_points = number_approx_points)
   # convert constraint matrix to sparse representation
   f$A <- Matrix::sparseMatrix(i = f$Ai, j = f$Aj, x = f$Ax, index1 = FALSE)
 

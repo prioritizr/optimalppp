@@ -62,9 +62,10 @@ ppp_epd <- function(x, y, tree, solution, project_column_name,
 
   # Exports
   rcpp_ppp_epd(spp_probs,
-               as(as.matrix(x[, y[[action_column_name]], drop = FALSE]),
+               methods::as(as.matrix(x[, y[[action_column_name]],
+                                       drop = FALSE]),
                   "dgCMatrix"),
                branch_matrix(tree), tree$edge.length,
-               as(as.matrix(solution[, y[[action_column_name]],
-                                     drop = FALSE]), "dgCMatrix"))
+               methods::as(as.matrix(solution[, y[[action_column_name]],
+                                              drop = FALSE]), "dgCMatrix"))
 }
