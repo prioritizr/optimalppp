@@ -115,6 +115,9 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
 # set seed for reproducibility
 set.seed(500)
 
+# load the ggplot2 R package to customize plots
+library(ggplot2)
+
 # load built-in data
 data(sim_project_data, sim_action_data, sim_tree)
 
@@ -130,9 +133,9 @@ print(sim_tree)
 # plot the simulated phylogeny
 plot(sim_tree, main = "simulated phylogeny")
 
-# create random some solutions with a budget of 700
+# create random some solutions with a budget of 300
 s1 <- ppp_random_phylo_solution(sim_project_data, sim_action_data, sim_tree,
-                                700, "name", "success", "name", "cost",
+                                300, "name", "success", "name", "cost",
                                 number_solutions = 10)
 
 # print output

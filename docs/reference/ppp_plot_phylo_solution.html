@@ -274,6 +274,9 @@ Evolution</em>, <strong>8</strong>: 28--36.</p>
     <pre class="examples"><div class='input'><span class='co'># set seed for reproducibility</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>500</span>)
 
+<span class='co'># load the ggplot2 R package to customize plots</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+
 <span class='co'># load built-in data</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>)
 
@@ -309,25 +312,25 @@ Evolution</em>, <strong>8</strong>: 28--36.</p>
 #&gt; Rooted; includes branch lengths.</div><div class='input'>
 <span class='co'># plot the simulated phylogeny</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sim_tree</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"simulated phylogeny"</span>)</div><div class='img'><img src='ppp_plot_phylo_solution-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># create random some solutions with a budget of 700</span>
+<span class='co'># create random some solutions with a budget of 300</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ppp_random_phylo_solution.html'>ppp_random_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>,
-                                <span class='fl'>700</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>,
+                                <span class='fl'>300</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>,
                                 <span class='kw'>number_solutions</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># print output</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 10 x 12</span><span>
 #&gt;    solution method   obj budget  cost optimal S1_action S2_action S3_action
 #&gt;       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>        1 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>        2 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>        3 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>        4 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>        5 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>        6 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>        7 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        8 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        9 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>       10 random  3.13    700  498. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>        1 random  2.92    300  295. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>        2 random  2.60    300  297. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>        3 random  2.64    300  200. </span><span style='color: #BB0000;'>NA</span><span>      FALSE     TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>        4 random  2.50    300  299. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>        5 random  2.20    300  298. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>        6 random  2.50    300  299. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>        7 random  1.96    300  203. </span><span style='color: #BB0000;'>NA</span><span>      FALSE     FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>        8 random  2.50    300  295. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      TRUE      FALSE    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>        9 random  2.20    300  298. </span><span style='color: #BB0000;'>NA</span><span>      TRUE      FALSE     TRUE     
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>       10 random  2.28    300  202. </span><span style='color: #BB0000;'>NA</span><span>      FALSE     FALSE     TRUE     
 #&gt; </span><span style='color: #949494;'># ... with 3 more variables: S4_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, S5_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
 #&gt; #   baseline_action </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
 <span class='co'># plot the first solution</span>
@@ -341,31 +344,31 @@ Evolution</em>, <strong>8</strong>: 28--36.</p>
 <span class='co'># for example, we can add a title</span>
 <span class='fu'>ppp_plot_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>) +
-<span class='fu'>ggtitle</span>(<span class='st'>"solution"</span>)</div><div class='img'><img src='ppp_plot_phylo_solution-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution"</span>)</div><div class='img'><img src='ppp_plot_phylo_solution-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># we could also also set the minimum and maximum values in the color ramp to</span>
 <span class='co'># correspond to those in the data, rather than being capped at 0 and 1</span>
 <span class='fu'>ppp_plot_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>) +
-<span class='fu'>scale_color_gradientn</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradientn</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
                       <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw pkg'>viridisLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/viridisLite/topics/viridis'>inferno</a></span>(<span class='fl'>150</span>, <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fl'>0</span>,
                                                     <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
                                                     <span class='kw'>direction</span> <span class='kw'>=</span> -<span class='fl'>1</span>)) +
-<span class='fu'>ggtitle</span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
 #&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='ppp_plot_phylo_solution-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># we could also change the color ramp</span>
 <span class='fu'>ppp_plot_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>) +
-<span class='fu'>scale_color_gradient</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradient</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
                      <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"black"</span>) +
-<span class='fu'>ggtitle</span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
 #&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='ppp_plot_phylo_solution-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># we could even hide the legend if desired</span>
 <span class='fu'>ppp_plot_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>) +
-<span class='fu'>scale_color_gradient</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_gradient.html'>scale_color_gradient</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Probability of\npersistence"</span>,
                      <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"black"</span>) +
-<span class='fu'>theme</span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>"hide"</span>) +
-<span class='fu'>ggtitle</span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>"hide"</span>) +
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution"</span>)</div><div class='output co'>#&gt; <span class='message'>Scale for 'colour' is already present. Adding another scale for 'colour',</span>
 #&gt; <span class='message'>which will replace the existing scale.</span></div><div class='img'><img src='ppp_plot_phylo_solution-7.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -11,7 +11,25 @@ NULL
 #' @inheritParams help
 #' @inheritParams ppp_plot_phylo_solution
 #'
-#' @inherit ppp_plot_phylo_solution details return
+#' @inherit ppp_plot_phylo_solution return
+#'
+#' @details This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
+#'   Since this package is distributed exclusively
+#'   through \href{https://bioconductor.org}{Bioconductor}, and is not
+#'   available on the
+#'   \href{https://cran.r-project.org/}{Comprehensive R Archive Network},
+#'   please execute the following command to install it:
+#'   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
+#'   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
+#'
+#'   Here, each line is colored according to probability
+#'   that it is expected to persist into the future (based on Faith 2008).
+#'   Additionally, species that directly benefit from at least a single
+#'   completely funded project with a non-zero cost are denoted with an
+#'   asterisk symbol. Species that indirectly benefit from funded
+#'   projects---because they are associated with partially funded projects that
+#'   have non-zero costs and share actions with at least one funded
+#'   project---are denoted with an open circle symbols.
 #'
 #' @seealso To generate solutions for the 'Project
 #'   Prioritization Protocol' problem, see
@@ -34,6 +52,9 @@ NULL
 #' # set seed for reproducibility
 #' set.seed(500)
 #'
+#' # load the ggplot2 R package to customize plots
+#' library(ggplot2)
+#'
 #' # load built-in data
 #' data(sim_project_data, sim_action_data, sim_species_data)
 #'
@@ -46,9 +67,9 @@ NULL
 #' # print simulated species data
 #' print(sim_species_data)
 #'
-#' # create random some solutions with a budget of 700
+#' # create random some solutions with a budget of 300
 #' s1 <- ppp_random_spp_solution(sim_project_data, sim_action_data,
-#'                               sim_species_data, 700, "name", "success",
+#'                               sim_species_data, 300, "name", "success",
 #'                               "name", "cost", "name", "weight",
 #'                               number_solutions = 10)
 #'

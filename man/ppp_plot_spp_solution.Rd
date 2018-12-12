@@ -116,7 +116,7 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
   \code{source("https://bioconductor.org/biocLite.R");biocLite("ggtree")}.
   If the installation process fails, please consult the package's \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{online documentation}.
 
-  Here, each phylogenetic branch is colored according to probability
+  Here, each line is colored according to probability
   that it is expected to persist into the future (based on Faith 2008).
   Additionally, species that directly benefit from at least a single
   completely funded project with a non-zero cost are denoted with an
@@ -128,6 +128,9 @@ This function requires the \pkg{ggtree} (Yu \emph{et al.} 2017).
 \examples{
 # set seed for reproducibility
 set.seed(500)
+
+# load the ggplot2 R package to customize plots
+library(ggplot2)
 
 # load built-in data
 data(sim_project_data, sim_action_data, sim_species_data)
@@ -141,9 +144,9 @@ print(sim_action_data)
 # print simulated species data
 print(sim_species_data)
 
-# create random some solutions with a budget of 700
+# create random some solutions with a budget of 300
 s1 <- ppp_random_spp_solution(sim_project_data, sim_action_data,
-                              sim_species_data, 700, "name", "success",
+                              sim_species_data, 300, "name", "success",
                               "name", "cost", "name", "weight",
                               number_solutions = 10)
 
