@@ -272,18 +272,22 @@ are permitted. Defaults to <code>1</code>.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The random solutions are generated using the following algorithm.
- Firstly, all projects are initially selected for funding (excepting actions
+    <p>Each random solution is generated using the following algorithm.
+ Firstly, all actions are initially selected for funding (excepting actions
  which are locked out). Secondly, an action is randomly selected and
  defunded. Thirdly, the second step is
- repeated until the total cost of the remaining projects that are selected
+ repeated until the total cost of the remaining actions that are prioritized
  for funding is within the budget. Note that actions that have zero cost
  are never deselected for funding, and are always included in the solutions.
  Additionally, actions that are locked in are never deselected for funding.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
+    <p>Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. <em>Conservation Biology</em>,
+<strong>22</strong>: 1461--1470.</p>
+<p>Joseph LN, Maloney RF &amp; Possingham HP (2009) Optimal allocation of
 resources among threatened species: A project prioritization protocol.
 <em>Conservation Biology</em>, <strong>23</strong>, 328--338.</p>
     
@@ -363,9 +367,9 @@ resources among threatened species: A project prioritization protocol.
                       <span class='no'>s1</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='st'>"name"</span>,
                       <span class='st'>"weight"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='ppp_random_spp_solution-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram the objective value</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>obj</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"sum weighted species probabilities"</span>)</div><div class='img'><img src='ppp_random_spp_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>obj</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Expected weighted species richness"</span>)</div><div class='img'><img src='ppp_random_spp_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># view histogram of their costs</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"solution cost"</span>)</div><div class='img'><img src='ppp_random_spp_solution-3.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/hist'>hist</a></span>(<span class='no'>s1</span>$<span class='no'>cost</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Solution cost ($)"</span>)</div><div class='img'><img src='ppp_random_spp_solution-3.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

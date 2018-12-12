@@ -123,11 +123,11 @@ use the \code{\link{ppp_exact_spp_solution}} method because it can identify
 optimal funding schemes with a guarantee.}
 }
 \details{
-The random solutions are generated using the following algorithm.
- Firstly, all projects are initially selected for funding (excepting actions
+Each random solution is generated using the following algorithm.
+ Firstly, all actions are initially selected for funding (excepting actions
  which are locked out). Secondly, an action is randomly selected and
  defunded. Thirdly, the second step is
- repeated until the total cost of the remaining projects that are selected
+ repeated until the total cost of the remaining actions that are prioritized
  for funding is within the budget. Note that actions that have zero cost
  are never deselected for funding, and are always included in the solutions.
  Additionally, actions that are locked in are never deselected for funding.
@@ -163,12 +163,17 @@ ppp_plot_spp_solution(sim_project_data, sim_action_data, sim_species_data,
                       "weight", n = 1)
 
 # view histogram the objective value
-hist(s1$obj, xlab = "sum weighted species probabilities")
+hist(s1$obj, xlab = "Expected weighted species richness")
 
 # view histogram of their costs
-hist(s1$cost, xlab = "solution cost")
+hist(s1$cost, xlab = "Solution cost ($)")
 }
 \references{
+Faith DP (2008) Threatened species and the potential loss of
+phylogenetic diversity: conservation scenarios based on estimated extinction
+probabilities and phylogenetic risk analysis. \emph{Conservation Biology},
+\strong{22}: 1461--1470.
+
 Joseph LN, Maloney RF & Possingham HP (2009) Optimal allocation of
 resources among threatened species: A project prioritization protocol.
 \emph{Conservation Biology}, \strong{23}, 328--338.
