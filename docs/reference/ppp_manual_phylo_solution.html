@@ -334,6 +334,11 @@ resources among threatened species: A project prioritization protocol.
 <span class='co'># the third solution will have four randomly selected actions funded</span>
 <span class='no'>solutions</span>[<span class='fl'>3</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample.int</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>sim_action_data</span>), <span class='fl'>4</span>)] <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
 
+<span class='co'># print the manually specified solutions</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>solutions</span>)</div><div class='output co'>#&gt;   S1_action S2_action S3_action S4_action S5_action baseline_action
+#&gt; 1     FALSE     FALSE     FALSE     FALSE     FALSE            TRUE
+#&gt; 2      TRUE      TRUE      TRUE      TRUE      TRUE            TRUE
+#&gt; 3     FALSE      TRUE     FALSE      TRUE      TRUE            TRUE</div><div class='input'>
 <span class='co'># now we can evaluate the solutions</span>
 <span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>ppp_manual_phylo_solution</span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>,
                                 <span class='no'>solutions</span>, <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>)
@@ -350,13 +355,13 @@ resources among threatened species: A project prioritization protocol.
 <span class='co'># visualize the effectiveness of the different solutions</span>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 1"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>) +
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 2"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 2"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='ppp_plot_phylo_solution.html'>ppp_plot_phylo_solution</a></span>(<span class='no'>sim_project_data</span>, <span class='no'>sim_action_data</span>, <span class='no'>sim_tree</span>, <span class='no'>s1</span>,
                         <span class='st'>"name"</span>, <span class='st'>"success"</span>, <span class='st'>"name"</span>, <span class='st'>"cost"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>) +
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"solution 3"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"solution 3"</span>)</div><div class='img'><img src='ppp_manual_phylo_solution-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -69,6 +69,9 @@ NULL
 #' # the third solution will have four randomly selected actions funded
 #' solutions[3, sample.int(nrow(sim_action_data), 4)] <- TRUE
 #'
+#' # print the manually specified solutions
+#' print(solutions)
+#'
 #' # now we can evaluate the solutions
 #' s1 <- ppp_manual_phylo_solution(sim_project_data, sim_action_data, sim_tree,
 #'                                 solutions, "name", "success", "name", "cost")
