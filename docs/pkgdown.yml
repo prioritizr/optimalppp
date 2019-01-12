@@ -1,9 +1,0 @@
-pandoc: 1.19.2.1
-pkgdown: 1.2.0
-pkgdown_sha: ~
-articles:
-  optimalppp: optimalppp.html
-urls:
-  reference: https://prioritizr.github.io/optimalppp/reference
-  article: https://prioritizr.github.io/optimalppp/articles
-
